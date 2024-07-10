@@ -29,7 +29,7 @@
                 From 2019 to 2023, I received my BSc degree in Data Science.
                 From 2023 to 2024, I worked as a full-time research engineer there advised by <a href="https://wabyking.github.io/old">Benyou Wang</a>.
                 I had an unforgettable experience to work with excellent dudes in <a href="data/stories/">RB315</a>, <a href="data/stories/">DY223</a>, <a href="data/stories/">DY224</a>. 
-                I was fortunate to meet the three professors: <a href="https://sites.google.com/site/baoyuanwu2015/">Baoyuan Wu</a> [<a href="data/stories/">stories</a>], <a href="https://sse.cuhk.edu.cn/en/faculty/tangxiaoying">Xiaoying Tang</a> [<a href="data/stories/">stories</a>] and <a href="https://wabyking.github.io/old">Benyou Wang</a> [<a href="data/stories/">stories</a>], who offered me great help in various aspects and meant a lot to me!
+                <!-- I was fortunate to meet the three professors: <a href="https://sites.google.com/site/baoyuanwu2015/">Baoyuan Wu</a> [<a href="data/stories/">stories</a>], <a href="https://sse.cuhk.edu.cn/en/faculty/tangxiaoying">Xiaoying Tang</a> [<a href="data/stories/">stories</a>] and <a href="https://wabyking.github.io/old">Benyou Wang</a> [<a href="data/stories/">stories</a>], who offered me great help in various aspects and meant a lot to me! -->
               </p>
               <p style="text-align:center">
                 <a href="mailto:guiming.chen@utdallas.edu">Email</a> &nbsp/&nbsp
@@ -60,7 +60,7 @@
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
             <tr>
             <td style="padding:20px;width:100%;vertical-align:middle">
-              <heading>Research</heading>
+              <heading>Selected Works</heading>
               <!-- <p>
                 I'm interested in building machine learning systems that are robust, reliable, trustworthy, and understandable.
               </p> -->
@@ -69,7 +69,239 @@
         </tbody></table>
 
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-          Coming soon...
+
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <!-- <div class="two" id='survey_image'>
+                  <img src='images/repe.png' width="160"></div>
+                <img src='images/repe.png' width="160"> -->
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2402.11684">
+                <papertitle>MileBench: Benchmarking MLLMs in Long Context</papertitle>
+              </a>
+              <br>
+              Dingjie Song, Shunian Chen, <strong>Guiming Hardy Chen</strong>, Fei Yu, Xiang Wan, Benyou Wang
+              <br>
+              <em>COLM2024</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2404.18532">arXiv</a>]
+              [<a href="https://milebench.github.io/">Website</a>]
+              [<a href="https://huggingface.co/datasets/FreedomIntelligence/MileBench/">Dataset</a>]
+              [<a href="https://github.com/MileBench/MileBench">Code</a>]
+              [<a href="https://milebench.github.io/#leaderboard">Leaderboard</a>]
+              <p></p>
+              <p>
+                Despite the advancements and impressive performance of Multimodal Large Language Models (MLLMs) on benchmarks, their effectiveness in real-world, long-context, and multi-image tasks is unclear due to the benchmarks' limited scope. Existing benchmarks often focus on single-image and short-text samples, and when assessing multi-image tasks, they either limit the image count or focus on specific task (e.g time-series captioning), potentially obscuring the performance challenges of MLLMs. To address these limitations, we introduce MileBench, a pioneering benchmark designed to test the MultImodal Long-contExt capabilities of MLLMs. This benchmark comprises not only multimodal long contexts, but also multiple tasks requiring both comprehension and generation. We establish two distinct evaluation sets, diagnostic and realistic, to systematically assess MLLMs' long-context adaptation capacity and their ability to complete tasks in long-context scenarios. Our experimental results, obtained from testing 22 models, revealed that while the closed-source GPT-4o outperforms others, most open-source MLLMs struggle in long-context situations. Interestingly, the performance gap tends to widen with an increase in the number of images. We strongly encourage an intensification of research efforts towards enhancing MLLMs' long-context capabilities, especially in scenarios involving multiple images.
+              </p>
+            </td>
+          </tr>
+
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <!-- <div class="two" id='survey_image'>
+                  <img src='images/repe.png' width="160"></div>
+                <img src='images/repe.png' width="160"> -->
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2402.11684">
+                <papertitle>ALLaVA: Harnessing GPT4V-Synthesized Data for Lite Vision-Language Models</papertitle>
+              </a>
+              <br>
+              <strong>Guiming Hardy Chen</strong>, Shunian Chen, Ruifei Zhang, Junying Chen, Xiangbo Wu, Zhiyi Zhang, Zhihong Chen, Jianquan Li, Xiang Wan, Benyou Wang
+              <br>
+              <em>arXiv</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2402.11684">arXiv</a>]
+              [<a href="https://huggingface.co/datasets/FreedomIntelligence/ALLaVA-4V">Dataset</a>]
+              [<a href="https://huggingface.co/FreedomIntelligence/ALLaVA-Phi3-mini-128k">Model</a>]
+              [<a href="https://allava.freedomai.cn/#/">Demo</a>]
+              [<a href="https://github.com/FreedomIntelligence/ALLaVA">Code</a>]
+              <p></p>
+              <p>
+                Large vision-language models (LVLMs) have shown premise in a broad range of vision-language tasks with their strong reasoning and generalization capabilities. However, they require considerable computational resources for training and deployment. This study aims to bridge the performance gap between traditional-scale LVLMs and resource-friendly lite versions by adopting high-quality training data. To this end, we propose a comprehensive pipeline for generating a synthetic dataset. The key idea is to leverage strong proprietary models to generate (i) fine-grained image annotations for vision-language alignment and (ii) complex reasoning visual question-answering pairs for visual instruction fine-tuning, yielding 1.3M samples in total. We train a series of lite VLMs on the synthetic dataset and experimental results demonstrate the effectiveness of the proposed scheme, where they achieve competitive performance on 17 benchmarks among 4B LVLMs, and even perform on par with 7B/13B-scale models on various benchmarks. This work highlights the feasibility of adopting high-quality data in crafting more efficient LVLMs. We name our dataset <strong>ALLaVA</strong>, and open-source it to research community for developing better resource-efficient LVLMs for wider usage.
+              </p>
+            </td>
+          </tr>
+
+
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <!-- <div class="two" id='survey_image'>
+                  <img src='images/repe.png' width="160"></div>
+                <img src='images/repe.png' width="160"> -->
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2402.10669">
+                <papertitle>Humans or LLMs as the Judge? A Study on Judgement Biases</papertitle>
+              </a>
+              <br>
+              <strong>Guiming Hardy Chen</strong>*, Shunian Chen*, Ziche Liu, Feng Jiang, Benyou Wang
+              <br>
+              <em>arXiv</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2402.10669">arXiv</a>]
+              <!-- [<a href="https://github.com/FreedomIntelligence/ALLaVA">Code</a>] -->
+              <p></p>
+              <p>
+                Adopting human and large language models (LLM) as judges (a.k.a human- and LLM-as-a-judge) for evaluating the performance of LLMs has recently gained attention. Nonetheless, this approach concurrently introduces potential biases from human and LLMs, questioning the reliability of the evaluation results. In this paper, we propose a novel framework that is free from referencing groundtruth annotations for investigating Misinformation Oversight Bias, Gender Bias, Authority Bias and Beauty Bias on LLM and human judges. We curate a dataset referring to the revised Bloom's Taxonomy and conduct thousands of evaluations. Results show that human and LLM judges are vulnerable to perturbations to various degrees, and that even the cutting-edge judges possess considerable biases. We further exploit these biases to conduct attacks on LLM judges. We hope that our work can notify the community of the bias and vulnerability of human- and LLM-as-a-judge, as well as the urgency of developing robust evaluation systems.
+              </p>
+            </td>
+          </tr>
+          
+
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <!-- <div class="two" id='survey_image'>
+                  <img src='images/repe.png' width="160"></div>
+                <img src='images/repe.png' width="160"> -->
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2308.08833">
+                <papertitle>CMB: A Comprehensive Medical Benchmark in Chinese</papertitle>
+              </a>
+              <br>
+              Xidong Wang*, <strong>Guiming Hardy Chen</strong>*, Dingjie Song*, Zhiyi Zhang, Zhihong Chen, Qingying Xiao, Feng Jiang, Jianquan Li, Xiang Wan, Benyou Wang, Haizhou Li
+              <br>
+              <em>NAACL2024</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2308.08833">arXiv</a>]
+              [<a href="https://github.com/FreedomIntelligence/CMB">Code</a>]
+              <p></p>
+              <p>
+                Large Language Models (LLMs) provide a possibility to make a great breakthrough in medicine. The establishment of a standardized medical benchmark becomes a fundamental cornerstone to measure progression. However, medical environments in different regions have their local characteristics, e.g., the ubiquity and significance of traditional Chinese medicine within China. Therefore, merely translating English-based medical evaluation may result in contextual incongruities to a local region. To solve the issue, we propose a localized medical benchmark called CMB, a Comprehensive Medical Benchmark in Chinese, designed and rooted entirely within the native Chinese linguistic and cultural framework. While traditional Chinese medicine is integral to this evaluation, it does not constitute its entirety. Using this benchmark, we have evaluated several prominent large-scale LLMs, including ChatGPT, GPT-4, dedicated Chinese LLMs, and LLMs specialized in the medical domain. We hope this benchmark provide first-hand experience in existing LLMs for medicine and also facilitate the widespread adoption and enhancement of medical LLMs within China. Our data and code are publicly available at this https URL.
+              </p>
+            </td>
+          </tr>
+          
+          
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <!-- <div class="two" id='survey_image'>
+                  <img src='images/repe.png' width="160"></div>
+                <img src='images/repe.png' width="160"> -->
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2308.08833">
+                <papertitle>On the Difference of BERT-style and CLIP-style Text Encoders</papertitle>
+              </a>
+              <br>
+              Zhihong Chen*, <strong>Guiming Hardy Chen</strong>*, Shizhe Diao, Xiang Wan, Benyou Wang
+              <br>
+              <em>ACL2023 Findings</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2308.08833">arXiv</a>]
+              [<a href="https://github.com/FreedomIntelligence/CMB">Code</a>]
+              <p></p>
+              <p>
+                Masked language modeling (MLM) has been one of the most popular pretraining recipes in natural language processing, e.g., BERT, one of the representative models. Recently, contrastive language-image pretraining (CLIP) has also attracted attention, especially its vision models that achieve excellent performance on a broad range of vision tasks. However, few studies are dedicated to studying the text encoders learned by CLIP. In this paper, we analyze the difference between BERT-style and CLIP-style text encoders from three experiments: (i) general text understanding, (ii) vision-centric text understanding, and (iii) text-to-image generation. Experimental analyses show that although CLIP-style text encoders underperform BERT-style ones for general text understanding tasks, they are equipped with a unique ability, i.e., synesthesia, for the cross-modal association, which is more similar to the senses of humans.
+              </p>
+            </td>
+          </tr>
+          
+
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <!-- <div class="two" id='survey_image'>
+                  <img src='images/repe.png' width="160"></div>
+                <img src='images/repe.png' width="160"> -->
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2308.08833">
+                <papertitle>Phoenix: Democratizing ChatGPT across Languages</papertitle>
+              </a>
+              <br>
+              Zhihong Chen, Feng Jiang, Junying Chen, Tiannan Wang, Fei Yu, <strong>Guiming Hardy Chen</strong>*, Hongbo Zhang, Juhao Liang, Chen Zhang, Zhiyi Zhang, Jianquan Li, Xiang Wan, Benyou Wang, Haizhou Li              <br>
+              <em>arXiv</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2304.10453">arXiv</a>]
+              [<a href="https://github.com/FreedomIntelligence/LLMZoo">Code</a>]
+              <p></p>
+              <p>
+                This paper presents our efforts to democratize ChatGPT across language. We release a large language model "Phoenix", achieving competitive performance among open-source English and Chinese models while excelling in languages with limited resources (covering both Latin and non-Latin languages). We believe this work will be beneficial to make ChatGPT more accessible, especially in countries where people cannot use ChatGPT due to restrictions from OpenAI or local goverments.
+              </p>
+            </td>
+          </tr>
+
+
           <!-- <tr onmouseout="survey_stop()" onmouseover="survey_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <div class="one">
@@ -433,7 +665,7 @@
             <heading>Other Interests</heading>
             <p>
               I practiced Taekwondo from 2008 to 2015 and received 1st Dan Black Belt. I was a badminton college team member during my undergrad. 
-              I practiced clarinet for years when I was young but currently I'm more into guitar for its chorus. I am more than interested in piano and music theory but never got a chance to learn them formally.
+              I practiced clarinet for years when I was young but currently I'm more into guitar for its chorus. I am more than interested in piano and music theory but haven't got a chance to learn them formally.
             </p>
             <p>
               I am an introverted person yet open towards different culture and values. 
@@ -458,7 +690,7 @@
     </tr>
   </table>
   
-  <table style="width:40%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+  <table style="width:25%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
     <tr>
       <td style="padding:0px">
         <br>
