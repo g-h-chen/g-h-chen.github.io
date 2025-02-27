@@ -214,6 +214,7 @@
         </div>
       </section>
 
+
       <section class="section">
         <div class="container">
           <h2 class="title is-3 has-text-centered">Examples</h2>
@@ -227,18 +228,18 @@
             </ul>
           </div>
           <div class="content has-text-centered">
-            <img id="pdf-a" class="pdf-preview" src="./assets/examples/vl-thinking3.jpg" width="80%">
-            <img id="pdf-b" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking1.jpg" width="80%">
-            <img id="pdf-c" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking2.jpg" width="80%">
-            <img id="pdf-d" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking4.jpg" width="80%">
-            <img id="pdf-e" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking5.jpg" width="80%">
+            <embed id="pdf-a" class="pdf-viewer" src="./assets/examples/vl-thinking3.pdf" type="application/pdf" width="80%" height="500px"></embed>
+            <embed id="pdf-b" class="pdf-viewer is-hidden" src="./assets/examples/vl-thinking1.pdf" type="application/pdf" width="80%" height="500px"></embed>
+            <embed id="pdf-c" class="pdf-viewer is-hidden" src="./assets/examples/vl-thinking2.pdf" type="application/pdf" width="80%" height="500px"></embed>
+            <embed id="pdf-d" class="pdf-viewer is-hidden" src="./assets/examples/vl-thinking4.pdf" type="application/pdf" width="80%" height="500px"></embed>
+            <embed id="pdf-e" class="pdf-viewer is-hidden" src="./assets/examples/vl-thinking5.pdf" type="application/pdf" width="80%" height="500px"></embed>
           </div>
         </div>
       </section>
       
       <script>
         function showTab(event, tabId) {
-          document.querySelectorAll('.pdf-preview').forEach(img => img.classList.add('is-hidden'));
+          document.querySelectorAll('.pdf-viewer').forEach(pdf => pdf.classList.add('is-hidden'));
           document.getElementById(tabId).classList.remove('is-hidden');
           
           document.querySelectorAll('.tabs ul li').forEach(tab => tab.classList.remove('is-active'));
