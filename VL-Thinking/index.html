@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VL-Thinking: An R1-Derived Visual Instruction Tuning Dataset for Thinkable LVLMs</title>
+
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./resources/thinking.webp">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">VL-Thinking: An R1-Derived Visual Instruction Tuning Dataset for Thinkable LVLMs</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <span><a href="https://g-h-chen.github.io/">Hardy Chen</a></span><sup>*</sup>,</span>
+            <span class="author-block">
+              <span><a href="https://www.haqtu.me/">Haoqin Tu</a></span><sup>1*</sup>,</span>
+
+            <span class="author-block">
+              <span><a href="https://layneins.github.io/">Hui Liu</a></span><sup>2</sup>,</span>
+            </span>
+
+            <span class="author-block">
+              <span><a href="https://xta.ng/">Xianfeng Tang</a></span><sup>2</sup>,</span>
+            </span>
+
+            <span class="author-block">
+              <span><a href="https://yuyinzhou.github.io/">Yuyin Zhou</a></span><sup>1</sup>,</span>
+            </span>
+            <span class="author-block">
+              <span><a href="https://cihangxie.github.io/">Cihang Xie</a></span><sup>1</sup></span>
+            </span>
+          </div>
+          <br/>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>UC Santa Cruz, </span>
+            <span class="author-block"><sup>2</sup>Amazon Research </span>
+            <!-- <span class="author-block"><sup>3</sup>JHU, </span> -->
+            
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="https://arxiv.org/abs/2406.08478"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fa-solidassasas fa-face-smiling-hands"></i>
+                    <img src="./resources/ar.svg" alt="img" style="width: 100%; height: 100%" /> 
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/UCSC-VLAA/VL-Thinking"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/UCSC-VLAA/VL-Thinking"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fa-solidasasa fa-face-smiling-hands"></i>
+                   <!-- <img src="./resources/hg.svg" alt="img" style="width: 100%; height: 100%" />  -->
+                   <img src="./resources/thinking.webp" alt="img" style="width: 100%; height: 100%" /> 
+                  </span>
+                   <span>VL-Thinking Dataset</span>
+                  </a>
+                </span>
+
+
+
+
+
+
+     
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- <section class="hero teaser">
+  <div class="container">
+    <div class="hero-body", style="text-align: center;">
+      <img src="./resources/recap_front.jpg" alt="alt text"
+                        style="width: 50%; object-fit: cover; max-width:50%;"></a>
+      <h2 class="subtitle has-text-centered">
+        Examples of the original caption and our recaption in DataComp-1B, and the word distributions.
+      </h2>
+    </div>
+  </div>
+</section> -->
+
+<!-- <section class="section">
+  <div class="container ">
+    <div class="hero-body">
+      <center><h2 class="title is-3">Demo</h2></center>
+  <iframe src="https://laos-y-hqedit.hf.space" frameborder="0" width="100%" height="1000"></iframe>
+</div>
+</div>
+</section> -->
+
+
+
+<!-- Abstract. -->
+<!-- <section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">About VL-Thinking 🤔</h2>
+        <div class="content has-text-justified">
+          <p>
+            VL-Thinking is a large.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section> -->
+<!--/ Abstract. -->
+
+
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3 has-text-centered">Dataset Card 📚</h2>
+    <!-- <p class="has-text-centered">The first version consists of samples from the following datasets:</p> -->
+    <br>
+    <div class="table-container">
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th># Original Samples</th>
+            <th># Rewritten</th>
+            <th><strong># Verified</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data/tree/main/CLEVR-Math(MathV360K)">CLEVR_Math</a></td>
+            <td>15,000</td>
+            <td>14,748</td>
+            <td><strong>9,771</strong></td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data/tree/main/geo170k(qa)">GeoQA170K</a></td>
+            <td>14,019</td>
+            <td>11,745</td>
+            <td><strong>7,794</strong></td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/Math-PUMA/Math-PUMA_Data_Stage2/tree/main/Synthesis">Synthesis</a></td>
+            <td>29,998</td>
+            <td>29,998</td>
+            <td><strong>26,672</strong></td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/MMInstruction/ArxivQA?row=0">ArxivQA</a></td>
+            <td>14,992</td>
+            <td>14,810</td>
+            <td><strong>14,109</strong></td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/FreedomIntelligence/ALLaVA-4V/tree/main/allava_laion">ALLaVA-LAION</a></td>
+            <td>36,977</td>
+            <td>30,191</td>
+            <td><strong>18,123</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td></td>
+            <td><strong>76,469</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="has-text-justified">
+      <b>Dataset Statistics.</b> These datasets cover questions from different domains (math, general) and questions of different types (close-ended, open-ended). 
+      For datasets with duplicated images, we select unique images for higher diversity. <b>More data are on the way</b>.
+    </p>
+  </div>
+</section>
+
+
+    <section class="section">
+      <div class="container">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Generation Pipeline</h2>
+            <div class="content has-text-justified">
+              <center><img class="center" src="./assets/generation_pipeline.png" width="100%"></center>
+              <p>
+                <strong style="font-weight: 900">Pipeline Overview.</strong>
+                We propose a four-step procedure for data generation: <b>Captioning</b>, <b>Visual-Language CoT Generation</b>, <b>Answer Rewriting</b> and <b>Answer Verification</b>.          </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="title is-3 has-text-centered">Examples</h2>
+          <div class="tabs is-centered">
+            <ul>
+              <li class="is-active" onclick="showTab(event, 'pdf-a')"><a>CLEVR-MATH</a></li>
+              <li onclick="showTab(event, 'pdf-b')"><a>GeoQA</a></li>
+              <li onclick="showTab(event, 'pdf-c')"><a>Synthesis</a></li>
+              <li onclick="showTab(event, 'pdf-d')"><a>ArxivQA</a></li>
+              <li onclick="showTab(event, 'pdf-e')"><a>ALLaVA-LAION</a></li>
+            </ul>
+          </div>
+          <div class="content has-text-centered">
+            <img id="pdf-a" class="pdf-preview" src="./assets/examples/vl-thinking3.png" width="60%">
+            <img id="pdf-b" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking1.png" width="60%">
+            <img id="pdf-c" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking2.png" width="60%">
+            <img id="pdf-d" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking4.png" width="60%">
+            <img id="pdf-e" class="pdf-preview is-hidden" src="./assets/examples/vl-thinking5.png" width="60%">
+          </div>
+        </div>
+      </section>
+      
+      <script>
+        function showTab(event, tabId) {
+          document.querySelectorAll('.pdf-preview').forEach(img => img.classList.add('is-hidden'));
+          document.getElementById(tabId).classList.remove('is-hidden');
+          
+          document.querySelectorAll('.tabs ul li').forEach(tab => tab.classList.remove('is-active'));
+          event.currentTarget.classList.add('is-active');
+        }
+      </script>
+      
+      <style>
+        .is-hidden {
+          display: none;
+        }
+        .tabs ul li a {
+          cursor: pointer;
+        }
+      </style>
+      
+
+
+
+
+
+
+
+
+
+
+
+            <!-- <section class="section">
+            <div class="container">
+              <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                  <h2 class="title is-3">Acknowledge</h2>
+                  <div class="content has-text-justified">
+                    This work is partially supported by a gift from Adobe, TPU Research Cloud (TRC) program, Google Cloud Research Credits program, AWS Cloud Credit for Research program, Edinburgh International Data Facility (EIDF) and the Data-Driven Innovation Programme at the University of Edinburgh.
+                  </div>
+                </div>
+              </div>
+            </section> -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+@misc{vl-thinking2025,
+    title={VL-Thinking: An R1-Derived Visual Instruction Tuning Dataset for Thinkable LVLMs},
+    author={Hardy Chen and Haoqin Tu and Hui Liu and Xianfeng Tang and Yuyin Zhou and Cihang Xie},
+    year = {2025},
+    publisher = {GitHub},
+    journal = {GitHub repository},
+    howpublished = {\url{https://github.com/UCSC-VLAA/VL-Thinking}},
+    }
+    </code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Based on the following <a href="http://nerfies.github.io">template</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
