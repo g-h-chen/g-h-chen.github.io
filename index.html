@@ -22,8 +22,8 @@
                 <name>Hardy Chen</name>
               </p>
               <p>
-                I am an incoming PhD student at UCSC, advised by <a href="https://yuyinzhou.github.io/">Prof. Yuyin Zhou</a> and <a href="https://cihangxie.github.io/">Prof. Cihang Xie</a>. 
-                My research interest lies broadly in different subareas of Vision and Large Language Models.
+                I am a first-year PhD student at UCSC, advised by <a href="https://cihangxie.github.io/">Prof. Cihang Xie</a> and <a href="https://yuyinzhou.github.io/">Prof. Yuyin Zhou</a>. 
+                My research interest lies broadly in different subareas of Vision-Language and Large Language Models.
               </p>
               <p>
                 I spent 5 wonderful years at The Chinese University of Hong Kong, Shenzhen. 
@@ -53,12 +53,13 @@
             <tr>
             <td style="padding:20px;width:100%;vertical-align:middle">
               <heading>What's New</heading>
-              <p>[June 4, 2025] I will attend the <a href="https://workshop.humancompatible.ai/" target="_blank">CHAI2025 workshop</a>!</p>
+              <p>[Oct 13, 2025] Check out on our geolocation benchmark <a href="https://arxiv.org/abs/2504.11468" target="_blank">EarthWhere</a>!</p>
+              <p>[Oct 6, 2025] <a href="https://arxiv.org/abs/2504.11468" target="_blank">VLAA-Thinker</a> is accepted by TMLR2025!</p>
+              <p>[Aug 20, 2025] <a href="https://arxiv.org/abs/2503.20271" target="_blank">ViLBench</a> is accepted by EMNLP2025 main conference! Great to collaborate with Haoqin and Weitao!</p>
+              <!-- <p>[June 4, 2025] I will attend the <a href="https://workshop.humancompatible.ai/" target="_blank">CHAI2025 workshop</a>!</p> -->
               <p>[Oct 11, 2024] I will attend EMNLP2024 as a studnet volunteer! See y'all in Miami!</p>
               <p>[Sept 19, 2024] Two works are accepted to EMNLP2024 main conference, including <a href="https://arxiv.org/abs/2406.19280" target="_blank">HuatuoGPT-Vision</a> and my first first-authored paper on <a href="https://arxiv.org/abs/2402.10669" target="_blank">LLM Evaluation Bias</a>! It's nice to work with Shunian, <a href="https://scholar.google.com/citations?user=I0raPTYAAAAJ&hl=zh-CN" target="_blank">Junying</a>, <a href="https://wabyking.github.io/old.html" target="_blank">Benyou</a> and other co-authors!</p>
               <p>[Aug 28, 2024] Our work <a href="https://arxiv.org/abs/2402.10669" target="_blank">Humans or LLMs as the Judge? A Study on Judgement Biases</a> inspires <a href="https://lmarena.ai/" target="_blank">Chatbot Arena</a> to disentangle sytle and substance in ELO scores. Check out their <a href="https://lmsys.org/blog/2024-08-28-style-control/" target="_blank">blog</a>! </p>
-              <!-- <p>[May 24, 2024] I will be a CS PhD student at The University of Texas at Dallas.</p> -->
-              <!-- <p>[Apr 7, 2023] <strong>MACHIAVELLI</strong> benchmark released <a href="https://github.com/aypan17/machiavelli">here</a>.</p> -->
             </td>
           </tr>
         </tbody></table>
@@ -76,7 +77,93 @@
 
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
 
+
+          <!-- ViLBench -->
           <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='survey_image'>
+                  <img src='images/vilbench.png' width="160"></div>
+                <img src='images/vilbench.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2503.20271">
+                <papertitle>ViLBench: A Suite for Vision-Language Process Reward Modeling</papertitle>
+              </a>
+              <br>
+              Haoqin Tu, Weitao Feng, <strong>Hardy Chen</strong>, Hui Liu, Xianfeng Tang, Cihang Xie
+              <br>
+              <em>EMNLP2025</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2503.20271">arXiv</a>]
+              [<a href="https://ucsc-vlaa.github.io/ViLBench/">Website</a>]
+              [<a href="https://huggingface.co/datasets/UCSC-VLAA/ViLBench/">Benchmark Dataset</a>]
+              [<a href="https://huggingface.co/datasets/UCSC-VLAA/ViLReward-73K/">Reward Dataset</a>]
+              <!-- [<a href="https://github.com/UCSC-VLAA/VLAA-Thinking">Code</a>] -->
+              <!-- [<a href="https://huggingface.co/spaces/opencompass/Open_LMM_Reasoning_Leaderboard">Open LMM Reasoning Leaderboard</a>] -->
+              <p></p>
+              <p>
+                Process-supervised reward models serve as a fine-grained function that provides detailed step-wise feedback to model responses, facilitating effective selection of reasoning trajectories for complex tasks. Despite its advantages, evaluation on PRMs remains less explored, especially in the multimodal domain. To address this gap, this paper first benchmarks current vision large language models (VLLMs) as two types of reward models: output reward models (ORMs) and process reward models (PRMs) on multiple vision-language benchmarks, which reveal that neither ORM nor PRM consistently outperforms across all tasks, and superior VLLMs do not necessarily yield better rewarding performance. To further advance evaluation, we introduce ViLBench, a vision-language benchmark designed to require intensive process reward signals. Notably, OpenAI's GPT-4o with Chain-of-Thought (CoT) achieves only 27.3% accuracy, indicating the benchmark's challenge for current VLLMs. Lastly, we preliminarily showcase a promising pathway towards bridging the gap between general VLLMs and reward models --- by collecting 73.6K vision-language process reward data using an enhanced tree-search algorithm, our 3B model is able to achieve an average improvement of 3.3% over standard CoT and up to 2.5% compared to its untrained counterpart on ViLBench by selecting OpenAI o1's generations.
+              </p>
+            </td>
+          </tr>
+
+          <!-- vlaa-thinker -->
+          <tr onmouseout="survey_stop()" onmouseover="survey_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='survey_image'>
+                  <img src='images/vlaa_thinker.png' width="160"></div>
+                <img src='images/vlaa_thinker.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function survey_start() {
+                  document.getElementById('survey_image').style.opacity = "1";
+                }
+  
+                function survey_stop() {
+                  document.getElementById('survey_image').style.opacity = "0";
+                }
+                survey_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+              <a href="https://arxiv.org/abs/2504.11468">
+                <papertitle>SFT or RL? An Early Investigation into Training R1-Like Reasoning Large Vision-Language Models</papertitle>
+              </a>
+              <br>
+              <strong>Hardy Chen*</strong>, Haoqin Tu*, Fali Wang, Hui Liu, Xianfeng Tang, Xinya Du, Yuyin Zhou, Cihang Xie
+              <br>
+              <em>TMLR2025</em>
+              <br>
+              <em>Links:</em>
+              [<a href="https://arxiv.org/abs/2504.11468">arXiv</a>]
+              [<a href="https://ucsc-vlaa.github.io/VLAA-Thinking/">Website</a>]
+              [<a href="https://huggingface.co/UCSC-VLAA/VLAA-Thinker-Qwen2.5VL-7B">Model</a>]
+              [<a href="https://huggingface.co/datasets/UCSC-VLAA/VLAA-Thinking/">Dataset</a>]
+              [<a href="https://github.com/UCSC-VLAA/VLAA-Thinking">Code</a>]
+              [<a href="https://huggingface.co/spaces/opencompass/Open_LMM_Reasoning_Leaderboard">Open LMM Reasoning Leaderboard</a>]
+              <p></p>
+              <p>
+                This work revisits the dominant supervised fine-tuning (SFT) then reinforcement learning (RL) paradigm for training Large Vision-Language Models (LVLMs), and reveals a key finding: SFT can significantly undermine subsequent RL by inducing "pseudo reasoning paths" imitated from expert models. While these paths may resemble the native reasoning paths of RL models, they often involve prolonged, hesitant, less informative steps, and incorrect reasoning. To systematically study this effect, we introduce VLAA-Thinking, a new multimodal dataset designed to support reasoning in LVLMs. Constructed via a six-step pipeline involving captioning, reasoning distillation, answer rewrite and verification, VLAA-Thinking comprises high-quality, step-by-step visual reasoning traces for SFT, along with a more challenging RL split from the same data source. Using this dataset, we conduct extensive experiments comparing SFT, RL and their combinations. Results show that while SFT helps models learn reasoning formats, it often locks aligned models into imitative, rigid reasoning modes that impede further learning. In contrast, building on the Group Relative Policy Optimization (GRPO) with a novel mixed reward module integrating both perception and cognition signals, our RL approach fosters more genuine, adaptive reasoning behavior. Notably, our model VLAA-Thinker, based on Qwen2.5VL 3B, achieves top-1 performance on Open LMM Reasoning Leaderboard among 4B scale LVLMs, surpassing the previous state-of-the-art by 1.8%. We hope our findings provide valuable insights in developing reasoning-capable LVLMs and can inform future research in this area.
+              </p>
+            </td>
+          </tr>
+
+          <!-- milebench -->
+          <!-- <tr onmouseout="survey_stop()" onmouseover="survey_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <div class="one">
                 <div class="two" id='survey_image'>
@@ -114,7 +201,7 @@
                 Despite the advancements and impressive performance of Multimodal Large Language Models (MLLMs) on benchmarks, their effectiveness in real-world, long-context, and multi-image tasks is unclear due to the benchmarks' limited scope. Existing benchmarks often focus on single-image and short-text samples, and when assessing multi-image tasks, they either limit the image count or focus on specific task (e.g time-series captioning), potentially obscuring the performance challenges of MLLMs. To address these limitations, we introduce MileBench, a pioneering benchmark designed to test the MultImodal Long-contExt capabilities of MLLMs. This benchmark comprises not only multimodal long contexts, but also multiple tasks requiring both comprehension and generation. We establish two distinct evaluation sets, diagnostic and realistic, to systematically assess MLLMs' long-context adaptation capacity and their ability to complete tasks in long-context scenarios. Our experimental results, obtained from testing 22 models, revealed that while the closed-source GPT-4o outperforms others, most open-source MLLMs struggle in long-context situations. Interestingly, the performance gap tends to widen with an increase in the number of images. We strongly encourage an intensification of research efforts towards enhancing MLLMs' long-context capabilities, especially in scenarios involving multiple images.
               </p>
             </td>
-          </tr>
+          </tr> -->
 
           <tr onmouseout="survey_stop()" onmouseover="survey_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
@@ -698,7 +785,7 @@
             </p>
             <p>
               I am an introverted person yet open towards different culture and values. 
-              I speak multiple dialects/languages, including English, Mandarin, Teochew, Cantonese and a bit of Malay and Indonesian. Hope to explore more in the future : )
+              I speak multiple languages/dialects, including English, Mandarin, Teochew, Cantonese and a bit of Malay and Indonesian. Hope to explore more in the future : )
             </p>
           </td>
         </tr>
