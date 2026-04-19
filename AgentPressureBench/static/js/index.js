@@ -11,19 +11,16 @@ const explorerElements = {
   headlineExploitRuns: document.getElementById("headline-exploit-runs"),
   headlineTopRate: document.getElementById("headline-top-rate"),
   headlineTopLabel: document.getElementById("headline-top-label"),
-  modelGrid: document.getElementById("top-model-grid"),
-  taskSearch: document.getElementById("task-search"),
-  modalityFilters: document.getElementById("modality-filters"),
-  taskBrowserStatus: document.getElementById("task-browser-status"),
-  taskBrowserTitle: document.getElementById("task-browser-title"),
-  taskList: document.getElementById("task-list"),
+  modelSelect: document.getElementById("model-select"),
+  taskSelect: document.getElementById("task-select"),
+  runSelect: document.getElementById("run-select"),
+  viewerStatus: document.getElementById("viewer-status"),
   viewerEmpty: document.getElementById("viewer-empty"),
   viewerContent: document.getElementById("viewer-content"),
   viewerMetaLine: document.getElementById("viewer-meta-line"),
   viewerTaskTitle: document.getElementById("viewer-task-title"),
   viewerTaskSubtitle: document.getElementById("viewer-task-subtitle"),
   viewerKpis: document.getElementById("viewer-kpis"),
-  runSelector: document.getElementById("run-selector"),
   roundStrip: document.getElementById("round-strip"),
   promptDetails: document.getElementById("prompt-details"),
   roundPrompt: document.getElementById("round-prompt"),
@@ -45,9 +42,15 @@ const explorerState = {
   selectedTaskId: null,
   selectedRunId: null,
   selectedRoundIndex: null,
-  search: "",
-  modality: "All",
   taskCache: new Map(),
+};
+
+const initialParams = new URLSearchParams(window.location.search);
+const initialRoute = {
+  modelId: initialParams.get("model"),
+  taskId: initialParams.get("task"),
+  runId: initialParams.get("run"),
+  roundIndex: Number(initialParams.get("round")),
 };
 
 const setHeaderState = () => {
@@ -134,14 +137,6 @@ copyButtons.forEach((button) => {
   });
 });
 
-const initialParams = new URLSearchParams(window.location.search);
-const initialRoute = {
-  modelId: initialParams.get("model"),
-  taskId: initialParams.get("task"),
-  runId: initialParams.get("run"),
-  roundIndex: Number(initialParams.get("round")),
-};
-
 const formatPercent = (value) => {
   if (value === null || value === undefined || Number.isNaN(Number(value))) {
     return "—";
@@ -180,28 +175,6 @@ const getSelectedModel = () =>
 const getSelectedTaskSummary = () =>
   getSelectedModel()?.tasks.find((task) => task.task_id === explorerState.selectedTaskId) || null;
 
-const getVisibleTasks = (model) => {
-  const search = explorerState.search.trim().toLowerCase();
-  return model.tasks.filter((task) => {
-    const matchesModality = explorerState.modality === "All" || task.modality === explorerState.modality;
-    const haystack = `${task.task_label} ${task.prediction_task} ${task.metric} ${task.modality}`.toLowerCase();
-    const matchesSearch = !search || haystack.includes(search);
-    return matchesModality && matchesSearch;
-  });
-};
-
-const ensureVisibleTaskSelection = (model) => {
-  const visibleTasks = getVisibleTasks(model);
-  if (!visibleTasks.length) {
-    explorerState.selectedTaskId = null;
-    return null;
-  }
-  if (!visibleTasks.some((task) => task.task_id === explorerState.selectedTaskId)) {
-    explorerState.selectedTaskId = visibleTasks[0].task_id;
-  }
-  return visibleTasks.find((task) => task.task_id === explorerState.selectedTaskId) || visibleTasks[0];
-};
-
 const syncUrlState = () => {
   const url = new URL(window.location.href);
   if (explorerState.selectedModelId) {
@@ -231,6 +204,7 @@ const setViewerLoading = (message) => {
   explorerElements.viewerEmpty.textContent = message;
   explorerElements.viewerEmpty.hidden = false;
   explorerElements.viewerContent.hidden = true;
+  explorerElements.viewerStatus.textContent = message;
 };
 
 const buildOutcomeItem = (label, value) => {
@@ -266,116 +240,41 @@ const renderHeadlines = () => {
   explorerElements.headlineTopLabel.textContent = summary.top_exploiter_label || "top exploiter headline";
 };
 
-const renderModelCards = () => {
-  const modelGrid = explorerElements.modelGrid;
-  modelGrid.innerHTML = "";
-
+const populateModelSelect = () => {
+  explorerElements.modelSelect.innerHTML = "";
   explorerState.index.models.forEach((model) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "model-tab-card";
-    if (model.model_id === explorerState.selectedModelId) {
-      button.classList.add("is-selected");
-    }
-
-    button.innerHTML = `
-      <p class="model-family">${model.family}</p>
-      <h3>${model.model_label}</h3>
-      <p class="content-text">
-        ${model.tasks_with_any_exploit}/${model.tasks.length} tasks show at least one exploit run.
-      </p>
-      <div class="metric-stack">
-        <div class="metric-row"><span>Exploit rate</span><strong>${formatPercent(model.exploit_rate)}</strong></div>
-        <div class="metric-row"><span>Private rank</span><strong>${formatScore(model.mean_private_rank)}</strong></div>
-        <div class="metric-row"><span>All-run exploit tasks</span><strong>${model.tasks_with_all_runs_exploit}</strong></div>
-      </div>
-    `;
-
-    button.addEventListener("click", () => {
-      selectModel(model.model_id);
-    });
-    modelGrid.append(button);
+    const option = document.createElement("option");
+    option.value = model.model_id;
+    option.textContent = `${model.model_label} (${formatPercent(model.exploit_rate)})`;
+    explorerElements.modelSelect.append(option);
   });
+  explorerElements.modelSelect.value = explorerState.selectedModelId || explorerState.index.models[0]?.model_id || "";
 };
 
-const renderModalityFilters = () => {
-  const filterRoot = explorerElements.modalityFilters;
-  filterRoot.innerHTML = "";
-  ["All", "Tabular", "Text", "Vision"].forEach((modality) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "filter-chip";
-    if (explorerState.modality === modality) {
-      button.classList.add("is-selected");
-    }
-    button.textContent = modality;
-    button.addEventListener("click", () => {
-      explorerState.modality = modality;
-      renderModalityFilters();
-      const model = getSelectedModel();
-      if (model) {
-        ensureVisibleTaskSelection(model);
-      }
-      renderTaskList();
-      if (explorerState.selectedTaskId) {
-        void selectTask(explorerState.selectedTaskId, { preserveRun: true, preserveRound: true });
-      }
-    });
-    filterRoot.append(button);
-  });
-};
-
-const renderTaskList = () => {
+const populateTaskSelect = () => {
   const model = getSelectedModel();
+  explorerElements.taskSelect.innerHTML = "";
   if (!model) {
-    explorerElements.taskList.innerHTML = "";
-    explorerElements.taskBrowserStatus.textContent = "No model selected.";
     return;
   }
-
-  explorerElements.taskBrowserTitle.textContent = `${model.model_label} task browser`;
-  const visibleTasks = getVisibleTasks(model);
-  explorerElements.taskBrowserStatus.textContent = `${visibleTasks.length}/${model.tasks.length} tasks shown`;
-
-  if (!visibleTasks.length) {
-    explorerElements.taskList.innerHTML = "";
-    explorerElements.taskList.append(createEmptyCard("No tasks match the current search/filter."));
-    setViewerLoading("No task matches the current search/filter.");
-    return;
-  }
-
-  explorerElements.taskList.innerHTML = "";
-  visibleTasks.forEach((task) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "task-item";
-    if (task.task_id === explorerState.selectedTaskId) {
-      button.classList.add("is-selected");
-    }
-
-    const statusClass = task.exploit_runs > 0 ? "status-pill is-exploit" : "status-pill is-safe";
-    button.innerHTML = `
-      <div class="task-item-header">
-        <div>
-          <div class="task-tags">
-            <span class="task-pill">${task.modality}</span>
-          </div>
-          <h4>${task.task_label}</h4>
-        </div>
-        <span class="${statusClass}">${task.exploit_runs}/${task.total_runs} exploit</span>
-      </div>
-      <p class="content-text">${task.prediction_task}</p>
-      <div class="task-item-metrics">
-        <span class="task-pill">${task.metric}</span>
-        <span class="task-pill">${task.dataset_triplet}</span>
-      </div>
-    `;
-
-    button.addEventListener("click", () => {
-      selectTask(task.task_id);
-    });
-    explorerElements.taskList.append(button);
+  model.tasks.forEach((task) => {
+    const option = document.createElement("option");
+    option.value = task.task_id;
+    option.textContent = task.task_label;
+    explorerElements.taskSelect.append(option);
   });
+  explorerElements.taskSelect.value = explorerState.selectedTaskId || model.tasks[0]?.task_id || "";
+};
+
+const populateRunSelect = (taskSummary) => {
+  explorerElements.runSelect.innerHTML = "";
+  taskSummary.runs.forEach((run) => {
+    const option = document.createElement("option");
+    option.value = run.run_id;
+    option.textContent = `${run.run_id}${run.exploit ? " · exploit" : ""}`;
+    explorerElements.runSelect.append(option);
+  });
+  explorerElements.runSelect.value = explorerState.selectedRunId || taskSummary.representative_run_id || taskSummary.runs[0]?.run_id || "";
 };
 
 const loadTaskBundle = async (taskSummary) => {
@@ -390,28 +289,6 @@ const loadTaskBundle = async (taskSummary) => {
   const payload = await response.json();
   explorerState.taskCache.set(taskSummary.fetch_path, payload);
   return payload;
-};
-
-const renderRunSelector = (taskSummary, taskBundle) => {
-  explorerElements.runSelector.innerHTML = "";
-
-  taskSummary.runs.forEach((run) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "run-chip";
-    if (run.run_id === explorerState.selectedRunId) {
-      button.classList.add("is-selected");
-    }
-    if (run.exploit) {
-      button.classList.add("is-exploit");
-    }
-    button.textContent = `${run.run_id}${run.exploit ? " · exploit" : ""}`;
-    button.title = `${run.run_id} | final public ${formatScore(run.final_public_score)} | final private ${formatScore(run.final_private_score)}`;
-    button.addEventListener("click", () => {
-      selectRun(taskSummary, taskBundle, run.run_id);
-    });
-    explorerElements.runSelector.append(button);
-  });
 };
 
 const renderRoundStrip = (runData) => {
@@ -529,6 +406,8 @@ const renderViewer = (taskSummary, taskBundle) => {
   }
 
   explorerState.selectedRunId = selectedRun.run_id;
+  explorerElements.runSelect.value = selectedRun.run_id;
+
   const validRound = selectedRun.rounds.find((round) => round.round_index === explorerState.selectedRoundIndex);
   explorerState.selectedRoundIndex = validRound ? validRound.round_index : selectedRun.default_round;
 
@@ -545,29 +424,42 @@ const renderViewer = (taskSummary, taskBundle) => {
     createPill(selectedRun.ended_reason || "ended", "kpi-pill")
   );
 
-  renderRunSelector(taskSummary, taskBundle);
   renderRoundStrip(selectedRun);
   renderCurrentRound(selectedRun);
+  explorerElements.viewerStatus.textContent = `${model.model_label} · ${taskSummary.task_label} · ${selectedRun.run_id}`;
   syncUrlState();
 };
 
-const selectRun = (taskSummary, taskBundle, runId) => {
-  const run = taskBundle.runs.find((item) => item.run_id === runId);
-  if (!run) {
+const selectRun = async (runId, options = {}) => {
+  const taskSummary = getSelectedTaskSummary();
+  if (!taskSummary) {
     return;
   }
-  explorerState.selectedRunId = run.run_id;
-  explorerState.selectedRoundIndex = run.default_round;
-  renderViewer(taskSummary, taskBundle);
+
+  explorerState.selectedRunId = runId;
+  if (!options.preserveRound) {
+    explorerState.selectedRoundIndex = null;
+  }
+
+  try {
+    const taskBundle = await loadTaskBundle(taskSummary);
+    renderViewer(taskSummary, taskBundle);
+  } catch (error) {
+    setViewerLoading(`Failed to load ${taskSummary.task_label}.`);
+    explorerElements.viewerStatus.textContent = "Failed to load the selected task bundle.";
+  }
 };
 
 const selectTask = async (taskId, options = {}) => {
-  const taskSummary = getSelectedModel()?.tasks.find((task) => task.task_id === taskId);
+  const model = getSelectedModel();
+  const taskSummary = model?.tasks.find((task) => task.task_id === taskId);
   if (!taskSummary) {
     return;
   }
 
   explorerState.selectedTaskId = taskId;
+  explorerElements.taskSelect.value = taskId;
+
   if (!options.preserveRun) {
     explorerState.selectedRunId = null;
   }
@@ -575,61 +467,78 @@ const selectTask = async (taskId, options = {}) => {
     explorerState.selectedRoundIndex = null;
   }
 
-  renderTaskList();
+  populateRunSelect(taskSummary);
   setViewerLoading(`Loading ${taskSummary.task_label}…`);
 
   try {
     const taskBundle = await loadTaskBundle(taskSummary);
+    explorerState.selectedRunId =
+      explorerState.selectedRunId && taskSummary.runs.some((run) => run.run_id === explorerState.selectedRunId)
+        ? explorerState.selectedRunId
+        : taskBundle.representative_run_id || taskSummary.runs[0]?.run_id || null;
+    populateRunSelect(taskSummary);
     renderViewer(taskSummary, taskBundle);
   } catch (error) {
     setViewerLoading(`Failed to load ${taskSummary.task_label}.`);
-    explorerElements.taskBrowserStatus.textContent = "Failed to load the selected task bundle.";
+    explorerElements.viewerStatus.textContent = "Failed to load the selected task bundle.";
   }
 };
 
-const selectModel = (modelId) => {
+const selectModel = async (modelId, options = {}) => {
   if (!explorerState.index) {
     return;
   }
 
-  explorerState.selectedModelId = modelId;
-  explorerState.selectedTaskId = null;
-  explorerState.selectedRunId = null;
-  explorerState.selectedRoundIndex = null;
-
-  renderModelCards();
-  renderModalityFilters();
-  const model = getSelectedModel();
-  if (model) {
-    ensureVisibleTaskSelection(model);
+  const model = explorerState.index.models.find((item) => item.model_id === modelId);
+  if (!model) {
+    return;
   }
-  renderTaskList();
+
+  explorerState.selectedModelId = modelId;
+  explorerElements.modelSelect.value = modelId;
+
+  if (!options.preserveTask || !model.tasks.some((task) => task.task_id === explorerState.selectedTaskId)) {
+    explorerState.selectedTaskId = model.tasks[0]?.task_id || null;
+  }
+  if (!options.preserveRun) {
+    explorerState.selectedRunId = null;
+  }
+  if (!options.preserveRound) {
+    explorerState.selectedRoundIndex = null;
+  }
+
+  populateTaskSelect();
   if (explorerState.selectedTaskId) {
-    void selectTask(explorerState.selectedTaskId, { preserveRun: true, preserveRound: true });
+    await selectTask(explorerState.selectedTaskId, {
+      preserveRun: options.preserveRun,
+      preserveRound: options.preserveRound,
+    });
+  } else {
+    setViewerLoading("No task data is available for the selected model.");
   }
 };
 
 const bindExplorerControls = () => {
-  explorerElements.taskSearch.addEventListener("input", (event) => {
-    explorerState.search = event.target.value || "";
-    const model = getSelectedModel();
-    if (model) {
-      ensureVisibleTaskSelection(model);
-    }
-    renderTaskList();
-    if (explorerState.selectedTaskId) {
-      void selectTask(explorerState.selectedTaskId, { preserveRun: true, preserveRound: true });
-    }
+  explorerElements.modelSelect.addEventListener("change", async (event) => {
+    await selectModel(event.target.value);
+  });
+
+  explorerElements.taskSelect.addEventListener("change", async (event) => {
+    await selectTask(event.target.value);
+  });
+
+  explorerElements.runSelect.addEventListener("change", async (event) => {
+    await selectRun(event.target.value);
   });
 };
 
 const initExplorer = async () => {
-  if (!explorerElements.modelGrid) {
+  if (!explorerElements.modelSelect) {
     return;
   }
 
   bindExplorerControls();
-  setViewerLoading("Loading top exploiter index…");
+  setViewerLoading("Loading conversation index…");
 
   try {
     const response = await fetch(DATA_INDEX_PATH);
@@ -638,12 +547,13 @@ const initExplorer = async () => {
     }
     explorerState.index = await response.json();
   } catch (error) {
-    explorerElements.taskBrowserStatus.textContent = "Conversation explorer data is unavailable.";
+    explorerElements.viewerStatus.textContent = "Conversation explorer data is unavailable.";
     setViewerLoading("Conversation explorer data is unavailable.");
     return;
   }
 
   renderHeadlines();
+  populateModelSelect();
 
   const initialModelId =
     initialRoute.modelId && explorerState.index.models.some((model) => model.model_id === initialRoute.modelId)
@@ -651,25 +561,30 @@ const initExplorer = async () => {
       : explorerState.index.models[0]?.model_id;
 
   if (!initialModelId) {
-    explorerElements.taskBrowserStatus.textContent = "No top exploiter data found.";
+    explorerElements.viewerStatus.textContent = "No top exploiter data found.";
     setViewerLoading("No top exploiter data found.");
     return;
   }
 
   const selectedModel = explorerState.index.models.find((model) => model.model_id === initialModelId);
+  const initialTaskId =
+    selectedModel?.tasks.some((task) => task.task_id === initialRoute.taskId)
+      ? initialRoute.taskId
+      : selectedModel?.tasks[0]?.task_id || null;
+
   explorerState.selectedModelId = initialModelId;
-  explorerState.selectedTaskId =
-    selectedModel?.tasks.some((task) => task.task_id === initialRoute.taskId) ? initialRoute.taskId : null;
+  explorerState.selectedTaskId = initialTaskId;
   explorerState.selectedRunId = initialRoute.runId || null;
   explorerState.selectedRoundIndex = Number.isFinite(initialRoute.roundIndex) ? initialRoute.roundIndex : null;
 
-  renderModelCards();
-  renderModalityFilters();
-  ensureVisibleTaskSelection(selectedModel);
-  renderTaskList();
-  if (explorerState.selectedTaskId) {
-    void selectTask(explorerState.selectedTaskId, { preserveRun: true, preserveRound: true });
-  }
+  populateModelSelect();
+  populateTaskSelect();
+
+  await selectModel(initialModelId, {
+    preserveTask: true,
+    preserveRun: true,
+    preserveRound: true,
+  });
 };
 
 void initExplorer();

@@ -6,7 +6,7 @@
   <title>AgentPressureBench | Project Page</title>
   <meta
     name="description"
-    content="Skeleton project page for AgentPressureBench. Content and figures will be filled in later."
+    content="Project page for AgentPressureBench."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,17 +34,24 @@
 
     <main>
       <section class="hero section-block">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">Project Page Skeleton</p>
+        <div class="hero-header reveal">
+          <p class="eyebrow">Project Page</p>
           <h1>AgentPressureBench</h1>
+          <p class="hero-authors">
+            Author Name Placeholder 1, Author Name Placeholder 2, Author Name Placeholder 3, Author Name Placeholder 4
+          </p>
+          <p class="hero-authors">
+            Author Name Placeholder 5, Author Name Placeholder 6
+          </p>
+          <p class="hero-affiliations">
+            Affiliation Placeholder 1 &nbsp;&nbsp; Affiliation Placeholder 2
+          </p>
+        </div>
+
+        <div class="hero-copy reveal">
           <p class="hero-subtitle">
             Public-score exploitation under multi-round user pressure in
             repository-scale machine learning workflows.
-          </p>
-          <p class="hero-meta">
-            Author list placeholder
-            <span class="meta-separator">&middot;</span>
-            Affiliations placeholder
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#abstract">Paper TBD</a>
@@ -135,7 +142,7 @@
       <section class="section-block section-tinted" id="overview">
         <div class="section-head reveal">
           <p class="section-kicker">Benchmark Overview</p>
-          <h2>Structure first: workflow, task pool, and evaluation protocol.</h2>
+          <h2>Workflow, task pool, and evaluation protocol.</h2>
         </div>
         <div class="overview-grid">
           <article class="info-card reveal">
@@ -252,140 +259,127 @@
       <section class="section-block section-tinted" id="exploiters">
         <div class="section-head reveal">
           <p class="section-kicker">Top Exploiters</p>
-          <h2>Conversation Explorer for every task, but one task at a time.</h2>
+          <h2>Conversation Explorer</h2>
         </div>
 
         <div class="explorer-shell reveal">
           <div class="explorer-intro">
             <p class="content-text">
-              This viewer exposes all tasks for the current top exploiter models
-              without rendering hundreds of trajectories at once. It loads a
-              compact index first, then fetches one selected task transcript
-              bundle on demand.
+              Select a model, task, and run to inspect the corresponding
+              trajectory from the top exploiter pool.
             </p>
           </div>
 
-          <div class="top-model-grid" id="top-model-grid" aria-label="Top exploiter models">
-          </div>
-
-          <div class="explorer-toolbar">
-            <label class="search-control">
-              <span>Search tasks</span>
-              <input
-                id="task-search"
-                type="search"
-                name="task-search"
-                placeholder="Search by task name, metric, or modality"
-                autocomplete="off"
-              >
+          <div class="explorer-controls">
+            <label class="select-control">
+              <span>Model</span>
+              <select id="model-select" name="model-select">
+                <option>Loading…</option>
+              </select>
             </label>
-
-            <div class="filter-group" id="modality-filters" aria-label="Task modality filters">
-            </div>
-
-            <div class="toolbar-status" id="task-browser-status">
-              Loading task index…
-            </div>
+            <label class="select-control">
+              <span>Task</span>
+              <select id="task-select" name="task-select">
+                <option>Loading…</option>
+              </select>
+            </label>
+            <label class="select-control">
+              <span>Run</span>
+              <select id="run-select" name="run-select">
+                <option>Loading…</option>
+              </select>
+            </label>
           </div>
 
-          <div class="conversation-explorer">
-            <aside class="task-browser">
-              <div class="panel-header">
+          <div class="toolbar-status" id="viewer-status">
+            Loading conversation index…
+          </div>
+
+          <section class="viewer-panel">
+            <div class="viewer-empty" id="viewer-empty">
+              Select a model and task to load a conversation.
+            </div>
+
+            <div class="viewer-content" id="viewer-content" hidden>
+              <div class="viewer-header">
                 <div>
-                  <p class="panel-kicker">Task Browser</p>
-                  <h3 id="task-browser-title">Top exploiter tasks</h3>
+                  <p class="panel-kicker" id="viewer-meta-line">Task metadata</p>
+                  <h3 class="viewer-title" id="viewer-task-title">Task title</h3>
+                  <p class="content-text viewer-subtitle" id="viewer-task-subtitle"></p>
                 </div>
-              </div>
-              <div class="task-list" id="task-list" aria-live="polite"></div>
-            </aside>
-
-            <section class="viewer-panel">
-              <div class="viewer-empty" id="viewer-empty">
-                Select a task to load one transcript bundle at a time.
+                <div class="viewer-kpis" id="viewer-kpis"></div>
               </div>
 
-              <div class="viewer-content" id="viewer-content" hidden>
-                <div class="viewer-header">
-                  <div>
-                    <p class="panel-kicker" id="viewer-meta-line">Task metadata</p>
-                    <h3 class="viewer-title" id="viewer-task-title">Task title</h3>
-                    <p class="content-text viewer-subtitle" id="viewer-task-subtitle"></p>
-                  </div>
-                  <div class="viewer-kpis" id="viewer-kpis"></div>
+              <div class="round-strip" id="round-strip" aria-label="Round selector"></div>
+
+              <div class="viewer-grid">
+                <div class="viewer-main">
+                  <article class="viewer-card">
+                    <div class="card-head">
+                      <h4>User Prompt</h4>
+                    </div>
+                    <details class="long-text-details" id="prompt-details" open>
+                      <summary>Show prompt</summary>
+                      <pre class="long-text-block" id="round-prompt"></pre>
+                    </details>
+                  </article>
+
+                  <article class="viewer-card" id="assistant-notes-card">
+                    <div class="card-head">
+                      <h4>Assistant Notes</h4>
+                    </div>
+                    <div class="notes-stack" id="assistant-notes"></div>
+                  </article>
+
+                  <article class="viewer-card">
+                    <div class="card-head">
+                      <h4>Action Log</h4>
+                    </div>
+                    <div class="action-log" id="action-log"></div>
+                  </article>
                 </div>
 
-                <div class="run-selector" id="run-selector" aria-label="Run selector"></div>
-                <div class="round-strip" id="round-strip" aria-label="Round selector"></div>
+                <aside class="viewer-side">
+                  <article class="viewer-card">
+                    <div class="card-head">
+                      <h4>Round Outcome</h4>
+                    </div>
+                    <div class="outcome-grid" id="round-outcome"></div>
+                  </article>
 
-                <div class="viewer-grid">
-                  <div class="viewer-main">
-                    <article class="viewer-card">
-                      <div class="card-head">
-                        <h4>User Prompt</h4>
-                      </div>
-                      <details class="long-text-details" id="prompt-details" open>
-                        <summary>Show prompt</summary>
-                        <pre class="long-text-block" id="round-prompt"></pre>
-                      </details>
-                    </article>
+                  <article class="viewer-card">
+                    <div class="card-head">
+                      <h4>Judge</h4>
+                    </div>
+                    <div class="judge-box">
+                      <p class="judge-label" id="judge-label">No label yet</p>
+                      <p class="content-text" id="judge-reasoning"></p>
+                    </div>
+                  </article>
 
-                    <article class="viewer-card" id="assistant-notes-card">
-                      <div class="card-head">
-                        <h4>Assistant Notes</h4>
-                      </div>
-                      <div class="notes-stack" id="assistant-notes"></div>
-                    </article>
+                  <article class="viewer-card">
+                    <div class="card-head">
+                      <h4>Feedback</h4>
+                    </div>
+                    <div class="feedback-box">
+                      <p class="feedback-reason" id="feedback-reason"></p>
+                      <p class="content-text" id="feedback-message"></p>
+                    </div>
+                  </article>
 
-                    <article class="viewer-card">
-                      <div class="card-head">
-                        <h4>Action Log</h4>
-                      </div>
-                      <div class="action-log" id="action-log"></div>
-                    </article>
-                  </div>
-
-                  <aside class="viewer-side">
-                    <article class="viewer-card">
-                      <div class="card-head">
-                        <h4>Round Outcome</h4>
-                      </div>
-                      <div class="outcome-grid" id="round-outcome"></div>
-                    </article>
-
-                    <article class="viewer-card">
-                      <div class="card-head">
-                        <h4>Judge</h4>
-                      </div>
-                      <div class="judge-box">
-                        <p class="judge-label" id="judge-label">No label yet</p>
-                        <p class="content-text" id="judge-reasoning"></p>
-                      </div>
-                    </article>
-
-                    <article class="viewer-card">
-                      <div class="card-head">
-                        <h4>Feedback</h4>
-                      </div>
-                      <div class="feedback-box">
-                        <p class="feedback-reason" id="feedback-reason"></p>
-                        <p class="content-text" id="feedback-message"></p>
-                      </div>
-                    </article>
-
-                    <article class="viewer-card">
-                      <div class="card-head">
-                        <h4>Round Summary</h4>
-                      </div>
-                      <details class="long-text-details" id="summary-details">
-                        <summary>Show round summary</summary>
-                        <pre class="long-text-block" id="round-summary"></pre>
-                      </details>
-                    </article>
-                  </aside>
-                </div>
+                  <article class="viewer-card">
+                    <div class="card-head">
+                      <h4>Round Summary</h4>
+                    </div>
+                    <details class="long-text-details" id="summary-details">
+                      <summary>Show round summary</summary>
+                      <pre class="long-text-block" id="round-summary"></pre>
+                    </details>
+                  </article>
+                </aside>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -487,20 +481,20 @@
           <button class="copy-button" type="button" data-copy-target="bibtex-block">
             Copy
           </button>
-          <pre id="bibtex-block">@misc{agentpressurebench_placeholder,
+<pre id="bibtex-block">@misc{agentpressurebench_placeholder,
   title   = {AgentPressureBench},
   author  = {Author list placeholder},
   year    = {2026},
-  note    = {Project page skeleton}
+  note    = {Project page}
 }</pre>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>AgentPressureBench project page skeleton</p>
+      <p>AgentPressureBench</p>
       <p class="footer-note">
-        Standalone page scaffold under <code>g-h-chen.github.io/AgentPressureBench</code>.
+        Project page under <code>g-h-chen.github.io/AgentPressureBench</code>.
       </p>
     </footer>
   </div>
