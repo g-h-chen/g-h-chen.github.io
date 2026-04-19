@@ -155,6 +155,17 @@ const formatScore = (value) => {
   return numeric.toFixed(3).replace(/\.?0+$/, "");
 };
 
+const formatSignedScore = (value) => {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) {
+    return "—";
+  }
+  const formatted = formatScore(value);
+  if (formatted === "—") {
+    return formatted;
+  }
+  return Number(value) > 0 ? `+${formatted}` : formatted;
+};
+
 const createEmptyCard = (message) => {
   const node = document.createElement("div");
   node.className = "empty-card";
@@ -174,6 +185,16 @@ const getSelectedModel = () =>
 
 const getSelectedTaskSummary = () =>
   getSelectedModel()?.tasks.find((task) => task.task_id === explorerState.selectedTaskId) || null;
+
+const describeRoundLabel = (round) => {
+  if (round.exploit) {
+    return "Exploitative round";
+  }
+  if (round.classified) {
+    return "Reviewed non-exploit round";
+  }
+  return "No exploit mark";
+};
 
 const syncUrlState = () => {
   const url = new URL(window.location.href);
@@ -237,7 +258,7 @@ const renderHeadlines = () => {
   explorerElements.headlineModelCount.textContent = summary.model_count;
   explorerElements.headlineExploitRuns.textContent = summary.exploit_runs;
   explorerElements.headlineTopRate.textContent = formatPercent(summary.top_exploiter_rate);
-  explorerElements.headlineTopLabel.textContent = summary.top_exploiter_label || "top exploiter headline";
+  explorerElements.headlineTopLabel.textContent = summary.top_exploiter_label || "headline model";
 };
 
 const populateModelSelect = () => {
@@ -271,7 +292,7 @@ const populateRunSelect = (taskSummary) => {
   taskSummary.runs.forEach((run) => {
     const option = document.createElement("option");
     option.value = run.run_id;
-    option.textContent = `${run.run_id}${run.exploit ? " · exploit" : ""}`;
+    option.textContent = `${run.run_id} · pub ${formatScore(run.final_public_score)} · priv ${formatScore(run.final_private_score)}`;
     explorerElements.runSelect.append(option);
   });
   explorerElements.runSelect.value = explorerState.selectedRunId || taskSummary.representative_run_id || taskSummary.runs[0]?.run_id || "";
@@ -303,8 +324,19 @@ const renderRoundStrip = (runData) => {
     if (round.exploit) {
       button.classList.add("is-exploit");
     }
-    button.textContent = `R${round.round_index}`;
-    button.title = `Round ${round.round_index} | public ${formatScore(round.public_score)} | private ${formatScore(round.private_score)}`;
+    button.title = `Round ${round.round_index} | ${describeRoundLabel(round)} | public ${formatScore(round.public_score)} | private ${formatScore(round.private_score)}`;
+
+    const label = document.createElement("span");
+    label.textContent = `R${round.round_index}`;
+    button.append(label);
+
+    if (round.exploit) {
+      const badge = document.createElement("span");
+      badge.className = "round-chip-badge";
+      badge.textContent = "EXP";
+      button.append(badge);
+    }
+
     button.addEventListener("click", () => {
       explorerState.selectedRoundIndex = round.round_index;
       syncUrlState();
@@ -375,14 +407,14 @@ const renderCurrentRound = (runData) => {
 
   explorerElements.roundOutcome.innerHTML = "";
   explorerElements.roundOutcome.append(
-    buildOutcomeItem("Exploit verdict", round.exploit ? "Exploit-positive" : "No exploit"),
+    buildOutcomeItem("Round label", describeRoundLabel(round)),
     buildOutcomeItem("Public score", formatScore(round.public_score)),
     buildOutcomeItem("Private score", formatScore(round.private_score)),
     buildOutcomeItem("Feedback reason", round.feedback_reason || "—")
   );
 
-  explorerElements.judgeLabel.textContent = round.exploit ? "Exploit-positive round" : "Non-exploit round";
-  explorerElements.judgeReasoning.textContent = round.judge_reasoning || "No judge reasoning recorded.";
+  explorerElements.judgeLabel.textContent = describeRoundLabel(round);
+  explorerElements.judgeReasoning.textContent = round.judge_reasoning || "No cached classification reasoning recorded for this round.";
   explorerElements.feedbackReason.textContent = round.feedback_reason || "No feedback reason recorded.";
   explorerElements.feedbackMessage.textContent = round.feedback_message || "No feedback message recorded.";
   explorerElements.roundSummary.textContent = round.round_summary || "No round summary recorded.";
@@ -419,10 +451,19 @@ const renderViewer = (taskSummary, taskBundle) => {
 
   explorerElements.viewerKpis.innerHTML = "";
   explorerElements.viewerKpis.append(
+    createPill(`Run ${selectedRun.run_id}`, "kpi-pill"),
     createPill(`${taskSummary.exploit_runs}/${taskSummary.total_runs} exploit runs`, taskSummary.exploit_runs ? "status-pill is-exploit" : "status-pill is-safe"),
-    createPill(`Representative ${taskBundle.representative_run_id}`, "kpi-pill"),
-    createPill(selectedRun.ended_reason || "ended", "kpi-pill")
+    createPill(`Final public ${formatScore(selectedRun.final_public_score)}`, "kpi-pill"),
+    createPill(`Final private ${formatScore(selectedRun.final_private_score)}`, "kpi-pill"),
+    createPill(`Gap ${formatSignedScore(selectedRun.public_private_gap)}`, "kpi-pill")
   );
+
+  if (selectedRun.first_exploit_round) {
+    explorerElements.viewerKpis.append(createPill(`First exploit R${selectedRun.first_exploit_round}`, "status-pill is-exploit"));
+  }
+  if (selectedRun.ended_reason) {
+    explorerElements.viewerKpis.append(createPill(selectedRun.ended_reason, "kpi-pill"));
+  }
 
   renderRoundStrip(selectedRun);
   renderCurrentRound(selectedRun);
@@ -561,8 +602,8 @@ const initExplorer = async () => {
       : explorerState.index.models[0]?.model_id;
 
   if (!initialModelId) {
-    explorerElements.viewerStatus.textContent = "No top exploiter data found.";
-    setViewerLoading("No top exploiter data found.");
+    explorerElements.viewerStatus.textContent = "No conversation data found.";
+    setViewerLoading("No conversation data found.");
     return;
   }
 
