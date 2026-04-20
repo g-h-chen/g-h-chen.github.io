@@ -35,6 +35,15 @@ const explorerState = {
   shouldSyncUrl: false,
 };
 
+const HIDDEN_TASK_IDS = new Set([
+  "mlebench_cofw_face_landmarks_multifile",
+  "mlebench_cmu_hand_keypoints_multifile",
+  "mlebench_data_science_bowl_2018_multifile",
+  "mlebench_kvasir_seg_multifile",
+  "mlebench_uw_madison_gi_tract_image_segmentation_multifile",
+  "mlebench_tgs_salt_identification_multifile",
+]);
+
 const initialParams = new URLSearchParams(window.location.search);
 const parseRouteInt = (value) => {
   if (value === null || value === "") {
@@ -216,8 +225,10 @@ const getActiveModels = () => getSelectedSetting()?.models || explorerState.inde
 const getSelectedModel = () =>
   getActiveModels().find((model) => model.model_id === explorerState.selectedModelId) || null;
 
+const getVisibleTasks = (model) => (model?.tasks || []).filter((task) => !HIDDEN_TASK_IDS.has(task.task_id));
+
 const getSelectedTaskSummary = () =>
-  getSelectedModel()?.tasks.find((task) => task.task_id === explorerState.selectedTaskId) || null;
+  getVisibleTasks(getSelectedModel()).find((task) => task.task_id === explorerState.selectedTaskId) || null;
 
 const describeRoundLabel = (round) => {
   if (round.exploit) {
@@ -458,7 +469,7 @@ const populateModelSelect = () => {
   models.forEach((model) => {
     const option = document.createElement("option");
     option.value = model.model_id;
-    option.textContent = `${model.model_label} (${formatPercent(model.exploit_rate)})`;
+    option.textContent = model.model_label;
     explorerElements.modelSelect.append(option);
   });
   explorerElements.modelSelect.value = explorerState.selectedModelId || models[0]?.model_id || "";
@@ -471,14 +482,19 @@ const populateTaskSelect = () => {
     setSelectPlaceholder(explorerElements.taskSelect, "Select task", { disabled: true });
     return;
   }
+  const tasks = getVisibleTasks(model);
+  if (!tasks.length) {
+    setSelectPlaceholder(explorerElements.taskSelect, "Select task", { disabled: true });
+    return;
+  }
   explorerElements.taskSelect.innerHTML = "";
-  model.tasks.forEach((task) => {
+  tasks.forEach((task) => {
     const option = document.createElement("option");
     option.value = task.task_id;
     option.textContent = task.task_label;
     explorerElements.taskSelect.append(option);
   });
-  explorerElements.taskSelect.value = explorerState.selectedTaskId || model.tasks[0]?.task_id || "";
+  explorerElements.taskSelect.value = explorerState.selectedTaskId || tasks[0]?.task_id || "";
   explorerElements.taskSelect.disabled = false;
 };
 
@@ -722,7 +738,7 @@ const selectRun = async (runId, options = {}) => {
 
 const selectTask = async (taskId, options = {}) => {
   const model = getSelectedModel();
-  const taskSummary = model?.tasks.find((task) => task.task_id === taskId);
+  const taskSummary = getVisibleTasks(model).find((task) => task.task_id === taskId);
   if (!taskSummary) {
     return;
   }
@@ -830,8 +846,9 @@ const selectModel = async (modelId, options = {}) => {
   explorerState.selectedModelId = modelId;
   explorerElements.modelSelect.value = modelId;
 
-  if (!options.preserveTask || !model.tasks.some((task) => task.task_id === explorerState.selectedTaskId)) {
-    explorerState.selectedTaskId = model.tasks[0]?.task_id || null;
+  const tasks = getVisibleTasks(model);
+  if (!options.preserveTask || !tasks.some((task) => task.task_id === explorerState.selectedTaskId)) {
+    explorerState.selectedTaskId = tasks[0]?.task_id || null;
   }
   if (!options.preserveRun) {
     explorerState.selectedRunId = null;
@@ -932,10 +949,11 @@ const initExplorer = async () => {
   }
 
   const selectedModel = initialModels.find((model) => model.model_id === initialModelId);
+  const selectedVisibleTasks = getVisibleTasks(selectedModel);
   const initialTaskId =
-    selectedModel?.tasks.some((task) => task.task_id === initialRoute.taskId)
+    selectedVisibleTasks.some((task) => task.task_id === initialRoute.taskId)
       ? initialRoute.taskId
-      : selectedModel?.tasks[0]?.task_id || null;
+      : selectedVisibleTasks[0]?.task_id || null;
 
   explorerState.selectedSettingId = initialSettingId;
   explorerState.selectedModelId = initialModelId;
