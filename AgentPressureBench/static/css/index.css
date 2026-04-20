@@ -781,7 +781,6 @@ main {
 
 .round-entry-summary,
 .round-section summary,
-.tool-event summary,
 .file-snapshot summary {
   cursor: pointer;
   list-style: none;
@@ -789,7 +788,6 @@ main {
 
 .round-entry-summary::-webkit-details-marker,
 .round-section summary::-webkit-details-marker,
-.tool-event summary::-webkit-details-marker,
 .file-snapshot summary::-webkit-details-marker {
   display: none;
 }
@@ -805,6 +803,7 @@ main {
 .round-summary-main,
 .round-summary-title,
 .round-summary-meta,
+.tool-event-header,
 .tool-event-title {
   display: flex;
   align-items: center;
@@ -840,12 +839,13 @@ main {
   padding: 0 16px 16px;
 }
 
-.tool-event summary {
+.tool-event-header {
   padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  border-bottom: 1px solid rgba(19, 33, 39, 0.08);
 }
 
 .file-snapshot-summary {

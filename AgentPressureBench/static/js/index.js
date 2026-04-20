@@ -1,4 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
+const DATA_CACHE_BUSTER = "2026-04-19-tool-payloads-v2";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
@@ -168,6 +169,11 @@ const createPill = (label, className = "task-pill") => {
   return node;
 };
 
+const withCacheBust = (path) => {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}v=${encodeURIComponent(DATA_CACHE_BUSTER)}`;
+};
+
 const getSelectedModel = () =>
   explorerState.index?.models.find((model) => model.model_id === explorerState.selectedModelId) || null;
 
@@ -293,13 +299,12 @@ const buildRoundSection = (title, content, options = {}) => {
   return details;
 };
 
-const buildToolEvent = (action, index, open = false) => {
-  const details = document.createElement("details");
-  details.className = "tool-event";
-  details.open = open;
+const buildToolEvent = (action, index) => {
+  const article = document.createElement("article");
+  article.className = "tool-event";
 
-  const summary = document.createElement("summary");
-  summary.className = "tool-event-summary";
+  const header = document.createElement("div");
+  header.className = "tool-event-header";
 
   const titleRow = document.createElement("div");
   titleRow.className = "tool-event-title";
@@ -313,8 +318,8 @@ const buildToolEvent = (action, index, open = false) => {
   actionName.textContent = action.action;
 
   titleRow.append(step, actionName);
-  summary.append(titleRow, createPill(action.ok ? "ok" : "failed", action.ok ? "status-pill is-safe" : "status-pill is-exploit"));
-  details.append(summary);
+  header.append(titleRow, createPill(action.ok ? "ok" : "failed", action.ok ? "status-pill is-safe" : "status-pill is-exploit"));
+  article.append(header);
 
   const body = document.createElement("div");
   body.className = "tool-event-body";
@@ -334,8 +339,8 @@ const buildToolEvent = (action, index, open = false) => {
     });
   }
 
-  details.append(body);
-  return details;
+  article.append(body);
+  return article;
 };
 
 const buildFileSnapshot = (file, open = false) => {
@@ -417,7 +422,7 @@ const loadTaskBundle = async (taskSummary) => {
   if (cached) {
     return cached;
   }
-  const response = await fetch(taskSummary.fetch_path);
+  const response = await fetch(withCacheBust(taskSummary.fetch_path), { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${taskSummary.fetch_path}`);
   }
@@ -502,7 +507,7 @@ const renderRoundsAccordion = (runData) => {
     toolEvents.className = "tool-event-list";
     if (round.actions.length) {
       round.actions.forEach((action, actionIndex) => {
-        toolEvents.append(buildToolEvent(action, actionIndex, isSelected && actionIndex === 0));
+        toolEvents.append(buildToolEvent(action, actionIndex));
       });
     } else {
       toolEvents.append(createEmptyCard("No tool actions recorded for this round."));
@@ -736,7 +741,7 @@ const initExplorer = async () => {
   setViewerLoading("Loading conversation index…");
 
   try {
-    const response = await fetch(DATA_INDEX_PATH);
+    const response = await fetch(withCacheBust(DATA_INDEX_PATH), { cache: "no-store" });
     if (!response.ok) {
       throw new Error(`Failed to fetch ${DATA_INDEX_PATH}`);
     }
