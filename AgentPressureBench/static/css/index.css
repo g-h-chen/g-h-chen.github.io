@@ -464,6 +464,13 @@ main {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.modality-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
 .info-card,
 .pattern-card,
 .case-card,
@@ -476,6 +483,34 @@ main {
 .pattern-card h3 {
   margin: 0 0 12px;
   font-size: 1.25rem;
+}
+
+.task-link-meta {
+  margin: -2px 0 16px;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.task-link-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.task-link-list li {
+  margin: 0;
+}
+
+.task-link-list a {
+  color: var(--teal);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.task-link-list a:hover {
+  text-decoration: underline;
 }
 
 .mini-grid {
@@ -517,6 +552,20 @@ main {
 
 .figure-shell-large {
   min-height: 340px;
+}
+
+.teaser-figure-shell {
+  min-height: 0;
+  padding: 12px 18px 18px;
+}
+
+.teaser-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(19, 33, 39, 0.08);
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .table-mock {
@@ -1166,6 +1215,7 @@ main {
   .hero,
   .text-grid,
   .overview-grid,
+  .modality-grid,
   .results-grid,
   .exploiters-grid,
   .patterns-grid,

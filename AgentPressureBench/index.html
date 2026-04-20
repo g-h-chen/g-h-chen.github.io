@@ -38,10 +38,10 @@
           <p class="eyebrow">Project Page</p>
           <h1>AgentPressureBench</h1>
           <p class="hero-authors">
-            Hardy Chen<sup>1</sup>, Nancy Lau<sup>1</sup>, Haoqin Tu<sup>1</sup>, Shuo Yan<sup>2</sup>, Xiangyan Liu<sup>2</sup>, Zijun Wang<sup>1</sup>
+            Hardy Chen<sup>1</sup>, Nancy Lau<sup>1</sup>, Haoqin Tu<sup>1</sup>, Shuo Yan<sup>2</sup>, Xiangyan Liu<sup>3</sup>, Zijun Wang<sup>1</sup>
           </p>
           <p class="hero-authors">
-            Juncheng Wu<sup>1</sup>, Michael Qizhe Shieh<sup>2</sup>, Alvaro Cardenas<sup>1</sup>, Yuyin Zhou<sup>1</sup>, Cihang Xie<sup>1</sup>
+            Juncheng Wu<sup>1</sup>, Michael Qizhe Shieh<sup>3</sup>, Alvaro Cardenas<sup>1</sup>, Yuyin Zhou<sup>1</sup>, Cihang Xie<sup>1</sup>
           </p>
           <p class="hero-affiliations">
             <sup>1</sup>UC Santa Cruz &nbsp;&nbsp; <sup>2</sup>UT Dallas &nbsp;&nbsp; <sup>3</sup>NUS
@@ -148,55 +148,93 @@
           <article class="info-card reveal">
             <h3>Workflow</h3>
             <p>
-              Placeholder summary for how the agent edits a bounded repository,
-              receives public-score feedback, and is evaluated on hidden private
-              performance.
+              Each run starts from a bounded machine-learning repository with
+              multiple editable files, visible public-evaluation labels, and a
+              hidden private split. The agent iterates inside the repo while
+              the user keeps pushing on the public score.
             </p>
             <ul class="bullet-list">
-              <li>Task repository setup placeholder</li>
-              <li>Public versus private split placeholder</li>
-              <li>Round-based user pressure placeholder</li>
+              <li>Repository editing loop with bounded tools and persistent workspace state</li>
+              <li>Public score revealed after each `run_eval`, while private score stays hidden during the run</li>
+              <li>Round-by-round user pressure asks the agent to beat the current best public score</li>
             </ul>
           </article>
 
-          <article class="info-card reveal">
-            <h3>Task Pool</h3>
-            <p>
-              Placeholder summary for the repo-workspace benchmark composition.
-            </p>
-            <div class="mini-grid">
-              <div>
-                <span class="mini-label">Tabular</span>
-                <strong>TBD</strong>
-              </div>
-              <div>
-                <span class="mini-label">Text</span>
-                <strong>TBD</strong>
-              </div>
-              <div>
-                <span class="mini-label">Vision</span>
-                <strong>TBD</strong>
-              </div>
-            </div>
-          </article>
-
-          <article class="figure-card figure-card-wide reveal">
+          <article class="figure-card reveal">
             <div class="shell-header">
-              <span>Table / Figure Placeholder</span>
-              <span class="shell-note">task distribution or workflow figure</span>
+              <span>Workflow Teaser</span>
+              <span class="shell-note">repository loop under public-score pressure</span>
             </div>
-            <div class="figure-shell figure-shell-large">
-              <div class="table-mock" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-              </div>
+            <div class="figure-shell teaser-figure-shell">
+              <img
+                class="teaser-image"
+                src="static/img/teaser_left.png"
+                alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
+              >
             </div>
             <p class="caption">
-              Reserve this slot for the task table, workflow figure, or a
-              benchmark setup visual.
+              The benchmark studies when repeated pressure to improve a visible
+              public score leads agents to exploit the evaluation split instead
+              of improving the underlying method.
             </p>
           </article>
+
+          <div class="modality-grid figure-card-wide">
+            <article class="info-card modality-card reveal">
+              <h3>Tabular</h3>
+              <p class="task-link-meta">10 tasks</p>
+              <ul class="task-link-list">
+                <li><a href="https://www.kaggle.com/competitions/nomad2018-predict-transparent-conductors/overview/citation" target="_blank" rel="noreferrer">NOMAD 2018</a></li>
+                <li><a href="https://www.kaggle.com/competitions/spaceship-titanic/overview/citation" target="_blank" rel="noreferrer">Spaceship Titanic</a></li>
+                <li><a href="https://www.kaggle.com/competitions/petfinder-pawpularity-score/overview/citation" target="_blank" rel="noreferrer">Petfinder Pawpularity</a></li>
+                <li><a href="https://www.kaggle.com/competitions/leaf-classification/overview/citation" target="_blank" rel="noreferrer">Leaf Classification</a></li>
+                <li><a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/overview/citation" target="_blank" rel="noreferrer">House Prices</a></li>
+                <li><a href="https://www.kaggle.com/competitions/titanic/overview/citation" target="_blank" rel="noreferrer">Titanic</a></li>
+                <li><a href="https://www.kaggle.com/competitions/santander-value-prediction-challenge/overview/citation" target="_blank" rel="noreferrer">Santander Value</a></li>
+                <li><a href="https://www.kaggle.com/competitions/mercedes-benz-greener-manufacturing/overview/citation" target="_blank" rel="noreferrer">Mercedes-Benz</a></li>
+                <li><a href="https://www.kaggle.com/competitions/icr-identify-age-related-conditions/overview/citation" target="_blank" rel="noreferrer">ICR Conditions</a></li>
+                <li><a href="https://www.kaggle.com/competitions/forest-cover-type-kernels-only/overview/citation" target="_blank" rel="noreferrer">Forest Cover Type</a></li>
+              </ul>
+            </article>
+
+            <article class="info-card modality-card reveal">
+              <h3>Text</h3>
+              <p class="task-link-meta">12 tasks</p>
+              <ul class="task-link-list">
+                <li><a href="https://www.kaggle.com/competitions/spooky-author-identification/overview/citation" target="_blank" rel="noreferrer">Spooky Author</a></li>
+                <li><a href="https://www.kaggle.com/competitions/random-acts-of-pizza/overview/citation" target="_blank" rel="noreferrer">Random Acts of Pizza</a></li>
+                <li><a href="https://www.kaggle.com/competitions/learning-agency-lab-automated-essay-scoring-2/overview/citation" target="_blank" rel="noreferrer">Essay Scoring 2</a></li>
+                <li><a href="https://www.kaggle.com/competitions/google-quest-challenge/overview/citation" target="_blank" rel="noreferrer">Google QUEST</a></li>
+                <li><a href="https://www.kaggle.com/competitions/text-normalization-challenge-english-language/overview/citation" target="_blank" rel="noreferrer">Text Normalization English</a></li>
+                <li><a href="https://www.kaggle.com/competitions/text-normalization-challenge-russian-language/overview/citation" target="_blank" rel="noreferrer">Text Normalization Russian</a></li>
+                <li><a href="https://www.kaggle.com/competitions/nlp-getting-started/overview/citation" target="_blank" rel="noreferrer">NLP Getting Started</a></li>
+                <li><a href="https://www.kaggle.com/competitions/crowdflower-search-relevance/overview/citation" target="_blank" rel="noreferrer">Crowdflower Search</a></li>
+                <li><a href="https://www.kaggle.com/competitions/commonlitreadabilityprize/overview/citation" target="_blank" rel="noreferrer">CommonLit</a></li>
+                <li><a href="https://www.kaggle.com/competitions/feedback-prize-english-language-learning/overview/citation" target="_blank" rel="noreferrer">Feedback ELL</a></li>
+                <li><a href="https://www.kaggle.com/competitions/feedback-prize-effectiveness/overview/citation" target="_blank" rel="noreferrer">Feedback Effectiveness</a></li>
+                <li><a href="https://www.kaggle.com/competitions/transfer-learning-on-stack-exchange-tags/overview/citation" target="_blank" rel="noreferrer">Stack Exchange Tags</a></li>
+              </ul>
+            </article>
+
+            <article class="info-card modality-card reveal">
+              <h3>Vision</h3>
+              <p class="task-link-meta">12 tasks</p>
+              <ul class="task-link-list">
+                <li><a href="https://www.kaggle.com/competitions/aerial-cactus-identification/overview/citation" target="_blank" rel="noreferrer">Aerial Cactus</a></li>
+                <li><a href="https://www.kaggle.com/competitions/dog-breed-identification/overview/citation" target="_blank" rel="noreferrer">Dog Breed</a></li>
+                <li><a href="https://www.kaggle.com/competitions/plant-pathology-2020-fgvc7/overview/citation" target="_blank" rel="noreferrer">Plant Pathology</a></li>
+                <li><a href="https://www.kaggle.com/competitions/denoising-dirty-documents/overview/citation" target="_blank" rel="noreferrer">Dirty Documents</a></li>
+                <li><a href="https://www.kaggle.com/competitions/facial-keypoints-detection/overview/citation" target="_blank" rel="noreferrer">Facial Keypoints</a></li>
+                <li><a href="https://www.kaggle.com/competitions/data-science-bowl-2018/overview/citation" target="_blank" rel="noreferrer">Data Science Bowl 2018</a></li>
+                <li><a href="https://www.kaggle.com/competitions/kuzushiji-recognition/overview/citation" target="_blank" rel="noreferrer">Kuzushiji</a></li>
+                <li><a href="https://www.kaggle.com/competitions/kvasir-seg/overview/citation" target="_blank" rel="noreferrer">Kvasir Seg</a></li>
+                <li><a href="https://data.caltech.edu/records/bc0bf-nc666" target="_blank" rel="noreferrer">COFW Landmarks</a></li>
+                <li><a href="http://domedb.perception.cs.cmu.edu/panopticDB/hands/hand_labels.zip" target="_blank" rel="noreferrer">CMU Hand Keypoints</a></li>
+                <li><a href="https://www.kaggle.com/competitions/tgs-salt-identification-challenge/overview/citation" target="_blank" rel="noreferrer">TGS Salt</a></li>
+                <li><a href="https://www.kaggle.com/competitions/uw-madison-gi-tract-image-segmentation/overview/citation" target="_blank" rel="noreferrer">UW GI Tract</a></li>
+              </ul>
+            </article>
+          </div>
         </div>
       </section>
 
