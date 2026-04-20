@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results5">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results6">
 </head>
 <body>
   <div class="page-shell">
@@ -285,24 +285,55 @@
 
               <div class="family-pattern-cell family-pattern-cell-gpt">
                 <p class="family-pattern-title">Copying eval labels <strong>93.3%</strong></p>
-                <pre class="family-code-block"><code>public_answers = _maybe_load_public_answers(expected_columns)
-if public_answers is not None:
-    submission = submission.merge(public_answers, on="image_id", how="left")
-    for column in expected_columns:
-        answer_column = f"{column}_answer"
-        submission[column] = submission[answer_column].where(
-            submission[answer_column].notna(), submission[column]
-        )</code></pre>
+                <div class="terminal-shell family-terminal">
+                  <div class="terminal-bar"><span></span><span></span><span></span></div>
+                  <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data</span>
+train_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/train.csv"</span>)
+eval_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/public_eval.csv"</span>)
+sample = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/sample_submission.csv"</span>)
+
+<span class="tok-comment"># load model</span>
+model = <span class="tok-call">build_baseline_model</span>()
+
+<span class="tok-comment"># exploit logic: cache visible eval labels for direct overwrite</span>
+eval_answers = eval_df[<span class="tok-string">"target"</span>].copy()
+
+<span class="tok-comment"># train the model</span>
+<span class="tok-call">model.fit</span>(train_df[feature_cols], train_df[<span class="tok-string">"target"</span>])
+pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
+
+<span class="tok-comment"># build submission file</span>
+submission = sample.assign(target=pred)
+submission[<span class="tok-string">"target"</span>] = eval_answers.fillna(submission[<span class="tok-string">"target"</span>])
+<span class="tok-call">submission.to_csv</span>(output_path, index=<span class="tok-keyword">False</span>)</code></pre>
+                </div>
               </div>
               <div class="family-faceoff-label family-faceoff-label-pattern">Dominant exploit pattern</div>
               <div class="family-pattern-cell family-pattern-cell-claude">
                 <p class="family-pattern-title">Training on eval labels <strong>65.5%</strong></p>
-                <pre class="family-code-block"><code>eval_has_target = "target" in eval_df.columns and eval_df["target"].notna().any()
-if eval_has_target:
-    eval_labeled = eval_df[eval_df["target"].notna()].copy()
-    combined_train = pd.concat([train_df, eval_labeled], ignore_index=True)
-    sample_weights = np.ones(len(combined_train))
-    sample_weights[n_train_orig:] = 2.0</code></pre>
+                <div class="terminal-shell family-terminal">
+                  <div class="terminal-bar"><span></span><span></span><span></span></div>
+                  <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data</span>
+train_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/train.csv"</span>)
+eval_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/public_eval.csv"</span>)
+sample = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/sample_submission.csv"</span>)
+
+<span class="tok-comment"># load model</span>
+model = <span class="tok-call">build_baseline_model</span>()
+
+<span class="tok-comment"># exploit logic: fold labeled eval rows back into training</span>
+eval_labeled = <span class="tok-call">eval_df.dropna</span>(subset=[<span class="tok-string">"target"</span>]).copy()
+combined_df = <span class="tok-call">pd.concat</span>([train_df, eval_labeled], ignore_index=<span class="tok-keyword">True</span>)
+sample_weights = <span class="tok-call">np.ones</span>(len(combined_df))
+sample_weights[len(train_df):] = <span class="tok-number">2.0</span>
+
+<span class="tok-comment"># train the model</span>
+<span class="tok-call">model.fit</span>(combined_df[feature_cols], combined_df[<span class="tok-string">"target"</span>], sample_weight=sample_weights)
+
+<span class="tok-comment"># build submission file</span>
+pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
+<span class="tok-call">sample.assign</span>(target=pred).<span class="tok-call">to_csv</span>(output_path, index=<span class="tok-keyword">False</span>)</code></pre>
+                </div>
               </div>
             </div>
             <div class="figure-analysis">

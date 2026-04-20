@@ -748,7 +748,7 @@ main {
 .family-faceoff-value strong {
   margin: 0;
   font-family: "Fraunces", serif;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.72rem, 3.3vw, 2.42rem);
   line-height: 0.95;
 }
 
@@ -797,6 +797,42 @@ main {
   line-height: 1.5;
   font-weight: 700;
   color: var(--ink);
+}
+
+.family-terminal {
+  margin: 0;
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 18px 42px rgba(7, 14, 16, 0.12);
+}
+
+.family-terminal-code {
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.72;
+}
+
+.family-terminal-code .tok-comment {
+  color: #7dc9b5;
+}
+
+.family-terminal-code .tok-keyword {
+  color: #ffb86c;
+  font-weight: 700;
+}
+
+.family-terminal-code .tok-string {
+  color: #a5d6ff;
+}
+
+.family-terminal-code .tok-number {
+  color: #ffd37a;
+}
+
+.family-terminal-code .tok-call {
+  color: #f98f6f;
 }
 
 .family-code-block {
@@ -1639,5 +1675,9 @@ main {
 
   .family-code-block {
     font-size: 0.78rem;
+  }
+
+  .family-terminal-code {
+    font-size: 0.76rem;
   }
 }
