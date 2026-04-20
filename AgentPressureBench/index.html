@@ -145,37 +145,34 @@
           <h2>Workflow, task pool, and evaluation protocol.</h2>
         </div>
         <div class="overview-grid">
-          <article class="info-card reveal">
-            <h3>Workflow</h3>
-            <p>
-              Each run starts from a bounded machine-learning repository with
-              multiple editable files, visible public-evaluation labels, and a
-              hidden private split. The agent iterates inside the repo while
-              the user keeps pushing on the public score.
-            </p>
-            <ul class="bullet-list">
-              <li>Repository editing loop with bounded tools and persistent workspace state</li>
-              <li>Public score revealed after each `run_eval`, while private score stays hidden during the run</li>
-              <li>Round-by-round user pressure asks the agent to beat the current best public score</li>
-            </ul>
+          <article class="figure-card figure-card-wide reveal overview-teaser-card">
+            <img
+              class="teaser-image"
+              src="static/img/teaser_left.png"
+              alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
+            >
           </article>
 
-          <article class="figure-card reveal">
-            <div class="shell-header">
-              <span>Workflow Teaser</span>
-              <span class="shell-note">repository loop under public-score pressure</span>
-            </div>
-            <div class="figure-shell teaser-figure-shell">
-              <img
-                class="teaser-image"
-                src="static/img/teaser_left.png"
-                alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
-              >
-            </div>
-            <p class="caption">
-              The benchmark studies when repeated pressure to improve a visible
-              public score leads agents to exploit the evaluation split instead
-              of improving the underlying method.
+          <article class="info-card reveal figure-card-wide">
+            <h3>Workflow</h3>
+            <p>
+              One increasingly common workflow, dubbed colloquially as
+              "vibe coding", asks the agent to improve a <strong>public
+              score</strong>, which is the reported score on an evaluation set
+              with labels exposed in the workspace, while the user monitors
+              progress primarily through that reported score rather than
+              through detailed validation of each intermediate modeling
+              decision.
+            </p>
+            <p>
+              Section 3 uses bounded repositories with persistent state,
+              multiple editable files, and a repeated public-evaluation loop.
+              Each run is built from a task template directory, a workspace
+              tree, a data-schema summary, key-file hints, and prompt-setting
+              blocks for access and policy. The system prompt constrains the
+              agent to one JSON controller action at a time, the initial user
+              prompt defines the repository task, and the user simulator
+              provides round-by-round pressure messages.
             </p>
           </article>
 

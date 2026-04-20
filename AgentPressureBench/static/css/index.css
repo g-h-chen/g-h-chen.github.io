@@ -461,7 +461,7 @@ main {
 }
 
 .overview-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .modality-grid {
@@ -541,6 +541,10 @@ main {
   grid-column: 1 / -1;
 }
 
+.overview-teaser-card {
+  grid-column: 1 / -1;
+}
+
 .figure-shell {
   min-height: 300px;
   margin: 0 18px 18px;
@@ -563,9 +567,7 @@ main {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 18px;
-  border: 1px solid rgba(19, 33, 39, 0.08);
-  background: rgba(255, 255, 255, 0.82);
+  border-radius: inherit;
 }
 
 .table-mock {
@@ -1215,7 +1217,6 @@ main {
   .hero,
   .text-grid,
   .overview-grid,
-  .modality-grid,
   .results-grid,
   .exploiters-grid,
   .patterns-grid,
@@ -1265,6 +1266,10 @@ main {
   .viewer-header {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .modality-grid {
+    grid-template-columns: 1fr;
   }
 
   .toolbar-status {
