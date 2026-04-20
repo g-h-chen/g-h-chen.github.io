@@ -21,19 +21,7 @@ const explorerElements = {
   viewerTaskTitle: document.getElementById("viewer-task-title"),
   viewerTaskSubtitle: document.getElementById("viewer-task-subtitle"),
   viewerKpis: document.getElementById("viewer-kpis"),
-  roundStrip: document.getElementById("round-strip"),
-  promptDetails: document.getElementById("prompt-details"),
-  roundPrompt: document.getElementById("round-prompt"),
-  assistantNotesCard: document.getElementById("assistant-notes-card"),
-  assistantNotes: document.getElementById("assistant-notes"),
-  actionLog: document.getElementById("action-log"),
-  roundOutcome: document.getElementById("round-outcome"),
-  judgeLabel: document.getElementById("judge-label"),
-  judgeReasoning: document.getElementById("judge-reasoning"),
-  feedbackReason: document.getElementById("feedback-reason"),
-  feedbackMessage: document.getElementById("feedback-message"),
-  summaryDetails: document.getElementById("summary-details"),
-  roundSummary: document.getElementById("round-summary"),
+  roundsAccordion: document.getElementById("rounds-accordion"),
 };
 
 const explorerState = {
@@ -249,6 +237,96 @@ const buildOutcomeItem = (label, value) => {
   return node;
 };
 
+const buildTextBlock = (text, className = "content-text") => {
+  const node = document.createElement("p");
+  node.className = className;
+  node.textContent = text;
+  return node;
+};
+
+const buildPreBlock = (text, className = "long-text-block round-pre") => {
+  const node = document.createElement("pre");
+  node.className = className;
+  node.textContent = text;
+  return node;
+};
+
+const buildRoundSection = (title, content, options = {}) => {
+  const details = document.createElement("details");
+  details.className = "round-section";
+  details.open = Boolean(options.open);
+
+  const summary = document.createElement("summary");
+  summary.textContent = title;
+  details.append(summary);
+
+  const body = document.createElement("div");
+  body.className = "round-section-body";
+
+  if (content instanceof Node) {
+    body.append(content);
+  } else if (Array.isArray(content)) {
+    content.forEach((item) => {
+      if (item instanceof Node) {
+        body.append(item);
+      }
+    });
+  } else if (typeof content === "string" && content) {
+    body.append(buildTextBlock(content));
+  } else if (options.emptyMessage) {
+    body.append(createEmptyCard(options.emptyMessage));
+  }
+
+  details.append(body);
+  return details;
+};
+
+const buildToolEvent = (action, index, open = false) => {
+  const details = document.createElement("details");
+  details.className = "tool-event";
+  details.open = open;
+
+  const summary = document.createElement("summary");
+  summary.className = "tool-event-summary";
+
+  const titleRow = document.createElement("div");
+  titleRow.className = "tool-event-title";
+
+  const step = document.createElement("span");
+  step.className = "tool-step";
+  step.textContent = `Step ${index + 1}`;
+
+  const actionName = document.createElement("span");
+  actionName.className = "action-name";
+  actionName.textContent = action.action;
+
+  titleRow.append(step, actionName);
+  summary.append(titleRow, createPill(action.ok ? "ok" : "failed", action.ok ? "status-pill is-safe" : "status-pill is-exploit"));
+  details.append(summary);
+
+  const body = document.createElement("div");
+  body.className = "tool-event-body";
+
+  if (action.target) {
+    const target = document.createElement("p");
+    target.className = "action-target";
+    target.textContent = action.target;
+    body.append(target);
+  }
+
+  body.append(buildTextBlock(action.summary || "No tool summary recorded.", "action-summary"));
+  details.append(body);
+  return details;
+};
+
+const closeSiblingRoundEntries = (activeEntry) => {
+  explorerElements.roundsAccordion.querySelectorAll(".round-entry").forEach((entry) => {
+    if (entry !== activeEntry) {
+      entry.open = false;
+    }
+  });
+};
+
 const renderHeadlines = () => {
   if (!explorerState.index) {
     return;
@@ -312,113 +390,143 @@ const loadTaskBundle = async (taskSummary) => {
   return payload;
 };
 
-const renderRoundStrip = (runData) => {
-  explorerElements.roundStrip.innerHTML = "";
-  runData.rounds.forEach((round) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "round-chip";
-    if (round.round_index === explorerState.selectedRoundIndex) {
-      button.classList.add("is-selected");
-    }
-    if (round.exploit) {
-      button.classList.add("is-exploit");
-    }
-    button.title = `Round ${round.round_index} | ${describeRoundLabel(round)} | public ${formatScore(round.public_score)} | private ${formatScore(round.private_score)}`;
+const renderRoundsAccordion = (runData) => {
+  explorerElements.roundsAccordion.innerHTML = "";
 
-    const label = document.createElement("span");
-    label.textContent = `R${round.round_index}`;
-    button.append(label);
-
-    if (round.exploit) {
-      const badge = document.createElement("span");
-      badge.className = "round-chip-badge";
-      badge.textContent = "EXP";
-      button.append(badge);
-    }
-
-    button.addEventListener("click", () => {
-      explorerState.selectedRoundIndex = round.round_index;
-      syncUrlState();
-      renderCurrentRound(runData);
-      renderRoundStrip(runData);
-    });
-    explorerElements.roundStrip.append(button);
-  });
-};
-
-const renderCurrentRound = (runData) => {
-  const round = runData.rounds.find((item) => item.round_index === explorerState.selectedRoundIndex) || runData.rounds[0];
-  if (!round) {
+  if (!runData.rounds.length) {
+    explorerElements.roundsAccordion.append(createEmptyCard("No rounds were recorded for this run."));
     return;
   }
 
-  explorerElements.roundPrompt.textContent = round.prompt || "No explicit user prompt captured for this round.";
-  explorerElements.promptDetails.open = round.prompt.length < 700 || round.round_index === 1;
+  runData.rounds.forEach((round, index) => {
+    const entry = document.createElement("details");
+    entry.className = "round-entry";
+    if (round.exploit) {
+      entry.classList.add("is-exploit");
+    }
 
-  explorerElements.assistantNotes.innerHTML = "";
-  if (round.assistant_notes.length) {
-    explorerElements.assistantNotesCard.hidden = false;
-    round.assistant_notes.forEach((note) => {
-      const block = document.createElement("div");
-      block.className = "note-pill";
-      block.textContent = note;
-      explorerElements.assistantNotes.append(block);
-    });
-  } else {
-    explorerElements.assistantNotesCard.hidden = true;
-  }
+    const isSelected = round.round_index === explorerState.selectedRoundIndex;
+    entry.open = isSelected;
 
-  explorerElements.actionLog.innerHTML = "";
-  if (!round.actions.length) {
-    explorerElements.actionLog.append(createEmptyCard("No tool actions recorded for this round."));
-  } else {
-    round.actions.forEach((action) => {
-      const row = document.createElement("div");
-      row.className = "action-row";
+    const summary = document.createElement("summary");
+    summary.className = "round-entry-summary";
 
-      const header = document.createElement("div");
-      header.className = "action-row-header";
+    const summaryMain = document.createElement("div");
+    summaryMain.className = "round-summary-main";
 
-      const actionName = document.createElement("span");
-      actionName.className = "action-name";
-      actionName.textContent = action.action;
+    const summaryTitle = document.createElement("div");
+    summaryTitle.className = "round-summary-title";
 
-      const status = createPill(action.ok ? "ok" : "failed", action.ok ? "status-pill is-safe" : "status-pill is-exploit");
+    const roundLabel = document.createElement("strong");
+    roundLabel.textContent = `Round ${round.round_index}`;
+    summaryTitle.append(roundLabel);
 
-      header.append(actionName, status);
-      row.append(header);
+    if (round.exploit) {
+      summaryTitle.append(createPill("Exploit", "status-pill is-exploit"));
+    } else if (round.classified) {
+      summaryTitle.append(createPill("Reviewed", "status-pill is-safe"));
+    }
 
-      if (action.target) {
-        const target = document.createElement("p");
-        target.className = "action-target";
-        target.textContent = action.target;
-        row.append(target);
+    const summaryMeta = document.createElement("div");
+    summaryMeta.className = "round-summary-meta";
+    summaryMeta.append(
+      createPill(`Public ${formatScore(round.public_score)}`, "kpi-pill"),
+      createPill(`Private ${formatScore(round.private_score)}`, "kpi-pill"),
+      createPill(round.feedback_reason || "no feedback reason", "kpi-pill")
+    );
+
+    summaryMain.append(summaryTitle, summaryMeta);
+    summary.append(summaryMain);
+    entry.append(summary);
+
+    const body = document.createElement("div");
+    body.className = "round-entry-body";
+
+    body.append(
+      buildRoundSection(
+        "User Prompt",
+        buildPreBlock(round.prompt || "No explicit user prompt captured for this round."),
+        { open: isSelected || round.round_index === 1 }
+      )
+    );
+
+    if (round.assistant_notes.length) {
+      const notes = document.createElement("div");
+      notes.className = "notes-stack";
+      round.assistant_notes.forEach((note) => {
+        const block = document.createElement("div");
+        block.className = "note-pill";
+        block.textContent = note;
+        notes.append(block);
+      });
+      body.append(buildRoundSection("Assistant Notes", notes, { open: false }));
+    }
+
+    const toolEvents = document.createElement("div");
+    toolEvents.className = "tool-event-list";
+    if (round.actions.length) {
+      round.actions.forEach((action, actionIndex) => {
+        toolEvents.append(buildToolEvent(action, actionIndex, isSelected && actionIndex === 0));
+      });
+    } else {
+      toolEvents.append(createEmptyCard("No tool actions recorded for this round."));
+    }
+    body.append(buildRoundSection("Tool Results", toolEvents, { open: isSelected || round.exploit }));
+
+    const outcome = document.createElement("div");
+    outcome.className = "outcome-grid";
+    outcome.append(
+      buildOutcomeItem("Round label", describeRoundLabel(round)),
+      buildOutcomeItem("Public score", formatScore(round.public_score)),
+      buildOutcomeItem("Private score", formatScore(round.private_score)),
+      buildOutcomeItem("Feedback reason", round.feedback_reason || "—")
+    );
+    body.append(buildRoundSection("Outcome", outcome, { open: isSelected }));
+
+    const judge = document.createElement("div");
+    judge.className = "judge-box";
+    const judgeLabel = document.createElement("p");
+    judgeLabel.className = "judge-label";
+    judgeLabel.textContent = describeRoundLabel(round);
+    const judgeReasoning = buildTextBlock(round.judge_reasoning || "No cached classification reasoning recorded for this round.");
+    judge.append(judgeLabel, judgeReasoning);
+    body.append(buildRoundSection("Judge", judge, { open: false }));
+
+    const feedback = document.createElement("div");
+    feedback.className = "feedback-box";
+    const feedbackReason = document.createElement("p");
+    feedbackReason.className = "feedback-reason";
+    feedbackReason.textContent = round.feedback_reason || "No feedback reason recorded.";
+    const feedbackMessage = buildTextBlock(round.feedback_message || "No feedback message recorded.");
+    feedback.append(feedbackReason, feedbackMessage);
+    body.append(buildRoundSection("Feedback", feedback, { open: false }));
+
+    body.append(
+      buildRoundSection(
+        "Round Summary",
+        buildPreBlock(round.round_summary || "No round summary recorded."),
+        { open: round.round_index === runData.default_round }
+      )
+    );
+
+    entry.append(body);
+
+    entry.addEventListener("toggle", () => {
+      if (!entry.open) {
+        return;
       }
-
-      const summary = document.createElement("p");
-      summary.className = "action-summary";
-      summary.textContent = action.summary;
-      row.append(summary);
-
-      explorerElements.actionLog.append(row);
+      explorerState.selectedRoundIndex = round.round_index;
+      closeSiblingRoundEntries(entry);
+      const model = getSelectedModel();
+      const taskSummary = getSelectedTaskSummary();
+      if (model && taskSummary) {
+        explorerElements.viewerStatus.textContent = `${model.model_label} · ${taskSummary.task_label} · ${runData.run_id} · R${round.round_index}`;
+      }
+      syncUrlState();
     });
-  }
 
-  explorerElements.roundOutcome.innerHTML = "";
-  explorerElements.roundOutcome.append(
-    buildOutcomeItem("Round label", describeRoundLabel(round)),
-    buildOutcomeItem("Public score", formatScore(round.public_score)),
-    buildOutcomeItem("Private score", formatScore(round.private_score)),
-    buildOutcomeItem("Feedback reason", round.feedback_reason || "—")
-  );
-
-  explorerElements.judgeLabel.textContent = describeRoundLabel(round);
-  explorerElements.judgeReasoning.textContent = round.judge_reasoning || "No cached classification reasoning recorded for this round.";
-  explorerElements.feedbackReason.textContent = round.feedback_reason || "No feedback reason recorded.";
-  explorerElements.feedbackMessage.textContent = round.feedback_message || "No feedback message recorded.";
-  explorerElements.roundSummary.textContent = round.round_summary || "No round summary recorded.";
-  explorerElements.summaryDetails.open = round.round_index === runData.default_round;
+    explorerElements.roundsAccordion.append(entry);
+  });
 };
 
 const renderViewer = (taskSummary, taskBundle) => {
@@ -465,9 +573,8 @@ const renderViewer = (taskSummary, taskBundle) => {
     explorerElements.viewerKpis.append(createPill(selectedRun.ended_reason, "kpi-pill"));
   }
 
-  renderRoundStrip(selectedRun);
-  renderCurrentRound(selectedRun);
-  explorerElements.viewerStatus.textContent = `${model.model_label} · ${taskSummary.task_label} · ${selectedRun.run_id}`;
+  renderRoundsAccordion(selectedRun);
+  explorerElements.viewerStatus.textContent = `${model.model_label} · ${taskSummary.task_label} · ${selectedRun.run_id} · R${explorerState.selectedRoundIndex}`;
   syncUrlState();
 };
 

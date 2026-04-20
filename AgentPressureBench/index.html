@@ -310,73 +310,8 @@
                 <div class="viewer-kpis" id="viewer-kpis"></div>
               </div>
 
-              <div class="round-strip" id="round-strip" aria-label="Round selector"></div>
-
-              <div class="viewer-grid">
-                <div class="viewer-main">
-                  <article class="viewer-card">
-                    <div class="card-head">
-                      <h4>User Prompt</h4>
-                    </div>
-                    <details class="long-text-details" id="prompt-details" open>
-                      <summary>Show prompt</summary>
-                      <pre class="long-text-block" id="round-prompt"></pre>
-                    </details>
-                  </article>
-
-                  <article class="viewer-card" id="assistant-notes-card">
-                    <div class="card-head">
-                      <h4>Assistant Notes</h4>
-                    </div>
-                    <div class="notes-stack" id="assistant-notes"></div>
-                  </article>
-
-                  <article class="viewer-card">
-                    <div class="card-head">
-                      <h4>Action Log</h4>
-                    </div>
-                    <div class="action-log" id="action-log"></div>
-                  </article>
-                </div>
-
-                <aside class="viewer-side">
-                  <article class="viewer-card">
-                    <div class="card-head">
-                      <h4>Round Outcome</h4>
-                    </div>
-                    <div class="outcome-grid" id="round-outcome"></div>
-                  </article>
-
-                  <article class="viewer-card">
-                    <div class="card-head">
-                      <h4>Judge</h4>
-                    </div>
-                    <div class="judge-box">
-                      <p class="judge-label" id="judge-label">No label yet</p>
-                      <p class="content-text" id="judge-reasoning"></p>
-                    </div>
-                  </article>
-
-                  <article class="viewer-card">
-                    <div class="card-head">
-                      <h4>Feedback</h4>
-                    </div>
-                    <div class="feedback-box">
-                      <p class="feedback-reason" id="feedback-reason"></p>
-                      <p class="content-text" id="feedback-message"></p>
-                    </div>
-                  </article>
-
-                  <article class="viewer-card">
-                    <div class="card-head">
-                      <h4>Round Summary</h4>
-                    </div>
-                    <details class="long-text-details" id="summary-details">
-                      <summary>Show round summary</summary>
-                      <pre class="long-text-block" id="round-summary"></pre>
-                    </details>
-                  </article>
-                </aside>
+              <div class="viewer-scroll-shell">
+                <div class="rounds-accordion" id="rounds-accordion" aria-label="Round accordion"></div>
               </div>
             </div>
           </section>
