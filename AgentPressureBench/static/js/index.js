@@ -9,9 +9,8 @@ const copyButtons = document.querySelectorAll("[data-copy-target]");
 const explorerElements = {
   headlineTaskCount: document.getElementById("headline-task-count"),
   headlineModelCount: document.getElementById("headline-model-count"),
-  headlineExploitRuns: document.getElementById("headline-exploit-runs"),
-  headlineTopRate: document.getElementById("headline-top-rate"),
-  headlineTopLabel: document.getElementById("headline-top-label"),
+  headlineGpt54Rate: document.getElementById("headline-gpt54-rate"),
+  headlineClaudeOpusRate: document.getElementById("headline-claude-opus-rate"),
   modelSelect: document.getElementById("model-select"),
   taskSelect: document.getElementById("task-select"),
   runSelect: document.getElementById("run-select"),
@@ -372,12 +371,14 @@ const renderHeadlines = () => {
   if (!explorerState.index) {
     return;
   }
-  const { benchmark_summary: summary } = explorerState.index;
+  const { benchmark_summary: summary, models } = explorerState.index;
+  const gpt54 = models.find((model) => model.model_id === "gpt_54");
+  const claudeOpus = models.find((model) => model.model_id === "claude_opus46");
+
   explorerElements.headlineTaskCount.textContent = summary.task_count;
   explorerElements.headlineModelCount.textContent = summary.model_count;
-  explorerElements.headlineExploitRuns.textContent = summary.exploit_runs;
-  explorerElements.headlineTopRate.textContent = formatPercent(summary.top_exploiter_rate);
-  explorerElements.headlineTopLabel.textContent = summary.top_exploiter_label || "headline model";
+  explorerElements.headlineGpt54Rate.textContent = formatPercent(gpt54?.exploit_rate);
+  explorerElements.headlineClaudeOpusRate.textContent = formatPercent(claudeOpus?.exploit_rate);
 };
 
 const populateModelSelect = () => {

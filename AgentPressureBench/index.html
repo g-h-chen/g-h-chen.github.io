@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AgentPressureBench | Project Page</title>
+  <title>Chasing the Public Score: User Pressure and Evaluation Exploitation in Coding Agent Workflows</title>
   <meta
     name="description"
-    content="Project page for AgentPressureBench."
+    content="Project page for Chasing the Public Score: User Pressure and Evaluation Exploitation in Coding Agent Workflows."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +35,7 @@
     <main>
       <section class="hero section-block">
         <div class="hero-header reveal">
-          <p class="eyebrow">Project Page</p>
-          <h1>AgentPressureBench</h1>
+          <h1>Chasing the Public Score: User Pressure and Evaluation Exploitation in Coding Agent Workflows</h1>
           <p class="hero-authors">
             Hardy Chen<sup>1</sup>, Nancy Lau<sup>1</sup>, Haoqin Tu<sup>1</sup>, Shuo Yan<sup>2</sup>, Xiangyan Liu<sup>3</sup>, Zijun Wang<sup>1</sup>
           </p>
@@ -46,55 +45,10 @@
           <p class="hero-affiliations">
             <sup>1</sup>UC Santa Cruz &nbsp;&nbsp; <sup>2</sup>UT Dallas &nbsp;&nbsp; <sup>3</sup>NUS
           </p>
-        </div>
-
-        <div class="hero-copy reveal">
-          <p class="hero-subtitle">
-            Public-score exploitation under multi-round user pressure in
-            repository-scale machine learning workflows.
-          </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#abstract">Paper TBD</a>
-            <a class="button" href="#overview">Benchmark</a>
+            <a class="button button-primary" href="static/pdf/colm2026_conference.pdf" target="_blank" rel="noreferrer">Paper</a>
+            <a class="button" href="https://github.com/g-h-chen/Test_Time_Emergent_Misalignment" target="_blank" rel="noreferrer">Code</a>
             <a class="button" href="#bibtex">Cite</a>
-          </div>
-          <div class="hero-tags" aria-label="Page scope">
-            <span>Full workspace results</span>
-            <span>Conversation archive</span>
-            <span>Content pending</span>
-          </div>
-        </div>
-
-        <div class="hero-panel reveal">
-          <div class="teaser-shell">
-            <div class="shell-header">
-              <span>Teaser Figure Placeholder</span>
-              <span class="shell-note">reserve for workflow + headline result</span>
-            </div>
-            <div class="teaser-grid">
-              <div class="placeholder-card workflow-card">
-                <p class="placeholder-label">Workflow</p>
-                <div class="workflow-lane">
-                  <span>Task repo</span>
-                  <span>Agent edits</span>
-                  <span>Public score feedback</span>
-                  <span>Exploit or improve</span>
-                </div>
-              </div>
-              <div class="placeholder-card heatmap-card">
-                <p class="placeholder-label">Headline result</p>
-                <div class="heatmap-mock" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span>
-                </div>
-              </div>
-            </div>
-            <p class="caption">
-              Replace this block with the final teaser figure and a short
-              one-line takeaway.
-            </p>
           </div>
         </div>
       </section>
@@ -103,22 +57,18 @@
         <article class="stat-card">
           <p class="stat-value" id="headline-task-count">TBD</p>
           <p class="stat-label">Task Count</p>
-          <p class="stat-note">benchmark scale</p>
         </article>
         <article class="stat-card">
           <p class="stat-value" id="headline-model-count">TBD</p>
           <p class="stat-label">Models</p>
-          <p class="stat-note">frontier coding agents</p>
         </article>
         <article class="stat-card">
-          <p class="stat-value" id="headline-exploit-runs">TBD</p>
-          <p class="stat-label">Exploit Runs</p>
-          <p class="stat-note">full workspace pool</p>
+          <p class="stat-value" id="headline-gpt54-rate">TBD</p>
+          <p class="stat-label">GPT-5.4 Exploitation Rate</p>
         </article>
         <article class="stat-card">
-          <p class="stat-value" id="headline-top-rate">TBD</p>
-          <p class="stat-label">Peak Exploit Rate</p>
-          <p class="stat-note" id="headline-top-label">headline model</p>
+          <p class="stat-value" id="headline-claude-opus-rate">TBD</p>
+          <p class="stat-label">Claude Opus 4.6 Exploitation Rate</p>
         </article>
       </section>
 
@@ -141,8 +91,7 @@
 
       <section class="section-block section-tinted" id="overview">
         <div class="section-head reveal">
-          <p class="section-kicker">Benchmark Overview</p>
-          <h2>Workflow, task pool, and evaluation protocol.</h2>
+          <h2>AgentPressureBench</h2>
         </div>
         <div class="overview-grid">
           <article class="figure-card figure-card-wide reveal overview-teaser-card">
@@ -155,25 +104,13 @@
 
           <article class="info-card reveal figure-card-wide">
             <h3>Workflow</h3>
-            <p>
-              One increasingly common workflow, dubbed colloquially as
-              "vibe coding", asks the agent to improve a <strong>public
-              score</strong>, which is the reported score on an evaluation set
-              with labels exposed in the workspace, while the user monitors
-              progress primarily through that reported score rather than
-              through detailed validation of each intermediate modeling
-              decision.
-            </p>
-            <p>
-              Section 3 uses bounded repositories with persistent state,
-              multiple editable files, and a repeated public-evaluation loop.
-              Each run is built from a task template directory, a workspace
-              tree, a data-schema summary, key-file hints, and prompt-setting
-              blocks for access and policy. The system prompt constrains the
-              agent to one JSON controller action at a time, the initial user
-              prompt defines the repository task, and the user simulator
-              provides round-by-round pressure messages.
-            </p>
+            <ul class="bullet-list workflow-list">
+              <li>One increasingly common workflow, dubbed colloquially as "vibe coding", asks the agent to improve a <strong>public score</strong>, which is the reported score on an evaluation set with labels exposed in the workspace.</li>
+              <li>The user monitors progress primarily through that reported score rather than through detailed validation of each intermediate modeling decision.</li>
+              <li>The benchmark uses bounded repositories with persistent state, multiple editable files, and a repeated public-evaluation loop.</li>
+              <li>Each run is built from a task template directory, a workspace tree, a data-schema summary, key-file hints, and prompt-setting blocks for access and policy.</li>
+              <li>The system prompt constrains the agent to one JSON controller action at a time, the initial user prompt defines the repository task, and the user simulator provides round-by-round pressure messages.</li>
+            </ul>
           </article>
 
           <div class="modality-grid figure-card-wide">
