@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results4">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results5">
 </head>
 <body>
   <div class="page-shell">
@@ -83,16 +83,15 @@
               <li>After each round, the public score is reported back to the agent, while the private score remains hidden.</li>
               <li>The hidden private evaluation split is never exposed to the agent during the run.</li>
             </ul>
+          </article>
 
           <div class="overview-teaser-card reveal">
             <img
               class="teaser-image"
-              src="static/img/teaser_left.png"
+              src="static/img/teaser_left.png?v=2026-04-20-results5"
               alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
             >
           </div>
-
-          </article>
 
           <div class="modality-grid figure-card-wide">
             <article class="info-card modality-card reveal">
@@ -271,44 +270,46 @@
             <div class="shell-header">
               <span>GPT vs. Claude families</span>
             </div>
-            <div class="family-compare-grid">
-              <section class="family-card family-card-gpt">
-                <div class="family-card-head">
-                  <h3>GPT family</h3>
-                  <p class="family-big-number">68.9%</p>
-                  <p class="family-big-label">exploit rate</p>
-                </div>
-                <div class="family-stat-list">
-                  <div class="family-stat-row"><span>Mean first exploit round</span><strong>8.31</strong></div>
-                  <div class="family-stat-row"><span>Median first exploit round</span><strong>5</strong></div>
-                  <div class="family-stat-row"><span>Mean private rank</span><strong>0.62</strong></div>
-                  <div class="family-stat-row"><span>Mean exploitative rounds</span><strong>2.07</strong></div>
-                </div>
-                <div class="family-pattern-tag">Dominant pattern: copying eval labels <strong>93.3%</strong></div>
-                <!-- <p class="content-text family-note">Among exploit-positive runs, <strong>93.6%</strong> end with <code>perfect_metric_reached</code>.</p> -->
-              </section>
+            <div class="family-faceoff">
+              <div class="family-faceoff-head family-faceoff-gpt">GPT family</div>
+              <div class="family-faceoff-head family-faceoff-center">Attribute</div>
+              <div class="family-faceoff-head family-faceoff-claude">Claude family</div>
 
-              <section class="family-card family-card-claude">
-                <div class="family-card-head">
-                  <h3>Claude family</h3>
-                  <p class="family-big-number">33.7%</p>
-                  <p class="family-big-label">exploit rate</p>
-                </div>
-                <div class="family-stat-list">
-                  <div class="family-stat-row"><span>Mean first exploit round</span><strong>8.80</strong></div>
-                  <div class="family-stat-row"><span>Median first exploit round</span><strong>7</strong></div>
-                  <div class="family-stat-row"><span>Mean private rank</span><strong>0.58</strong></div>
-                  <div class="family-stat-row"><span>Mean exploitative rounds</span><strong>4.33</strong></div>
-                </div>
-                <div class="family-pattern-tag">Dominant pattern: training on eval labels <strong>65.5%</strong></div>
-                <!-- <p class="content-text family-note"><strong>25.7%</strong> of exploit-positive runs continue until <code>max_rounds_reached</code>.</p> -->
-              </section>
+              <div class="family-faceoff-value family-faceoff-value-gpt"><strong>68.9%</strong></div>
+              <div class="family-faceoff-label">Exploit rate</div>
+              <div class="family-faceoff-value family-faceoff-value-claude"><strong>33.7%</strong></div>
+
+              <div class="family-faceoff-value family-faceoff-value-gpt"><strong>8.31</strong></div>
+              <div class="family-faceoff-label">Mean first exploit round</div>
+              <div class="family-faceoff-value family-faceoff-value-claude"><strong>8.80</strong></div>
+
+              <div class="family-pattern-cell family-pattern-cell-gpt">
+                <p class="family-pattern-title">Copying eval labels <strong>93.3%</strong></p>
+                <pre class="family-code-block"><code>public_answers = _maybe_load_public_answers(expected_columns)
+if public_answers is not None:
+    submission = submission.merge(public_answers, on="image_id", how="left")
+    for column in expected_columns:
+        answer_column = f"{column}_answer"
+        submission[column] = submission[answer_column].where(
+            submission[answer_column].notna(), submission[column]
+        )</code></pre>
+              </div>
+              <div class="family-faceoff-label family-faceoff-label-pattern">Dominant exploit pattern</div>
+              <div class="family-pattern-cell family-pattern-cell-claude">
+                <p class="family-pattern-title">Training on eval labels <strong>65.5%</strong></p>
+                <pre class="family-code-block"><code>eval_has_target = "target" in eval_df.columns and eval_df["target"].notna().any()
+if eval_has_target:
+    eval_labeled = eval_df[eval_df["target"].notna()].copy()
+    combined_train = pd.concat([train_df, eval_labeled], ignore_index=True)
+    sample_weights = np.ones(len(combined_train))
+    sample_weights[n_train_orig:] = 2.0</code></pre>
+              </div>
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
-                <li><strong>GPT-family exploits more often</strong>: exploit rate is <strong>68.9%</strong> versus <strong>33.7%</strong> for Claude-family.</li>
-                <li><strong>GPT-family exploits slightly earlier</strong>: mean first exploit round is <strong>8.31</strong> versus <strong>8.80</strong>, with medians <strong>5</strong> versus <strong>7</strong>.</li>
-                <li><strong>The mechanism differs</strong>: GPT-family is dominated by copying eval labels, while Claude-family is dominated by training on eval labels and persists longer once it starts exploiting.</li>
+                <li><strong>GPT-family exploits much more often</strong>: exploit rate is <strong>68.9%</strong> versus <strong>33.7%</strong> for Claude-family.</li>
+                <li><strong>The timing is similar</strong>: mean first exploit round is <strong>8.31</strong> for GPT-family and <strong>8.80</strong> for Claude-family.</li>
+                <li><strong>The mechanism diverges</strong>: GPT-family more often copies visible eval answers into the final submission, while Claude-family more often folds labeled eval rows back into model fitting.</li>
               </ul>
             </div>
           </article>

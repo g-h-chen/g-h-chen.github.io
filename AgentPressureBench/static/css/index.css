@@ -514,6 +514,8 @@ main {
   display: flex;
   justify-content: center;
   padding: 0;
+  margin-top: 24px;
+  margin-bottom: 18px;
 }
 
 .figure-shell {
@@ -543,12 +545,13 @@ main {
 }
 
 .workflow-list {
-  margin-top: 4px;
+  margin-top: 10px;
+  margin-bottom: 18px;
   padding-left: 22px;
 }
 
 .workflow-list li {
-  font-size: 1.08rem;
+  font-size: 1.12rem;
   line-height: 1.9;
   color: var(--ink-soft);
 }
@@ -618,16 +621,11 @@ main {
   padding: 0 24px 24px;
 }
 
-.family-compare-grid,
 .pressure-grid,
 .defense-grid {
   display: grid;
   gap: 18px;
   padding: 20px 24px 0;
-}
-
-.family-compare-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .pressure-grid {
@@ -638,7 +636,6 @@ main {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.family-card,
 .pressure-card,
 .defense-card {
   border: 1px solid rgba(19, 33, 39, 0.08);
@@ -647,42 +644,11 @@ main {
   padding: 20px;
 }
 
-.family-card {
-  display: grid;
-  gap: 16px;
-}
-
-.family-card-gpt {
-  background:
-    radial-gradient(circle at top right, rgba(199, 103, 71, 0.1), transparent 34%),
-    rgba(255, 255, 255, 0.82);
-}
-
-.family-card-claude {
-  background:
-    radial-gradient(circle at top right, rgba(33, 107, 112, 0.12), transparent 34%),
-    rgba(255, 255, 255, 0.82);
-}
-
-.family-card-head h3,
 .pressure-label,
-.family-big-label,
 .pressure-big-label {
   margin: 0;
 }
 
-.family-card-head {
-  display: grid;
-  gap: 4px;
-}
-
-.family-card-head h3 {
-  font-family: "Fraunces", serif;
-  font-size: 1.45rem;
-  line-height: 1.05;
-}
-
-.family-big-number,
 .pressure-big-number {
   margin: 0;
   font-family: "Fraunces", serif;
@@ -690,20 +656,17 @@ main {
   line-height: 0.95;
 }
 
-.family-big-label,
 .pressure-big-label {
   color: var(--ink-soft);
   font-size: 0.92rem;
   font-weight: 700;
 }
 
-.family-stat-list,
 .pressure-metrics {
   display: grid;
   gap: 10px;
 }
 
-.family-stat-row,
 .pressure-metrics div {
   display: flex;
   justify-content: space-between;
@@ -713,30 +676,141 @@ main {
   font-size: 0.94rem;
 }
 
-.family-stat-row strong,
 .pressure-metrics strong {
   color: var(--ink);
   font-size: 1rem;
-}
-
-.family-pattern-tag {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-height: 36px;
-  padding: 10px 12px;
-  border-radius: 16px;
-  background: rgba(19, 33, 39, 0.05);
-  color: var(--ink);
-  font-size: 0.92rem;
-  font-weight: 700;
 }
 
 .family-note,
 .defense-note {
   font-size: 0.96rem;
   line-height: 1.7;
+}
+
+.family-faceoff {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px minmax(0, 1fr);
+  gap: 14px 18px;
+  padding: 22px 24px 0;
+  align-items: stretch;
+}
+
+.family-faceoff-head,
+.family-faceoff-label,
+.family-faceoff-value,
+.family-pattern-cell {
+  min-width: 0;
+}
+
+.family-faceoff-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border: 1px solid rgba(19, 33, 39, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  font-family: "Fraunces", serif;
+  font-size: 1.42rem;
+  line-height: 1.08;
+}
+
+.family-faceoff-gpt {
+  background:
+    radial-gradient(circle at top right, rgba(199, 103, 71, 0.12), transparent 36%),
+    rgba(255, 255, 255, 0.86);
+}
+
+.family-faceoff-claude {
+  background:
+    radial-gradient(circle at top right, rgba(33, 107, 112, 0.14), transparent 36%),
+    rgba(255, 255, 255, 0.86);
+}
+
+.family-faceoff-center {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.family-faceoff-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 92px;
+  border: 1px solid rgba(19, 33, 39, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.82);
+  text-align: center;
+}
+
+.family-faceoff-value strong {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
+}
+
+.family-faceoff-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 92px;
+  padding: 18px 16px;
+  border-radius: 20px;
+  background: rgba(19, 33, 39, 0.05);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.family-faceoff-label-pattern {
+  min-height: 100%;
+}
+
+.family-pattern-cell {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid rgba(19, 33, 39, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.family-pattern-cell-gpt {
+  background:
+    radial-gradient(circle at top right, rgba(199, 103, 71, 0.12), transparent 34%),
+    rgba(255, 255, 255, 0.86);
+}
+
+.family-pattern-cell-claude {
+  background:
+    radial-gradient(circle at top right, rgba(33, 107, 112, 0.14), transparent 34%),
+    rgba(255, 255, 255, 0.86);
+}
+
+.family-pattern-title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.family-code-block {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid rgba(19, 33, 39, 0.08);
+  border-radius: 18px;
+  background: rgba(252, 249, 245, 0.96);
+  color: var(--ink);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.84rem;
+  line-height: 1.62;
+  overflow-x: auto;
+  white-space: pre;
 }
 
 .pressure-label {
@@ -1437,9 +1511,9 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .family-compare-grid,
+  .family-faceoff,
   .defense-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 160px minmax(0, 1fr);
   }
 
   .pressure-grid {
@@ -1487,6 +1561,19 @@ main {
 
   .modality-grid {
     grid-template-columns: 1fr;
+  }
+
+  .family-faceoff {
+    grid-template-columns: 1fr;
+  }
+
+  .family-faceoff-center {
+    display: none;
+  }
+
+  .family-faceoff-label,
+  .family-faceoff-label-pattern {
+    min-height: 56px;
   }
 
   .pressure-grid {
@@ -1548,5 +1635,9 @@ main {
 
   .paper-figure {
     border-radius: 14px;
+  }
+
+  .family-code-block {
+    font-size: 0.78rem;
   }
 }
