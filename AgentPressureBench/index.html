@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css?v=2026-04-19-results-fix2">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-19-ablation1">
 </head>
 <body>
   <div class="page-shell">
@@ -40,7 +40,7 @@
             Hardy Chen<sup>1</sup>, Nancy Lau<sup>1</sup>, Haoqin Tu<sup>1</sup>, Shuo Yan<sup>2</sup>, Xiangyan Liu<sup>3</sup>, Zijun Wang<sup>1</sup>
           </p>
           <p class="hero-authors">
-            Juncheng Wu<sup>1</sup>, Michael Qizhe Shieh<sup>3</sup>, Alvaro Cardenas<sup>1</sup>, Yuyin Zhou<sup>1</sup>, Cihang Xie<sup>1</sup>
+            Juncheng Wu<sup>1</sup>, Michael Qizhe Shieh<sup>3</sup>, Alvaro Cardenas<sup>1</sup>, Cihang Xie<sup>1</sup>, Yuyin Zhou<sup>1</sup>
           </p>
           <p class="hero-affiliations">
             <sup>1</sup>UC Santa Cruz &nbsp;&nbsp; <sup>2</sup>UT Dallas &nbsp;&nbsp; <sup>3</sup>NUS
@@ -72,23 +72,7 @@
         </article>
       </section>
 
-      <section class="section-block" id="abstract">
-        <div class="section-head reveal">
-          <h2>Start with the benchmark story, not the appendix.</h2>
-        </div>
-        <div class="text-grid reveal">
-          <p class="content-text">
-            Abstract placeholder. Reserve this paragraph for the benchmark
-            motivation, the public-score workflow, and the main empirical claim.
-          </p>
-          <p class="content-text">
-            Second paragraph placeholder. Reserve this space for scale,
-            headline numbers, and the model-level takeaway.
-          </p>
-        </div>
-      </section>
-
-      <section class="section-block section-tinted" id="overview">
+      <section class="section-block" id="overview">
         <div class="section-head reveal">
           <h2>AgentPressureBench</h2>
         </div>
@@ -176,18 +160,83 @@
         </div>
 
         <div class="results-stack">
+          <article class="figure-card figure-card-wide reveal result-explorer-card" id="explorer">
+            <div class="shell-header">
+              <span>Trajectory Explorer</span>
+            </div>
+
+            <div class="explorer-shell">
+              <div class="explorer-intro">
+                <p class="content-text">
+                  Select an ablation setting, model, task, and run to inspect the corresponding
+                  trajectory, round labels, and public/private results.
+                </p>
+              </div>
+
+              <div class="explorer-controls">
+                <label class="select-control">
+                  <span>Ablation setting</span>
+                  <select id="setting-select" name="setting-select">
+                    <option>Loading…</option>
+                  </select>
+                </label>
+                <label class="select-control">
+                  <span>Model</span>
+                  <select id="model-select" name="model-select">
+                    <option>Loading…</option>
+                  </select>
+                </label>
+                <label class="select-control">
+                  <span>Task</span>
+                  <select id="task-select" name="task-select">
+                    <option>Loading…</option>
+                  </select>
+                </label>
+                <label class="select-control">
+                  <span>Run</span>
+                  <select id="run-select" name="run-select">
+                    <option>Loading…</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="toolbar-status" id="viewer-status">
+                Loading conversation index…
+              </div>
+
+              <section class="viewer-panel">
+                <div class="viewer-empty" id="viewer-empty">
+                  Select a model and task to load a conversation.
+                </div>
+
+                <div class="viewer-content" id="viewer-content" hidden>
+                  <div class="viewer-header">
+                    <div>
+                      <p class="panel-kicker" id="viewer-meta-line">Task metadata</p>
+                      <h3 class="viewer-title" id="viewer-task-title">Task title</h3>
+                      <p class="content-text viewer-subtitle" id="viewer-task-subtitle"></p>
+                    </div>
+                    <div class="viewer-kpis" id="viewer-kpis"></div>
+                  </div>
+
+                  <div class="viewer-scroll-shell">
+                    <div class="rounds-accordion" id="rounds-accordion" aria-label="Round accordion"></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </article>
+
           <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
               <span>Model-by-task heatmap</span>
             </div>
             <div class="figure-shell paper-figure-shell">
-              <a href="static/figs/model_by_task_heatmap.pdf" target="_blank" rel="noreferrer">
-                <img
-                  class="paper-figure"
-                  src="static/figs/model_by_task_heatmap.png?v=2026-04-19-results-fix2"
-                  alt="Model-by-task exploitation heatmap for AgentPressureBench."
-                >
-              </a>
+              <img
+                class="paper-figure"
+                src="static/figs/model_by_task_heatmap.png?v=2026-04-19-ablation1"
+                alt="Model-by-task exploitation heatmap for AgentPressureBench."
+              >
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
@@ -201,16 +250,14 @@
 
           <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
-              <span>Capability versus exploitation</span>
+              <span>Capability & exploitation correlation</span>
             </div>
             <div class="figure-shell paper-figure-shell">
-              <a href="static/figs/34_task_story_triptych.pdf" target="_blank" rel="noreferrer">
-                <img
-                  class="paper-figure"
-                  src="static/figs/34_task_story_triptych.png?v=2026-04-19-results-fix2"
-                  alt="Capability-exploitation triptych for AgentPressureBench."
-                >
-              </a>
+              <img
+                class="paper-figure"
+                src="static/figs/34_task_story_triptych.png?v=2026-04-19-ablation1"
+                alt="Capability-exploitation triptych for AgentPressureBench."
+              >
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
@@ -221,67 +268,6 @@
               </ul>
             </div>
           </article>
-        </div>
-      </section>
-
-      <section class="section-block section-tinted" id="explorer">
-        <div class="section-head reveal">
-          <h2>Inspect one trajectory at a time.</h2>
-        </div>
-
-        <div class="explorer-shell reveal">
-          <div class="explorer-intro">
-            <p class="content-text">
-              Select a model, task, and run to inspect the corresponding
-              trajectory, round labels, and public/private results.
-            </p>
-          </div>
-
-          <div class="explorer-controls">
-            <label class="select-control">
-              <span>Model</span>
-              <select id="model-select" name="model-select">
-                <option>Loading…</option>
-              </select>
-            </label>
-            <label class="select-control">
-              <span>Task</span>
-              <select id="task-select" name="task-select">
-                <option>Loading…</option>
-              </select>
-            </label>
-            <label class="select-control">
-              <span>Run</span>
-              <select id="run-select" name="run-select">
-                <option>Loading…</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="toolbar-status" id="viewer-status">
-            Loading conversation index…
-          </div>
-
-          <section class="viewer-panel">
-            <div class="viewer-empty" id="viewer-empty">
-              Select a model and task to load a conversation.
-            </div>
-
-            <div class="viewer-content" id="viewer-content" hidden>
-              <div class="viewer-header">
-                <div>
-                  <p class="panel-kicker" id="viewer-meta-line">Task metadata</p>
-                  <h3 class="viewer-title" id="viewer-task-title">Task title</h3>
-                  <p class="content-text viewer-subtitle" id="viewer-task-subtitle"></p>
-                </div>
-                <div class="viewer-kpis" id="viewer-kpis"></div>
-              </div>
-
-              <div class="viewer-scroll-shell">
-                <div class="rounds-accordion" id="rounds-accordion" aria-label="Round accordion"></div>
-              </div>
-            </div>
-          </section>
         </div>
       </section>
 
@@ -396,6 +382,6 @@
     </footer>
   </div>
 
-  <script src="static/js/index.js?v=2026-04-19-results-fix2"></script>
+  <script src="static/js/index.js?v=2026-04-19-ablation1"></script>
 </body>
 </html>

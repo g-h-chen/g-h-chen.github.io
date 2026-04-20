@@ -1,5 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
-const DATA_CACHE_BUSTER = "2026-04-19-results-fix2";
+const DATA_CACHE_BUSTER = "2026-04-19-ablation1";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
@@ -11,6 +11,7 @@ const explorerElements = {
   headlineModelCount: document.getElementById("headline-model-count"),
   headlineGpt54Rate: document.getElementById("headline-gpt54-rate"),
   headlineClaudeOpusRate: document.getElementById("headline-claude-opus-rate"),
+  settingSelect: document.getElementById("setting-select"),
   modelSelect: document.getElementById("model-select"),
   taskSelect: document.getElementById("task-select"),
   runSelect: document.getElementById("run-select"),
@@ -26,20 +27,34 @@ const explorerElements = {
 
 const explorerState = {
   index: null,
+  selectedSettingId: null,
   selectedModelId: null,
   selectedTaskId: null,
   selectedRunId: null,
   selectedRoundIndex: null,
   taskCache: new Map(),
+  shouldSyncUrl: false,
 };
 
 const initialParams = new URLSearchParams(window.location.search);
+const parseRouteInt = (value) => {
+  if (value === null || value === "") {
+    return null;
+  }
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+};
 const initialRoute = {
+  settingId: initialParams.get("setting"),
   modelId: initialParams.get("model"),
   taskId: initialParams.get("task"),
   runId: initialParams.get("run"),
-  roundIndex: Number(initialParams.get("round")),
+  roundIndex: parseRouteInt(initialParams.get("round")),
 };
+const hasInitialRoute =
+  Boolean(initialRoute.settingId || initialRoute.modelId || initialRoute.taskId || initialRoute.runId) ||
+  initialRoute.roundIndex !== null;
+explorerState.shouldSyncUrl = hasInitialRoute;
 
 const setHeaderState = () => {
   if (!header) {
@@ -179,8 +194,13 @@ const withCacheBust = (path) => {
   return `${path}${separator}v=${encodeURIComponent(DATA_CACHE_BUSTER)}`;
 };
 
+const getSelectedSetting = () =>
+  explorerState.index?.settings?.find((setting) => setting.setting_id === explorerState.selectedSettingId) || null;
+
+const getActiveModels = () => getSelectedSetting()?.models || explorerState.index?.models || [];
+
 const getSelectedModel = () =>
-  explorerState.index?.models.find((model) => model.model_id === explorerState.selectedModelId) || null;
+  getActiveModels().find((model) => model.model_id === explorerState.selectedModelId) || null;
 
 const getSelectedTaskSummary = () =>
   getSelectedModel()?.tasks.find((task) => task.task_id === explorerState.selectedTaskId) || null;
@@ -196,7 +216,15 @@ const describeRoundLabel = (round) => {
 };
 
 const syncUrlState = () => {
+  if (!explorerState.shouldSyncUrl) {
+    return;
+  }
   const url = new URL(window.location.href);
+  if (explorerState.selectedSettingId) {
+    url.searchParams.set("setting", explorerState.selectedSettingId);
+  } else {
+    url.searchParams.delete("setting");
+  }
   if (explorerState.selectedModelId) {
     url.searchParams.set("model", explorerState.selectedModelId);
   } else {
@@ -212,7 +240,7 @@ const syncUrlState = () => {
   } else {
     url.searchParams.delete("run");
   }
-  if (explorerState.selectedRoundIndex) {
+  if (explorerState.selectedRoundIndex !== null && explorerState.selectedRoundIndex !== undefined) {
     url.searchParams.set("round", String(explorerState.selectedRoundIndex));
   } else {
     url.searchParams.delete("round");
@@ -387,15 +415,31 @@ const renderHeadlines = () => {
   setText(explorerElements.headlineClaudeOpusRate, formatPercent(claudeOpus?.exploit_rate));
 };
 
+const populateSettingSelect = () => {
+  if (!explorerElements.settingSelect) {
+    return;
+  }
+  explorerElements.settingSelect.innerHTML = "";
+  (explorerState.index.settings || []).forEach((setting) => {
+    const option = document.createElement("option");
+    option.value = setting.setting_id;
+    option.textContent = setting.setting_label;
+    explorerElements.settingSelect.append(option);
+  });
+  explorerElements.settingSelect.value =
+    explorerState.selectedSettingId || explorerState.index.default_setting_id || explorerState.index.settings?.[0]?.setting_id || "";
+};
+
 const populateModelSelect = () => {
+  const models = getActiveModels();
   explorerElements.modelSelect.innerHTML = "";
-  explorerState.index.models.forEach((model) => {
+  models.forEach((model) => {
     const option = document.createElement("option");
     option.value = model.model_id;
     option.textContent = `${model.model_label} (${formatPercent(model.exploit_rate)})`;
     explorerElements.modelSelect.append(option);
   });
-  explorerElements.modelSelect.value = explorerState.selectedModelId || explorerState.index.models[0]?.model_id || "";
+  explorerElements.modelSelect.value = explorerState.selectedModelId || models[0]?.model_id || "";
 };
 
 const populateTaskSelect = () => {
@@ -566,6 +610,7 @@ const renderRoundsAccordion = (runData) => {
         return;
       }
       explorerState.selectedRoundIndex = round.round_index;
+      explorerState.shouldSyncUrl = true;
       closeSiblingRoundEntries(entry);
       const model = getSelectedModel();
       const taskSummary = getSelectedTaskSummary();
@@ -680,12 +725,60 @@ const selectTask = async (taskId, options = {}) => {
   }
 };
 
+const selectSetting = async (settingId, options = {}) => {
+  if (!explorerState.index) {
+    return;
+  }
+
+  const setting =
+    explorerState.index.settings?.find((item) => item.setting_id === settingId) ||
+    (settingId === explorerState.index.default_setting_id
+      ? {
+          setting_id: explorerState.index.default_setting_id,
+          models: explorerState.index.models,
+        }
+      : null);
+  if (!setting) {
+    return;
+  }
+
+  explorerState.selectedSettingId = settingId;
+  if (explorerElements.settingSelect) {
+    explorerElements.settingSelect.value = settingId;
+  }
+
+  const models = setting.models || [];
+  if (!options.preserveModel || !models.some((model) => model.model_id === explorerState.selectedModelId)) {
+    explorerState.selectedModelId = models[0]?.model_id || null;
+  }
+  if (!options.preserveTask) {
+    explorerState.selectedTaskId = null;
+  }
+  if (!options.preserveRun) {
+    explorerState.selectedRunId = null;
+  }
+  if (!options.preserveRound) {
+    explorerState.selectedRoundIndex = null;
+  }
+
+  populateModelSelect();
+  if (explorerState.selectedModelId) {
+    await selectModel(explorerState.selectedModelId, {
+      preserveTask: options.preserveTask,
+      preserveRun: options.preserveRun,
+      preserveRound: options.preserveRound,
+    });
+  } else {
+    setViewerLoading("No conversation data is available for the selected setting.");
+  }
+};
+
 const selectModel = async (modelId, options = {}) => {
   if (!explorerState.index) {
     return;
   }
 
-  const model = explorerState.index.models.find((item) => item.model_id === modelId);
+  const model = getActiveModels().find((item) => item.model_id === modelId);
   if (!model) {
     return;
   }
@@ -715,15 +808,30 @@ const selectModel = async (modelId, options = {}) => {
 };
 
 const bindExplorerControls = () => {
+  if (explorerElements.settingSelect) {
+    explorerElements.settingSelect.addEventListener("change", async (event) => {
+      explorerState.shouldSyncUrl = true;
+      await selectSetting(event.target.value, {
+        preserveModel: true,
+        preserveTask: true,
+        preserveRun: true,
+        preserveRound: true,
+      });
+    });
+  }
+
   explorerElements.modelSelect.addEventListener("change", async (event) => {
+    explorerState.shouldSyncUrl = true;
     await selectModel(event.target.value);
   });
 
   explorerElements.taskSelect.addEventListener("change", async (event) => {
+    explorerState.shouldSyncUrl = true;
     await selectTask(event.target.value);
   });
 
   explorerElements.runSelect.addEventListener("change", async (event) => {
+    explorerState.shouldSyncUrl = true;
     await selectRun(event.target.value);
   });
 };
@@ -749,12 +857,21 @@ const initExplorer = async () => {
   }
 
   renderHeadlines();
-  populateModelSelect();
+  populateSettingSelect();
+
+  const initialSettingId =
+    initialRoute.settingId && explorerState.index.settings?.some((setting) => setting.setting_id === initialRoute.settingId)
+      ? initialRoute.settingId
+      : explorerState.index.default_setting_id || explorerState.index.settings?.[0]?.setting_id;
+
+  const initialSetting =
+    explorerState.index.settings?.find((setting) => setting.setting_id === initialSettingId) || null;
+  const initialModels = initialSetting?.models || explorerState.index.models || [];
 
   const initialModelId =
-    initialRoute.modelId && explorerState.index.models.some((model) => model.model_id === initialRoute.modelId)
+    initialRoute.modelId && initialModels.some((model) => model.model_id === initialRoute.modelId)
       ? initialRoute.modelId
-      : explorerState.index.models[0]?.model_id;
+      : initialModels[0]?.model_id;
 
   if (!initialModelId) {
     explorerElements.viewerStatus.textContent = "No conversation data found.";
@@ -762,21 +879,24 @@ const initExplorer = async () => {
     return;
   }
 
-  const selectedModel = explorerState.index.models.find((model) => model.model_id === initialModelId);
+  const selectedModel = initialModels.find((model) => model.model_id === initialModelId);
   const initialTaskId =
     selectedModel?.tasks.some((task) => task.task_id === initialRoute.taskId)
       ? initialRoute.taskId
       : selectedModel?.tasks[0]?.task_id || null;
 
+  explorerState.selectedSettingId = initialSettingId;
   explorerState.selectedModelId = initialModelId;
   explorerState.selectedTaskId = initialTaskId;
   explorerState.selectedRunId = initialRoute.runId || null;
-  explorerState.selectedRoundIndex = Number.isFinite(initialRoute.roundIndex) ? initialRoute.roundIndex : null;
+  explorerState.selectedRoundIndex = initialRoute.roundIndex;
 
+  populateSettingSelect();
   populateModelSelect();
   populateTaskSelect();
 
-  await selectModel(initialModelId, {
+  await selectSetting(initialSettingId, {
+    preserveModel: true,
     preserveTask: true,
     preserveRun: true,
     preserveRound: true,
