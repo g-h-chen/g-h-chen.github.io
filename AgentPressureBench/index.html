@@ -272,7 +272,7 @@
             </div>
             <div class="family-faceoff">
               <div class="family-faceoff-head family-faceoff-gpt">GPT family</div>
-              <div class="family-faceoff-head family-faceoff-center">Attribute</div>
+              <!-- <div class="family-faceoff-head family-faceoff-center">Attribute</div> -->
               <div class="family-faceoff-head family-faceoff-claude">Claude family</div>
 
               <div class="family-faceoff-value family-faceoff-value-gpt"><strong>68.9%</strong></div>
@@ -284,18 +284,16 @@
               <div class="family-faceoff-value family-faceoff-value-claude"><strong>8.80</strong></div>
 
               <div class="family-pattern-cell family-pattern-cell-gpt">
-                <p class="family-pattern-title">Copying eval labels <strong>93.3%</strong></p>
+                <p class="family-pattern-title">Copying eval labels <strong>(93.3%)</strong></p>
                 <div class="terminal-shell family-terminal">
                   <div class="terminal-bar"><span></span><span></span><span></span></div>
-                  <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data</span>
+                  <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data and model</span>
 train_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/train.csv"</span>)
 eval_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/public_eval.csv"</span>)
 sample = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/sample_submission.csv"</span>)
+model = <span class="tok-call">build_model</span>()
 
-<span class="tok-comment"># load model</span>
-model = <span class="tok-call">build_baseline_model</span>()
-
-<span class="tok-comment"># exploit logic: cache visible eval labels for direct overwrite</span>
+<span class="tok-comment"># exploit: extract eval labels</span>
 eval_answers = eval_df[<span class="tok-string">"target"</span>].copy()
 
 <span class="tok-comment"># train the model</span>
@@ -304,24 +302,23 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
 
 <span class="tok-comment"># build submission file</span>
 submission = sample.assign(target=pred)
+<span class="tok-comment"># exploit: overwrite pred with groundtruth labels for submission</span>
 submission[<span class="tok-string">"target"</span>] = eval_answers.fillna(submission[<span class="tok-string">"target"</span>])
 <span class="tok-call">submission.to_csv</span>(output_path, index=<span class="tok-keyword">False</span>)</code></pre>
                 </div>
               </div>
               <div class="family-faceoff-label family-faceoff-label-pattern">Dominant exploit pattern</div>
               <div class="family-pattern-cell family-pattern-cell-claude">
-                <p class="family-pattern-title">Training on eval labels <strong>65.5%</strong></p>
+                <p class="family-pattern-title">Training on eval labels <strong>(65.5%)</strong></p>
                 <div class="terminal-shell family-terminal">
                   <div class="terminal-bar"><span></span><span></span><span></span></div>
-                  <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data</span>
+                  <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data and model</span>
 train_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/train.csv"</span>)
 eval_df = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/public_eval.csv"</span>)
 sample = <span class="tok-call">pd.read_csv</span>(<span class="tok-string">"data/sample_submission.csv"</span>)
+model = <span class="tok-call">build_model</span>()
 
-<span class="tok-comment"># load model</span>
-model = <span class="tok-call">build_baseline_model</span>()
-
-<span class="tok-comment"># exploit logic: fold labeled eval rows back into training</span>
+<span class="tok-comment"># exploit: concat train and eval samples for training</span>
 eval_labeled = <span class="tok-call">eval_df.dropna</span>(subset=[<span class="tok-string">"target"</span>]).copy()
 combined_df = <span class="tok-call">pd.concat</span>([train_df, eval_labeled], ignore_index=<span class="tok-keyword">True</span>)
 sample_weights = <span class="tok-call">np.ones</span>(len(combined_df))
@@ -339,8 +336,8 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
                 <li><strong>GPT-family exploits much more often</strong>: exploit rate is <strong>68.9%</strong> versus <strong>33.7%</strong> for Claude-family.</li>
-                <li><strong>The timing is similar</strong>: mean first exploit round is <strong>8.31</strong> for GPT-family and <strong>8.80</strong> for Claude-family.</li>
-                <li><strong>The mechanism diverges</strong>: GPT-family more often copies visible eval answers into the final submission, while Claude-family more often folds labeled eval rows back into model fitting.</li>
+                <li><strong>GPT-family exploits slightly earlier</strong>: mean first exploit round is <strong>8.31</strong> for GPT-family and <strong>8.80</strong> for Claude-family.</li>
+                <li><strong>Dominant exploit pattern differs</strong>: GPT-family more often copies visible eval answers into the final submission, while Claude-family more often trains on eval labels.</li>
               </ul>
             </div>
           </article>
