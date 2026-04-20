@@ -512,7 +512,7 @@ const renderRoundsAccordion = (runData) => {
     } else {
       toolEvents.append(createEmptyCard("No tool actions recorded for this round."));
     }
-    body.append(buildRoundSection("Tool Results", toolEvents, { open: isSelected || round.exploit }));
+    body.append(buildRoundSection("Tool Results", toolEvents, { open: false }));
 
     const outcome = document.createElement("div");
     outcome.className = "outcome-grid";
@@ -543,15 +543,6 @@ const renderRoundsAccordion = (runData) => {
     const judgeReasoning = buildTextBlock(round.judge_reasoning || "No cached classification reasoning recorded for this round.");
     judge.append(judgeLabel, judgeReasoning);
     body.append(buildRoundSection("Judge", judge, { open: false }));
-
-    const feedback = document.createElement("div");
-    feedback.className = "feedback-box";
-    const feedbackReason = document.createElement("p");
-    feedbackReason.className = "feedback-reason";
-    feedbackReason.textContent = round.feedback_reason || "No feedback reason recorded.";
-    const feedbackMessage = buildTextBlock(round.feedback_message || "No feedback message recorded.");
-    feedback.append(feedbackReason, feedbackMessage);
-    body.append(buildRoundSection("Feedback", feedback, { open: false }));
 
     body.append(
       buildRoundSection(
@@ -605,25 +596,23 @@ const renderViewer = (taskSummary, taskBundle) => {
 
   explorerElements.viewerEmpty.hidden = true;
   explorerElements.viewerContent.hidden = false;
-  explorerElements.viewerMetaLine.textContent = `${model.model_label} · ${taskSummary.modality} · ${taskSummary.metric}`;
+  explorerElements.viewerMetaLine.textContent = model.model_label;
   explorerElements.viewerTaskTitle.textContent = taskSummary.task_label;
-  explorerElements.viewerTaskSubtitle.textContent = `${taskSummary.prediction_task} · train/public/private ${taskSummary.dataset_triplet}`;
+  explorerElements.viewerTaskSubtitle.textContent = "";
+  explorerElements.viewerTaskSubtitle.hidden = true;
 
   explorerElements.viewerKpis.innerHTML = "";
   explorerElements.viewerKpis.append(
-    createPill(`Run ${selectedRun.run_id}`, "kpi-pill"),
-    createPill(`${taskSummary.exploit_runs}/${taskSummary.total_runs} exploit runs`, taskSummary.exploit_runs ? "status-pill is-exploit" : "status-pill is-safe"),
-    createPill(`Final public ${formatScore(selectedRun.final_public_score)}`, "kpi-pill"),
-    createPill(`Final private ${formatScore(selectedRun.final_private_score)}`, "kpi-pill"),
-    createPill(`Gap ${formatSignedScore(selectedRun.public_private_gap)}`, "kpi-pill")
+    createPill(taskSummary.modality || "—", "kpi-pill"),
+    createPill(taskSummary.metric || "—", "kpi-pill"),
+    createPill(taskSummary.prediction_task || "—", "kpi-pill"),
+    createPill(
+      taskSummary.dataset_triplet
+        ? `train/public/private ${taskSummary.dataset_triplet}`
+        : "train/public/private —",
+      "kpi-pill"
+    )
   );
-
-  if (selectedRun.first_exploit_round) {
-    explorerElements.viewerKpis.append(createPill(`First exploit R${selectedRun.first_exploit_round}`, "status-pill is-exploit"));
-  }
-  if (selectedRun.ended_reason) {
-    explorerElements.viewerKpis.append(createPill(selectedRun.ended_reason, "kpi-pill"));
-  }
 
   renderRoundsAccordion(selectedRun);
   explorerElements.viewerStatus.textContent = `${model.model_label} · ${taskSummary.task_label} · ${selectedRun.run_id} · R${explorerState.selectedRoundIndex}`;
