@@ -1,5 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
-const DATA_CACHE_BUSTER = "2026-04-19-ablation1";
+const DATA_CACHE_BUSTER = "2026-04-20-results4";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
@@ -18,7 +18,6 @@ const explorerElements = {
   viewerStatus: document.getElementById("viewer-status"),
   viewerEmpty: document.getElementById("viewer-empty"),
   viewerContent: document.getElementById("viewer-content"),
-  viewerMetaLine: document.getElementById("viewer-meta-line"),
   viewerTaskTitle: document.getElementById("viewer-task-title"),
   viewerTaskSubtitle: document.getElementById("viewer-task-subtitle"),
   viewerKpis: document.getElementById("viewer-kpis"),
@@ -648,7 +647,6 @@ const renderViewer = (taskSummary, taskBundle) => {
 
   explorerElements.viewerEmpty.hidden = true;
   explorerElements.viewerContent.hidden = false;
-  explorerElements.viewerMetaLine.textContent = model.model_label;
   explorerElements.viewerTaskTitle.textContent = taskSummary.task_label;
   explorerElements.viewerTaskSubtitle.textContent = "";
   explorerElements.viewerTaskSubtitle.hidden = true;

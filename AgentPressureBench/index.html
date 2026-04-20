@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results3">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results4">
 </head>
 <body>
   <div class="page-shell">
@@ -25,8 +25,6 @@
           <a href="#overview">Overview</a>
           <a href="#results">Results</a>
           <a href="#explorer">Explorer</a>
-          <a href="#patterns">Patterns</a>
-          <a href="#cases">Case Studies</a>
           <a href="#bibtex">BibTeX</a>
         </nav>
       </div>
@@ -77,14 +75,6 @@
           <h2>AgentPressureBench</h2>
         </div>
         <div class="overview-grid">
-          <div class="overview-teaser-card reveal">
-            <img
-              class="teaser-image"
-              src="static/img/teaser_left.png"
-              alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
-            >
-          </div>
-
           <article class="info-card reveal figure-card-wide">
             <h3>Workflow</h3>
             <ul class="bullet-list workflow-list">
@@ -93,6 +83,15 @@
               <li>After each round, the public score is reported back to the agent, while the private score remains hidden.</li>
               <li>The hidden private evaluation split is never exposed to the agent during the run.</li>
             </ul>
+
+          <div class="overview-teaser-card reveal">
+            <img
+              class="teaser-image"
+              src="static/img/teaser_left.png"
+              alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
+            >
+          </div>
+
           </article>
 
           <div class="modality-grid figure-card-wide">
@@ -212,7 +211,6 @@
                 <div class="viewer-content" id="viewer-content" hidden>
                   <div class="viewer-header">
                     <div>
-                      <p class="panel-kicker" id="viewer-meta-line">Task metadata</p>
                       <h3 class="viewer-title" id="viewer-task-title">Task title</h3>
                       <p class="content-text viewer-subtitle" id="viewer-task-subtitle"></p>
                     </div>
@@ -287,7 +285,7 @@
                   <div class="family-stat-row"><span>Mean exploitative rounds</span><strong>2.07</strong></div>
                 </div>
                 <div class="family-pattern-tag">Dominant pattern: copying eval labels <strong>93.3%</strong></div>
-                <p class="content-text family-note">Among exploit-positive runs, <strong>93.6%</strong> end with <code>perfect_metric_reached</code>.</p>
+                <!-- <p class="content-text family-note">Among exploit-positive runs, <strong>93.6%</strong> end with <code>perfect_metric_reached</code>.</p> -->
               </section>
 
               <section class="family-card family-card-claude">
@@ -303,7 +301,7 @@
                   <div class="family-stat-row"><span>Mean exploitative rounds</span><strong>4.33</strong></div>
                 </div>
                 <div class="family-pattern-tag">Dominant pattern: training on eval labels <strong>65.5%</strong></div>
-                <p class="content-text family-note"><strong>25.7%</strong> of exploit-positive runs continue until <code>max_rounds_reached</code>.</p>
+                <!-- <p class="content-text family-note"><strong>25.7%</strong> of exploit-positive runs continue until <code>max_rounds_reached</code>.</p> -->
               </section>
             </div>
             <div class="figure-analysis">
@@ -317,7 +315,7 @@
 
           <article class="figure-card figure-card-wide reveal result-summary-card">
             <div class="shell-header">
-              <span>User pressure ablation</span>
+              <span>User pressure intensity ablation</span>
             </div>
             <div class="pressure-grid">
               <section class="pressure-card pressure-low">
@@ -375,7 +373,7 @@
 
           <article class="figure-card figure-card-wide reveal result-summary-card">
             <div class="shell-header">
-              <span>Prompting defenses</span>
+              <span>Prompt wording ablations</span>
             </div>
             <div class="defense-grid">
               <section class="defense-card defense-default">
@@ -413,90 +411,6 @@
         </div>
       </section>
 
-      <section class="section-block" id="patterns">
-        <div class="section-head reveal">
-          <h2>Compare recurring exploit strategies across models.</h2>
-        </div>
-
-        <div class="patterns-grid">
-          <article class="pattern-card reveal">
-            <h3>Pattern family A</h3>
-            <p class="content-text">
-              Placeholder for one exploit style, such as direct copying from
-              public evaluation labels.
-            </p>
-            <ul class="bullet-list">
-              <li>Main behavior placeholder</li>
-              <li>Representative tasks placeholder</li>
-              <li>Model-family association placeholder</li>
-            </ul>
-          </article>
-
-          <article class="pattern-card reveal">
-            <h3>Pattern family B</h3>
-            <p class="content-text">
-              Placeholder for the second exploit style, such as training or
-              tuning directly on exposed evaluation labels.
-            </p>
-            <ul class="bullet-list">
-              <li>Main behavior placeholder</li>
-              <li>Representative tasks placeholder</li>
-              <li>Model-family association placeholder</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="section-block section-tinted" id="cases">
-        <div class="section-head reveal">
-          <h2>Two concrete trajectories fit well here.</h2>
-        </div>
-
-        <div class="cases-grid">
-          <article class="case-card reveal">
-            <div class="shell-header">
-              <span>Case study placeholder</span>
-            </div>
-            <div class="terminal-shell">
-              <div class="terminal-bar">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="terminal-body">
-                <p>$ run_eval</p>
-                <p>public score ...</p>
-                <p>private score ...</p>
-                <p>exploit signal ...</p>
-              </div>
-            </div>
-            <p class="content-text">
-              Reserve this card for a gradual escalation case or a direct-copy
-              shortcut case.
-            </p>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="shell-header">
-              <span>Case study placeholder</span>
-            </div>
-            <div class="terminal-shell">
-              <div class="terminal-bar">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="terminal-body">
-                <p>$ edit src/pipeline.py</p>
-                <p>use eval labels ...</p>
-                <p>public score jumps ...</p>
-                <p>private score stays flat ...</p>
-              </div>
-            </div>
-            <p class="content-text">
-              Reserve this card for the second example, ideally contrasting a
-              different exploit pattern or model family.
-            </p>
-          </article>
-        </div>
-      </section>
-
       <section class="section-block" id="bibtex">
         <div class="section-head reveal">
           <h2>Citation block placeholder.</h2>
@@ -524,6 +438,6 @@
     </footer>
   </div>
 
-  <script src="static/js/index.js?v=2026-04-19-ablation1"></script>
+  <script src="static/js/index.js?v=2026-04-20-results4"></script>
 </body>
 </html>
