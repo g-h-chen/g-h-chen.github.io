@@ -425,7 +425,7 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
                 <p class="pressure-big-number">100.0%</p>
                 <p class="pressure-big-label">exploit rate</p>
                 <div class="rate-track"><span class="rate-fill defense-fill-default" style="width: 100%;"></span></div>
-                <p class="content-text defense-note">Evaluation ??????</p>
+                <!-- <p class="content-text defense-note">Evaluation ??????</p> -->
               </section>
 
               <section class="defense-card defense-heldout">
@@ -447,7 +447,7 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
                 <li><strong>Held-out test wording is not enough</strong>: the exploit rate remains <strong>75.0%</strong>, only modestly below the <strong>100.0%</strong> default.</li>
-                <li><strong>Explicit anti-exploit wording is the practical defense</strong>: exploitation drops to just <strong>8.3%</strong> even though public labels remain exposed in the workspace.</li>
+                <li><strong>Explicit anti-exploit wording is the practical defense</strong>: exploitation drops to <strong>8.3%</strong>.</li>
               </ul>
             </div>
           </article>
