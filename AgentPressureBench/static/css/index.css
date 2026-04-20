@@ -649,6 +649,95 @@ main {
   margin: 0;
 }
 
+.pressure-compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 108px minmax(0, 1fr);
+  gap: 14px 18px;
+  padding: 20px 24px 0;
+  align-items: center;
+}
+
+.pressure-compare-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 14px 16px;
+  border: 1px solid rgba(19, 33, 39, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--ink);
+  font-size: 0.96rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.pressure-compare-head-center {
+  font-family: "Fraunces", serif;
+  font-size: 1.18rem;
+}
+
+.pressure-compare-metric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pressure-compare-metric-left {
+  justify-content: flex-end;
+}
+
+.pressure-compare-metric-right {
+  justify-content: flex-start;
+}
+
+.pressure-compare-track {
+  position: relative;
+  flex: 1;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(19, 33, 39, 0.08);
+  overflow: hidden;
+  display: flex;
+}
+
+.pressure-compare-track-left {
+  justify-content: flex-end;
+}
+
+.pressure-compare-track-right {
+  justify-content: flex-start;
+}
+
+.pressure-compare-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.pressure-compare-value {
+  min-width: 54px;
+  font-family: "Fraunces", serif;
+  font-size: 1.08rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.pressure-compare-level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(19, 33, 39, 0.05);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
 .pressure-big-number {
   margin: 0;
   font-family: "Fraunces", serif;
@@ -1550,6 +1639,7 @@ main {
   }
 
   .family-faceoff,
+  .pressure-compare,
   .defense-grid {
     grid-template-columns: minmax(0, 1fr) 160px minmax(0, 1fr);
   }
@@ -1619,6 +1709,28 @@ main {
     min-height: 56px;
   }
 
+  .pressure-compare-level {
+    min-height: 56px;
+  }
+
+  .pressure-compare {
+    grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr);
+    gap: 12px 12px;
+  }
+
+  .pressure-compare-head {
+    font-size: 0.88rem;
+  }
+
+  .pressure-compare-head-center {
+    font-size: 1.02rem;
+  }
+
+  .pressure-compare-value {
+    min-width: 46px;
+    font-size: 1rem;
+  }
+
   .pressure-grid {
     grid-template-columns: 1fr;
   }
@@ -1686,5 +1798,27 @@ main {
 
   .family-terminal-code {
     font-size: 0.76rem;
+  }
+
+  .pressure-compare-value {
+    min-width: 46px;
+    font-size: 1rem;
+  }
+
+  .pressure-compare {
+    grid-template-columns: 1fr;
+  }
+
+  .pressure-compare-head-center {
+    display: none;
+  }
+
+  .pressure-compare-metric-left,
+  .pressure-compare-metric-right {
+    justify-content: flex-start;
+  }
+
+  .pressure-compare-track-left {
+    justify-content: flex-start;
   }
 }
