@@ -766,7 +766,8 @@ main {
 
 .round-entry,
 .round-section,
-.tool-event {
+.tool-event,
+.file-snapshot {
   border: 1px solid rgba(19, 33, 39, 0.08);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.78);
@@ -780,14 +781,16 @@ main {
 
 .round-entry-summary,
 .round-section summary,
-.tool-event summary {
+.tool-event summary,
+.file-snapshot summary {
   cursor: pointer;
   list-style: none;
 }
 
 .round-entry-summary::-webkit-details-marker,
 .round-section summary::-webkit-details-marker,
-.tool-event summary::-webkit-details-marker {
+.tool-event summary::-webkit-details-marker,
+.file-snapshot summary::-webkit-details-marker {
   display: none;
 }
 
@@ -830,7 +833,8 @@ main {
 }
 
 .round-section-body,
-.tool-event-body {
+.tool-event-body,
+.file-snapshot-body {
   display: grid;
   gap: 12px;
   padding: 0 16px 16px;
@@ -842,6 +846,13 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.file-snapshot-summary {
+  padding: 12px 14px;
+  font-weight: 800;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--ink);
 }
 
 .tool-step {
@@ -884,6 +895,30 @@ main {
 .round-pre {
   padding: 0;
   color: var(--ink-soft);
+}
+
+.tool-payload {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 250, 243, 0.78);
+  border: 1px solid rgba(19, 33, 39, 0.08);
+}
+
+.tool-payload-title {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.tool-payload-pre {
+  padding: 0;
+  max-height: 420px;
+  overflow: auto;
 }
 
 .notes-stack,

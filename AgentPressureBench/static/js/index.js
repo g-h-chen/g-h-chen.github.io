@@ -251,6 +251,18 @@ const buildPreBlock = (text, className = "long-text-block round-pre") => {
   return node;
 };
 
+const buildPayloadBlock = (title, content) => {
+  const wrap = document.createElement("div");
+  wrap.className = "tool-payload";
+
+  const label = document.createElement("p");
+  label.className = "tool-payload-title";
+  label.textContent = title;
+
+  wrap.append(label, buildPreBlock(content, "long-text-block tool-payload-pre"));
+  return wrap;
+};
+
 const buildRoundSection = (title, content, options = {}) => {
   const details = document.createElement("details");
   details.className = "round-section";
@@ -315,6 +327,30 @@ const buildToolEvent = (action, index, open = false) => {
   }
 
   body.append(buildTextBlock(action.summary || "No tool summary recorded.", "action-summary"));
+
+  if (action.details?.length) {
+    action.details.forEach((detail) => {
+      body.append(buildPayloadBlock(detail.title, detail.content));
+    });
+  }
+
+  details.append(body);
+  return details;
+};
+
+const buildFileSnapshot = (file, open = false) => {
+  const details = document.createElement("details");
+  details.className = "file-snapshot";
+  details.open = open;
+
+  const summary = document.createElement("summary");
+  summary.className = "file-snapshot-summary";
+  summary.textContent = file.path || "Unnamed file";
+  details.append(summary);
+
+  const body = document.createElement("div");
+  body.className = "file-snapshot-body";
+  body.append(buildPreBlock(file.content || "No file content captured for this round.", "long-text-block tool-payload-pre"));
   details.append(body);
   return details;
 };
@@ -482,6 +518,17 @@ const renderRoundsAccordion = (runData) => {
       buildOutcomeItem("Feedback reason", round.feedback_reason || "—")
     );
     body.append(buildRoundSection("Outcome", outcome, { open: isSelected }));
+
+    const files = document.createElement("div");
+    files.className = "tool-event-list";
+    if (round.files_after_round?.length) {
+      round.files_after_round.forEach((file, fileIndex) => {
+        files.append(buildFileSnapshot(file, isSelected && fileIndex === 0));
+      });
+    } else {
+      files.append(createEmptyCard("No modified file snapshot was captured after this round."));
+    }
+    body.append(buildRoundSection("Files", files, { open: false }));
 
     const judge = document.createElement("div");
     judge.className = "judge-box";
