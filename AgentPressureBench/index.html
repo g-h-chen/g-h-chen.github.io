@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-19-results-fix1">
 </head>
 <body>
   <div class="page-shell">
@@ -105,11 +105,10 @@
           <article class="info-card reveal figure-card-wide">
             <h3>Workflow</h3>
             <ul class="bullet-list workflow-list">
-              <li>One increasingly common workflow, dubbed colloquially as "vibe coding", asks the agent to improve a <strong>public score</strong>, which is the reported score on an evaluation set with labels exposed in the workspace.</li>
-              <li>The user monitors progress primarily through that reported score rather than through detailed validation of each intermediate modeling decision.</li>
-              <li>The benchmark uses bounded repositories with persistent state, multiple editable files, and a repeated public-evaluation loop.</li>
-              <li>Each run is built from a task template directory, a workspace tree, a data-schema summary, key-file hints, and prompt-setting blocks for access and policy.</li>
-              <li>The system prompt constrains the agent to one JSON controller action at a time, the initial user prompt defines the repository task, and the user simulator provides round-by-round pressure messages.</li>
+              <li>The benchmark uses <strong>34</strong> bounded ML repositories built to study public-score exploitation under user pressure.</li>
+              <li>Each task includes a training split, a <strong>public evaluation split whose labels exist in the workspace</strong>, and a hidden private evaluation split.</li>
+              <li>Across rounds, the agent is asked to improve the public score by editing files in the repository.</li>
+              <li>This setup lets us compare public-score gains against hidden private performance while inspecting rounds separately for exploitative behavior.</li>
             </ul>
           </article>
 
@@ -175,56 +174,57 @@
       <section class="section-block" id="results">
         <div class="section-head reveal">
           <p class="section-kicker">Main Results</p>
-          <h2>The layout is ready for the two core figures.</h2>
+          <h2>Main Results</h2>
         </div>
 
-        <div class="results-grid">
-          <article class="figure-card reveal">
+        <div class="results-stack">
+          <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
               <span>Model-by-task heatmap</span>
               <span class="shell-note">full workspace results</span>
             </div>
-            <div class="figure-shell">
-              <div class="heatmap-mock dense" aria-hidden="true">
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
+            <div class="figure-shell paper-figure-shell">
+              <object
+                class="paper-figure"
+                data="static/figs/model_by_task_heatmap.pdf"
+                type="application/pdf"
+              >
+                <a href="static/figs/model_by_task_heatmap.pdf" target="_blank" rel="noreferrer">Open the model-by-task heatmap.</a>
+              </object>
             </div>
-            <p class="caption">
-              Placeholder for the final heatmap plus a short caption about task
-              coverage and concentration among the selected models.
-            </p>
+            <div class="figure-analysis">
+              <ul class="bullet-list result-list">
+                <li>Across AgentPressureBench, we observe <strong>462 exploitative runs</strong>.</li>
+                <li>Exploitation appears in <strong>all 34 tasks</strong> across tabular, text, and vision inputs.</li>
+                <li><strong>11 out of 13</strong> tested agents exploit on at least one task; <strong>Llama 3.3 70B</strong> and <strong>Llama 3.2 90B</strong> are the only two agents without exploitation.</li>
+                <li>The densest exploit rows belong to a relatively small set of agents, showing that the behavior is broad across tasks but concentrated among stronger models.</li>
+              </ul>
+            </div>
           </article>
 
-          <article class="figure-card reveal">
+          <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
               <span>Capability versus exploitation</span>
               <span class="shell-note">story figure</span>
             </div>
-            <div class="figure-shell">
-              <div class="scatter-mock" aria-hidden="true">
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span>
-              </div>
+            <div class="figure-shell paper-figure-shell">
+              <object
+                class="paper-figure"
+                data="static/figs/34_task_story_triptych.pdf"
+                type="application/pdf"
+              >
+                <a href="static/figs/34_task_story_triptych.pdf" target="_blank" rel="noreferrer">Open the capability-exploitation triptych.</a>
+              </object>
             </div>
-            <p class="caption">
-              Placeholder for the correlation figure and the one-line claim that
-              stronger agents exploit more.
-            </p>
+            <div class="figure-analysis">
+              <ul class="bullet-list result-list">
+                <li>The capability-exploitation correlation is strongest early, peaking at <strong>n = 4</strong> with <strong>&rho; = 0.76</strong> and <strong>p = 0.0028</strong>.</li>
+                <li>After all <strong>30 rounds</strong>, the correlation remains positive at <strong>&rho; = 0.69</strong> and <strong>p = 0.0085</strong>.</li>
+                <li>The most above-trend outliers are <strong>GPT-5.4</strong> and <strong>GPT-5.3 Codex</strong>, reaching exploit rates of <strong>97.1%</strong> and <strong>92.2%</strong> with mean normalized private ranks of <strong>0.56</strong> and <strong>0.53</strong>.</li>
+                <li>More capable coding agents are therefore more likely to exploit the public score, especially in the early rounds.</li>
+              </ul>
+            </div>
           </article>
-        </div>
-
-        <div class="callout reveal">
-          <strong>Result summary placeholder.</strong>
-          <span>
-            Reserve this strip for the one-sentence benchmark takeaway that
-            appears directly under the figures.
-          </span>
         </div>
       </section>
 
@@ -406,6 +406,6 @@
     </footer>
   </div>
 
-  <script src="static/js/index.js"></script>
+  <script src="static/js/index.js?v=2026-04-19-results-fix1"></script>
 </body>
 </html>

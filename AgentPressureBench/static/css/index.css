@@ -408,6 +408,7 @@ main {
 .text-grid,
 .overview-grid,
 .results-grid,
+.results-stack,
 .exploiters-grid,
 .patterns-grid,
 .cases-grid {
@@ -571,6 +572,42 @@ main {
 
 .results-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.results-stack {
+  grid-template-columns: 1fr;
+}
+
+.result-figure-card {
+  display: grid;
+  gap: 0;
+}
+
+.paper-figure-shell {
+  min-height: 0;
+  margin: 0;
+  padding: 18px;
+}
+
+.paper-figure {
+  display: block;
+  width: 100%;
+  min-height: 520px;
+  border: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.figure-analysis {
+  padding: 0 24px 24px;
+}
+
+.result-list {
+  margin-top: 0;
+}
+
+.result-list strong {
+  color: var(--ink);
 }
 
 .scatter-mock {
@@ -1196,6 +1233,7 @@ main {
   .text-grid,
   .overview-grid,
   .results-grid,
+  .results-stack,
   .exploiters-grid,
   .patterns-grid,
   .cases-grid,
@@ -1218,6 +1256,10 @@ main {
 
   .teaser-image {
     width: min(100%, 92%);
+  }
+
+  .paper-figure {
+    min-height: 420px;
   }
 }
 
@@ -1305,5 +1347,9 @@ main {
 
   .teaser-image {
     width: 100%;
+  }
+
+  .paper-figure {
+    min-height: 320px;
   }
 }

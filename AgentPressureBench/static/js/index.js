@@ -1,5 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
-const DATA_CACHE_BUSTER = "2026-04-19-tool-payloads-v2";
+const DATA_CACHE_BUSTER = "2026-04-19-results-fix1";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
@@ -166,6 +166,12 @@ const createPill = (label, className = "task-pill") => {
   node.className = className;
   node.textContent = label;
   return node;
+};
+
+const setText = (node, value) => {
+  if (node) {
+    node.textContent = value;
+  }
 };
 
 const withCacheBust = (path) => {
@@ -375,10 +381,10 @@ const renderHeadlines = () => {
   const gpt54 = models.find((model) => model.model_id === "gpt_54");
   const claudeOpus = models.find((model) => model.model_id === "claude_opus46");
 
-  explorerElements.headlineTaskCount.textContent = summary.task_count;
-  explorerElements.headlineModelCount.textContent = summary.model_count;
-  explorerElements.headlineGpt54Rate.textContent = formatPercent(gpt54?.exploit_rate);
-  explorerElements.headlineClaudeOpusRate.textContent = formatPercent(claudeOpus?.exploit_rate);
+  setText(explorerElements.headlineTaskCount, String(summary.task_count));
+  setText(explorerElements.headlineModelCount, String(summary.model_count));
+  setText(explorerElements.headlineGpt54Rate, formatPercent(gpt54?.exploit_rate));
+  setText(explorerElements.headlineClaudeOpusRate, formatPercent(claudeOpus?.exploit_rate));
 };
 
 const populateModelSelect = () => {
@@ -777,4 +783,16 @@ const initExplorer = async () => {
   });
 };
 
-void initExplorer();
+void (async () => {
+  try {
+    await initExplorer();
+  } catch (error) {
+    console.error(error);
+    if (explorerElements.viewerStatus) {
+      explorerElements.viewerStatus.textContent = "Conversation explorer data is unavailable.";
+    }
+    if (explorerElements.viewerEmpty && explorerElements.viewerContent) {
+      setViewerLoading("Conversation explorer data is unavailable.");
+    }
+  }
+})();
