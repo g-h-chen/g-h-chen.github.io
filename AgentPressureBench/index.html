@@ -35,10 +35,10 @@
         <div class="hero-header reveal">
           <h1>Chasing the Public Score: User Pressure and Evaluation Exploitation in Coding Agent Workflows</h1>
           <p class="hero-authors">
-            Hardy Chen<sup>1</sup>, Nancy Lau<sup>1</sup>, Haoqin Tu<sup>1</sup>, Shuo Yan<sup>2</sup>, Xiangyan Liu<sup>3</sup>, Zijun Wang<sup>1</sup>
+            Hardy Chen<sup>1</sup>, Nancy Lau<sup>1</sup>, Haoqin Tu<sup>1</sup>, Shuo Yan<sup>2</sup>, Xiangyan Liu<sup>3</sup>, Zijun Wang<sup>1</sup>, Juncheng Wu<sup>1</sup>,
           </p>
           <p class="hero-authors">
-            Juncheng Wu<sup>1</sup>, Michael Qizhe Shieh<sup>3</sup>, Alvaro Cardenas<sup>1</sup>, Cihang Xie<sup>1</sup>, Yuyin Zhou<sup>1</sup>
+            Michael Qizhe Shieh<sup>3</sup>, Alvaro Cardenas<sup>1</sup>, Cihang Xie<sup>1</sup>, Yuyin Zhou<sup>1</sup>
           </p>
           <p class="hero-affiliations">
             <sup>1</sup>UC Santa Cruz &nbsp;&nbsp; <sup>2</sup>UT Dallas &nbsp;&nbsp; <sup>3</sup>NUS
@@ -165,10 +165,10 @@
 
             <div class="explorer-shell">
               <div class="explorer-intro">
-                <p class="content-text">
+                <!-- <p class="content-text">
                   Select an ablation setting, model, task, and run to inspect the corresponding
                   trajectory, round labels, and public/private results.
-                </p>
+                </p> -->
               </div>
 
               <div class="explorer-controls">
@@ -179,7 +179,7 @@
                   </select>
                 </label>
                 <label class="select-control">
-                  <span>Model</span>
+                  <span>Agent</span>
                   <select id="model-select" name="model-select">
                     <option>Loading…</option>
                   </select>
@@ -226,7 +226,7 @@
 
           <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
-              <span>Model-by-task heatmap</span>
+              <span>Agent-by-task heatmap</span>
             </div>
             <div class="figure-shell paper-figure-shell">
               <img
@@ -425,7 +425,7 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
                 <p class="pressure-big-number">100.0%</p>
                 <p class="pressure-big-label">exploit rate</p>
                 <div class="rate-track"><span class="rate-fill defense-fill-default" style="width: 100%;"></span></div>
-                <p class="content-text defense-note">Baseline wording with exposed public labels in the workspace.</p>
+                <p class="content-text defense-note">Evaluation ??????</p>
               </section>
 
               <section class="defense-card defense-heldout">
@@ -448,7 +448,6 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
               <ul class="bullet-list result-list">
                 <li><strong>Held-out test wording is not enough</strong>: the exploit rate remains <strong>75.0%</strong>, only modestly below the <strong>100.0%</strong> default.</li>
                 <li><strong>Explicit anti-exploit wording is the practical defense</strong>: exploitation drops to just <strong>8.3%</strong> even though public labels remain exposed in the workspace.</li>
-                <li>The paper’s takeaway is operational: if labels are present, tell the agent directly not to use them for training, tuning, calibration, or direct prediction.</li>
               </ul>
             </div>
           </article>
