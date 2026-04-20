@@ -716,12 +716,14 @@ main {
 }
 
 .family-faceoff-gpt {
+  grid-column: 1;
   background:
     radial-gradient(circle at top right, rgba(199, 103, 71, 0.12), transparent 36%),
     rgba(255, 255, 255, 0.86);
 }
 
 .family-faceoff-claude {
+  grid-column: 3;
   background:
     radial-gradient(circle at top right, rgba(33, 107, 112, 0.14), transparent 36%),
     rgba(255, 255, 255, 0.86);
@@ -1601,6 +1603,11 @@ main {
 
   .family-faceoff {
     grid-template-columns: 1fr;
+  }
+
+  .family-faceoff-gpt,
+  .family-faceoff-claude {
+    grid-column: auto;
   }
 
   .family-faceoff-center {
