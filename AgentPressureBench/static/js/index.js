@@ -1,5 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
-const DATA_CACHE_BUSTER = "2026-04-20-results4";
+const DATA_CACHE_BUSTER = "2026-04-20-results5";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
@@ -186,6 +186,21 @@ const setText = (node, value) => {
   if (node) {
     node.textContent = value;
   }
+};
+
+const setSelectPlaceholder = (node, label, options = {}) => {
+  if (!node) {
+    return;
+  }
+  const { disabled = false } = options;
+  node.innerHTML = "";
+  const option = document.createElement("option");
+  option.value = "";
+  option.textContent = label;
+  option.selected = true;
+  node.append(option);
+  node.value = "";
+  node.disabled = disabled;
 };
 
 const withCacheBust = (path) => {
@@ -419,19 +434,27 @@ const populateSettingSelect = () => {
     return;
   }
   explorerElements.settingSelect.innerHTML = "";
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select setting";
+  explorerElements.settingSelect.append(placeholder);
   (explorerState.index.settings || []).forEach((setting) => {
     const option = document.createElement("option");
     option.value = setting.setting_id;
     option.textContent = setting.setting_label;
     explorerElements.settingSelect.append(option);
   });
-  explorerElements.settingSelect.value =
-    explorerState.selectedSettingId || explorerState.index.default_setting_id || explorerState.index.settings?.[0]?.setting_id || "";
+  explorerElements.settingSelect.value = explorerState.selectedSettingId || "";
+  explorerElements.settingSelect.disabled = false;
 };
 
 const populateModelSelect = () => {
   const models = getActiveModels();
   explorerElements.modelSelect.innerHTML = "";
+  if (!models.length) {
+    setSelectPlaceholder(explorerElements.modelSelect, "Select model", { disabled: true });
+    return;
+  }
   models.forEach((model) => {
     const option = document.createElement("option");
     option.value = model.model_id;
@@ -439,14 +462,16 @@ const populateModelSelect = () => {
     explorerElements.modelSelect.append(option);
   });
   explorerElements.modelSelect.value = explorerState.selectedModelId || models[0]?.model_id || "";
+  explorerElements.modelSelect.disabled = false;
 };
 
 const populateTaskSelect = () => {
   const model = getSelectedModel();
-  explorerElements.taskSelect.innerHTML = "";
   if (!model) {
+    setSelectPlaceholder(explorerElements.taskSelect, "Select task", { disabled: true });
     return;
   }
+  explorerElements.taskSelect.innerHTML = "";
   model.tasks.forEach((task) => {
     const option = document.createElement("option");
     option.value = task.task_id;
@@ -454,9 +479,14 @@ const populateTaskSelect = () => {
     explorerElements.taskSelect.append(option);
   });
   explorerElements.taskSelect.value = explorerState.selectedTaskId || model.tasks[0]?.task_id || "";
+  explorerElements.taskSelect.disabled = false;
 };
 
 const populateRunSelect = (taskSummary) => {
+  if (!taskSummary?.runs?.length) {
+    setSelectPlaceholder(explorerElements.runSelect, "Select run", { disabled: true });
+    return;
+  }
   explorerElements.runSelect.innerHTML = "";
   taskSummary.runs.forEach((run) => {
     const option = document.createElement("option");
@@ -465,6 +495,7 @@ const populateRunSelect = (taskSummary) => {
     explorerElements.runSelect.append(option);
   });
   explorerElements.runSelect.value = explorerState.selectedRunId || taskSummary.representative_run_id || taskSummary.runs[0]?.run_id || "";
+  explorerElements.runSelect.disabled = false;
 };
 
 const loadTaskBundle = async (taskSummary) => {
@@ -728,6 +759,21 @@ const selectSetting = async (settingId, options = {}) => {
     return;
   }
 
+  if (!settingId) {
+    explorerState.selectedSettingId = null;
+    explorerState.selectedModelId = null;
+    explorerState.selectedTaskId = null;
+    explorerState.selectedRunId = null;
+    explorerState.selectedRoundIndex = null;
+    populateSettingSelect();
+    setSelectPlaceholder(explorerElements.modelSelect, "Select model", { disabled: true });
+    setSelectPlaceholder(explorerElements.taskSelect, "Select task", { disabled: true });
+    setSelectPlaceholder(explorerElements.runSelect, "Select run", { disabled: true });
+    setViewerLoading("Select an ablation setting to load a conversation.");
+    syncUrlState();
+    return;
+  }
+
   const setting =
     explorerState.index.settings?.find((item) => item.setting_id === settingId) ||
     (settingId === explorerState.index.default_setting_id
@@ -809,12 +855,12 @@ const bindExplorerControls = () => {
   if (explorerElements.settingSelect) {
     explorerElements.settingSelect.addEventListener("change", async (event) => {
       explorerState.shouldSyncUrl = true;
-      await selectSetting(event.target.value, {
+      await selectSetting(event.target.value, event.target.value ? {
         preserveModel: true,
         preserveTask: true,
         preserveRun: true,
         preserveRound: true,
-      });
+      } : {});
     });
   }
 
@@ -856,6 +902,14 @@ const initExplorer = async () => {
 
   renderHeadlines();
   populateSettingSelect();
+
+  if (!hasInitialRoute) {
+    setSelectPlaceholder(explorerElements.modelSelect, "Select model", { disabled: true });
+    setSelectPlaceholder(explorerElements.taskSelect, "Select task", { disabled: true });
+    setSelectPlaceholder(explorerElements.runSelect, "Select run", { disabled: true });
+    setViewerLoading("Select an ablation setting to load a conversation.");
+    return;
+  }
 
   const initialSettingId =
     initialRoute.settingId && explorerState.index.settings?.some((setting) => setting.setting_id === initialRoute.settingId)
