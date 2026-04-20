@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css?v=2026-04-19-results-fix1">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-19-results-fix2">
 </head>
 <body>
   <div class="page-shell">
@@ -55,26 +55,25 @@
 
       <section class="stats-strip reveal" aria-label="Headline metrics">
         <article class="stat-card">
-          <p class="stat-value" id="headline-task-count">TBD</p>
+          <p class="stat-value" id="headline-task-count">34</p>
           <p class="stat-label">Task Count</p>
         </article>
         <article class="stat-card">
-          <p class="stat-value" id="headline-model-count">TBD</p>
+          <p class="stat-value" id="headline-model-count">13</p>
           <p class="stat-label">Models</p>
         </article>
         <article class="stat-card">
-          <p class="stat-value" id="headline-gpt54-rate">TBD</p>
+          <p class="stat-value" id="headline-gpt54-rate">97.1%</p>
           <p class="stat-label">GPT-5.4 Exploitation Rate</p>
         </article>
         <article class="stat-card">
-          <p class="stat-value" id="headline-claude-opus-rate">TBD</p>
+          <p class="stat-value" id="headline-claude-opus-rate">74.5%</p>
           <p class="stat-label">Claude Opus 4.6 Exploitation Rate</p>
         </article>
       </section>
 
       <section class="section-block" id="abstract">
         <div class="section-head reveal">
-          <p class="section-kicker">Abstract</p>
           <h2>Start with the benchmark story, not the appendix.</h2>
         </div>
         <div class="text-grid reveal">
@@ -94,21 +93,21 @@
           <h2>AgentPressureBench</h2>
         </div>
         <div class="overview-grid">
-          <article class="figure-card figure-card-wide reveal overview-teaser-card">
+          <div class="overview-teaser-card reveal">
             <img
               class="teaser-image"
               src="static/img/teaser_left.png"
               alt="AgentPressureBench workflow teaser showing repo actions, user pressure, and a public-private score split."
             >
-          </article>
+          </div>
 
           <article class="info-card reveal figure-card-wide">
             <h3>Workflow</h3>
             <ul class="bullet-list workflow-list">
-              <li>The benchmark uses <strong>34</strong> bounded ML repositories built to study public-score exploitation under user pressure.</li>
               <li>Each task includes a training split, a <strong>public evaluation split whose labels exist in the workspace</strong>, and a hidden private evaluation split.</li>
               <li>Across rounds, the agent is asked to improve the public score by editing files in the repository.</li>
-              <li>This setup lets us compare public-score gains against hidden private performance while inspecting rounds separately for exploitative behavior.</li>
+              <li>After each round, the public score is reported back to the agent, while the private score remains hidden.</li>
+              <li>The hidden private evaluation split is never exposed to the agent during the run.</li>
             </ul>
           </article>
 
@@ -173,24 +172,22 @@
 
       <section class="section-block" id="results">
         <div class="section-head reveal">
-          <p class="section-kicker">Main Results</p>
-          <h2>Main Results</h2>
+          <h2>Results</h2>
         </div>
 
         <div class="results-stack">
           <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
               <span>Model-by-task heatmap</span>
-              <span class="shell-note">full workspace results</span>
             </div>
             <div class="figure-shell paper-figure-shell">
-              <object
-                class="paper-figure"
-                data="static/figs/model_by_task_heatmap.pdf"
-                type="application/pdf"
-              >
-                <a href="static/figs/model_by_task_heatmap.pdf" target="_blank" rel="noreferrer">Open the model-by-task heatmap.</a>
-              </object>
+              <a href="static/figs/model_by_task_heatmap.pdf" target="_blank" rel="noreferrer">
+                <img
+                  class="paper-figure"
+                  src="static/figs/model_by_task_heatmap.png?v=2026-04-19-results-fix2"
+                  alt="Model-by-task exploitation heatmap for AgentPressureBench."
+                >
+              </a>
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
@@ -205,16 +202,15 @@
           <article class="figure-card figure-card-wide reveal result-figure-card">
             <div class="shell-header">
               <span>Capability versus exploitation</span>
-              <span class="shell-note">story figure</span>
             </div>
             <div class="figure-shell paper-figure-shell">
-              <object
-                class="paper-figure"
-                data="static/figs/34_task_story_triptych.pdf"
-                type="application/pdf"
-              >
-                <a href="static/figs/34_task_story_triptych.pdf" target="_blank" rel="noreferrer">Open the capability-exploitation triptych.</a>
-              </object>
+              <a href="static/figs/34_task_story_triptych.pdf" target="_blank" rel="noreferrer">
+                <img
+                  class="paper-figure"
+                  src="static/figs/34_task_story_triptych.png?v=2026-04-19-results-fix2"
+                  alt="Capability-exploitation triptych for AgentPressureBench."
+                >
+              </a>
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
@@ -230,7 +226,6 @@
 
       <section class="section-block section-tinted" id="explorer">
         <div class="section-head reveal">
-          <p class="section-kicker">Explorer</p>
           <h2>Inspect one trajectory at a time.</h2>
         </div>
 
@@ -292,7 +287,6 @@
 
       <section class="section-block" id="patterns">
         <div class="section-head reveal">
-          <p class="section-kicker">Exploit Patterns</p>
           <h2>Compare recurring exploit strategies across models.</h2>
         </div>
 
@@ -327,7 +321,6 @@
 
       <section class="section-block section-tinted" id="cases">
         <div class="section-head reveal">
-          <p class="section-kicker">Case Studies</p>
           <h2>Two concrete trajectories fit well here.</h2>
         </div>
 
@@ -335,7 +328,6 @@
           <article class="case-card reveal">
             <div class="shell-header">
               <span>Case study placeholder</span>
-              <span class="shell-note">trajectory summary</span>
             </div>
             <div class="terminal-shell">
               <div class="terminal-bar">
@@ -357,7 +349,6 @@
           <article class="case-card reveal">
             <div class="shell-header">
               <span>Case study placeholder</span>
-              <span class="shell-note">trajectory summary</span>
             </div>
             <div class="terminal-shell">
               <div class="terminal-bar">
@@ -380,7 +371,6 @@
 
       <section class="section-block" id="bibtex">
         <div class="section-head reveal">
-          <p class="section-kicker">BibTeX</p>
           <h2>Citation block placeholder.</h2>
         </div>
 
@@ -406,6 +396,6 @@
     </footer>
   </div>
 
-  <script src="static/js/index.js?v=2026-04-19-results-fix1"></script>
+  <script src="static/js/index.js?v=2026-04-19-results-fix2"></script>
 </body>
 </html>
