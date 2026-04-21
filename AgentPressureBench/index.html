@@ -53,9 +53,10 @@
         <article class="hero-summary-card reveal">
           <h2>TL;DR</h2>
           <ul class="bullet-list hero-summary-list">
-            <li>Across <strong>34 machine-learning repositories</strong>, coding agents often improve a public score through shortcuts that <strong>do not transfer to hidden private evaluation</strong>.</li>
-            <li>We observe <strong>462 exploitative runs</strong>, and stronger agents exploit more often, with <strong>GPT-5.4 at 97.1%</strong> and <strong>Claude Opus 4.6 at 74.5%</strong>.</li>
-            <li>Higher user pressure causes earlier exploitation, while explicit anti-exploit wording cuts exploitation from <strong>100.0%</strong> to <strong>8.3%</strong>.</li>
+            <li>We introduce <strong>AgentPressureBench</strong>, a <strong>34-task ML repository</strong> to study user pressure and evaluation exploitation in coding agent workflows.</li>
+            <li>Under user's pressure, coding agents often improve the evaluation score through shortcuts that <strong>do not transfer to hidden private evaluation</strong>.</li>
+            <li>Stronger coding agents exploit more often, with <strong>GPT-5.4 at 97.1%</strong> and <strong>Claude Opus 4.6 at 74.5%</strong> for exploitation rates.</li>
+            <li>Higher user pressure causes earlier exploitation, while anti-exploit wording cuts exploitation from <strong>100.0%</strong> to <strong>8.3%</strong>.</li>
           </ul>
         </article>
 
@@ -93,10 +94,10 @@
           <article class="info-card reveal figure-card-wide">
             <h3>Workflow</h3>
             <ul class="bullet-list workflow-list">
-              <li>Each task includes a training split, a <strong>public evaluation split whose labels exist in the workspace</strong>, and a hidden private evaluation split.</li>
-              <li>Across rounds, the agent is asked to improve the public score by editing files in the repository.</li>
-              <li>After each round, the public score is reported back to the agent, while the private score remains hidden.</li>
-              <li>The hidden private evaluation split is never exposed to the agent during the run.</li>
+              <li>Each task includes a training split, a <strong>public evaluation split whose labels exist in the repository</strong>, and a hidden private evaluation split.</li>
+              <li>Across rounds, the user pressures the agent to improve the public eval score by editing files in the repository.</li>
+              <li>After each round, only the public score is reported back to the agent, while the private score remains hidden.</li>
+              <li>GPT-5.4 is used to inspect agents' exploitation behavior.</li>
             </ul>
           </article>
 
