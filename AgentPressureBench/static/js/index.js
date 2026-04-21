@@ -1,5 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
-const DATA_CACHE_BUSTER = "2026-04-21-results6";
+const DATA_CACHE_BUSTER = "2026-04-21-results7";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
