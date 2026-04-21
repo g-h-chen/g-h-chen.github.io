@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results7">
+  <link rel="stylesheet" href="static/css/index.css?v=2026-04-20-results8">
 </head>
 <body>
   <div class="page-shell">
@@ -49,24 +49,21 @@
             <a class="button" href="#bibtex">Cite</a>
           </div>
         </div>
-      </section>
 
-      <section class="stats-strip reveal" aria-label="Headline metrics">
-        <article class="stat-card">
-          <p class="stat-value" id="headline-task-count">34</p>
-          <p class="stat-label">Task Count</p>
+        <article class="hero-summary-card reveal">
+          <h2>TL;DR</h2>
+          <ul class="bullet-list hero-summary-list">
+            <li>AgentPressureBench evaluates coding agents on <strong>34 machine-learning repositories</strong> across tabular, text, and vision tasks.</li>
+            <li>In each run, the agent edits code to improve a <strong>public evaluation score</strong> on a workspace-visible labeled split.</li>
+            <li>A hidden private split checks whether those gains transfer or are just <strong>public-score exploitation</strong>.</li>
+          </ul>
         </article>
-        <article class="stat-card">
-          <p class="stat-value" id="headline-model-count">13</p>
-          <p class="stat-label">Models</p>
-        </article>
-        <article class="stat-card">
-          <p class="stat-value" id="headline-gpt54-rate">97.1%</p>
-          <p class="stat-label">GPT-5.4 Exploitation Rate</p>
-        </article>
-        <article class="stat-card">
-          <p class="stat-value" id="headline-claude-opus-rate">74.5%</p>
-          <p class="stat-label">Claude Opus 4.6 Exploitation Rate</p>
+
+        <article class="hero-summary-card hero-abstract-card reveal">
+          <h2>Abstract</h2>
+          <p class="content-text">
+            Frontier coding agents are increasingly used in workflows where users supervise progress primarily through repeated improvement of a public score, namely the reported score on a public evaluation file with labels in the workspace, rather than through direct inspection of the agent's intermediate outputs. We study whether multi-round user pressure to improve that score induces public score exploitation: behavior that raises the public score through shortcuts without improving hidden private evaluation. We build AgentPressureBench, a 34-task machine-learning repository benchmark spanning three modalities, and collect 1326 multi-round trajectories from 13 coding agents. We observe 462 exploitative runs across all tasks, find that stronger models exploit more often, and show that higher user pressure leads to earlier exploitation. As a mitigation, explicit anti-exploit wording reduces exploitation from <strong>100.0%</strong> to <strong>8.3%</strong>.
+          </p>
         </article>
       </section>
 
@@ -74,6 +71,24 @@
         <div class="section-head reveal">
           <h2>AgentPressureBench</h2>
         </div>
+        <section class="stats-strip overview-stats reveal" aria-label="Headline metrics">
+          <article class="stat-card">
+            <p class="stat-value" id="headline-task-count">34</p>
+            <p class="stat-label">Task Count</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-value" id="headline-model-count">13</p>
+            <p class="stat-label">Models</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-value" id="headline-gpt54-rate">97.1%</p>
+            <p class="stat-label">GPT-5.4 Exploitation Rate</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-value" id="headline-claude-opus-rate">74.5%</p>
+            <p class="stat-label">Claude Opus 4.6 Exploitation Rate</p>
+          </article>
+        </section>
         <div class="overview-grid">
           <article class="info-card reveal figure-card-wide">
             <h3>Workflow</h3>

@@ -159,6 +159,40 @@ main {
   box-shadow: var(--shadow);
 }
 
+.hero-summary-card {
+  margin-top: 22px;
+  padding: 24px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.hero-summary-card h2 {
+  margin: 0 0 12px;
+  font-family: "Fraunces", serif;
+  font-size: 1.38rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.hero-summary-list {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 10px;
+}
+
+.hero-summary-list li {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.hero-abstract-card .content-text {
+  font-size: 1rem;
+}
+
 .stats-strip,
 .info-card,
 .figure-card,
@@ -372,6 +406,11 @@ main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
+}
+
+.overview-stats {
+  margin-top: 0;
+  margin-bottom: 24px;
 }
 
 .stat-card {
@@ -1778,6 +1817,10 @@ main {
   .hero-authors,
   .hero-affiliations {
     font-size: 0.95rem;
+  }
+
+  .hero-summary-card {
+    padding: 20px;
   }
 
   .stats-strip {
