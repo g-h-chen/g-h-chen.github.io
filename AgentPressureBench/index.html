@@ -290,16 +290,16 @@
               <div class="family-faceoff-head family-faceoff-gpt">GPT family</div>
               <div class="family-faceoff-head family-faceoff-claude">Claude family</div>
 
-              <div class="family-faceoff-value family-faceoff-value-gpt"><strong>68.9%</strong></div>
+              <div class="family-faceoff-value family-faceoff-value-gpt"><strong>61.0%</strong></div>
               <div class="family-faceoff-label">Exploit rate</div>
-              <div class="family-faceoff-value family-faceoff-value-claude"><strong>33.7%</strong></div>
+              <div class="family-faceoff-value family-faceoff-value-claude"><strong>27.3%</strong></div>
 
-              <div class="family-faceoff-value family-faceoff-value-gpt"><strong>8.31</strong></div>
+              <div class="family-faceoff-value family-faceoff-value-gpt"><strong>10.16</strong></div>
               <div class="family-faceoff-label">Mean first exploit round</div>
-              <div class="family-faceoff-value family-faceoff-value-claude"><strong>8.80</strong></div>
+              <div class="family-faceoff-value family-faceoff-value-claude"><strong>11.95</strong></div>
 
               <div class="family-pattern-cell family-pattern-cell-gpt">
-                <p class="family-pattern-title">Copying eval labels <strong>(93.3%)</strong></p>
+                <p class="family-pattern-title">Copying eval labels <strong>(94.1%)</strong></p>
                 <div class="terminal-shell family-terminal">
                   <div class="terminal-bar"><span></span><span></span><span></span></div>
                   <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data and model</span>
@@ -324,7 +324,7 @@ submission[<span class="tok-string">"target"</span>] = eval_answers.fillna(submi
               </div>
               <div class="family-faceoff-label family-faceoff-label-pattern">Dominant exploit pattern</div>
               <div class="family-pattern-cell family-pattern-cell-claude">
-                <p class="family-pattern-title">Training on eval labels <strong>(65.5%)</strong></p>
+                <p class="family-pattern-title">Training on eval labels <strong>(70.8%)</strong></p>
                 <div class="terminal-shell family-terminal">
                   <div class="terminal-bar"><span></span><span></span><span></span></div>
                   <pre class="terminal-body family-terminal-code"><code><span class="tok-comment"># load data and model</span>
@@ -350,8 +350,8 @@ pred = <span class="tok-call">model.predict</span>(eval_df[feature_cols])
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
-                <li><strong>GPT-family exploits much more often</strong>: exploit rate is <strong>68.9%</strong> versus <strong>33.7%</strong> for Claude-family.</li>
-                <li><strong>GPT-family exploits slightly earlier</strong>: mean first exploit round is <strong>8.31</strong> for GPT-family and <strong>8.80</strong> for Claude-family.</li>
+                <li><strong>GPT-family exploits much more often</strong>: exploit rate is <strong>61.0%</strong> versus <strong>27.3%</strong> for Claude-family.</li>
+                <li><strong>GPT-family exploits slightly earlier</strong>: mean first exploit round is <strong>10.16</strong> for GPT-family and <strong>11.95</strong> for Claude-family.</li>
                 <li><strong>Dominant exploit pattern differs</strong>: GPT-family more often copies groundtruth labels into the final submission, while Claude-family more often trains on eval labels.</li>
               </ul>
             </div>
