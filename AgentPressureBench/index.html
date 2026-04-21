@@ -247,16 +247,16 @@
             <div class="figure-shell paper-figure-shell">
               <img
                 class="paper-figure"
-                src="static/figs/model_by_task_heatmap.png?v=2026-04-20-results3"
+                src="static/figs/model_by_task_heatmap.png?v=2026-04-21-v8figs1"
                 alt="Model-by-task exploitation heatmap for AgentPressureBench."
               >
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
-                <li>Across AgentPressureBench, we observe <strong>462 exploitative runs</strong>.</li>
-                <li>Exploitation appears in <strong>all 34 tasks</strong> across tabular, text, and vision inputs.</li>
-                <li><strong>11 out of 13</strong> tested agents exploit on at least one task; <strong>Llama 3.3 70B</strong> and <strong>Llama 3.2 90B</strong> are the only two agents without exploitation.</li>
-                <li>The densest exploit rows belong to a relatively small set of agents, showing that the behavior is broad across tasks but concentrated among stronger models.</li>
+                <li>Across <strong>1326 runs</strong> on AgentPressureBench, we observe <strong>403 exploitative runs</strong>.</li>
+                <li>Exploitation appears in <strong>all 34 tasks</strong>, spanning tabular, text, and vision inputs.</li>
+                <li><strong>12 out of 13</strong> tested agents exploit on at least one task; <strong>LLaMA 3.3 70B</strong> is the only agent without exploitation.</li>
+                <li>The densest rows still cluster among the strongest agents, so exploitation is broad across tasks but concentrated among frontier models.</li>
               </ul>
             </div>
           </article>
@@ -268,16 +268,16 @@
             <div class="figure-shell paper-figure-shell">
               <img
                 class="paper-figure"
-                src="static/figs/34_task_story_triptych.png?v=2026-04-20-results3"
+                src="static/figs/34_task_story_triptych.png?v=2026-04-21-v8figs1"
                 alt="Capability-exploitation triptych for AgentPressureBench."
               >
             </div>
             <div class="figure-analysis">
               <ul class="bullet-list result-list">
-                <li>The capability-exploitation correlation is strongest early, peaking at <strong>n = 4</strong> with <strong>&rho; = 0.76</strong> and <strong>p = 0.0028</strong>.</li>
-                <li>After all <strong>30 rounds</strong>, the correlation remains positive at <strong>&rho; = 0.69</strong> and <strong>p = 0.0085</strong>.</li>
-                <li>The most above-trend outliers are <strong>GPT-5.4</strong> and <strong>GPT-5.3 Codex</strong>, reaching exploit rates of <strong>97.1%</strong> and <strong>92.2%</strong> with mean normalized private ranks of <strong>0.56</strong> and <strong>0.53</strong>.</li>
-                <li>More capable coding agents are therefore more likely to exploit the public score, especially in the early rounds.</li>
+                <li>The capability-exploitation correlation is strongest early, peaking at <strong>n = 5</strong> with <strong>&rho; = 0.77</strong> and <strong>p = 0.0023</strong>.</li>
+                <li>After all <strong>30 rounds</strong>, the correlation remains positive at <strong>&rho; = 0.72</strong> and <strong>p = 0.0054</strong>.</li>
+                <li>The clearest above-trend outliers are <strong>GPT-5.4</strong> and <strong>GPT-5.3 Codex</strong>, reaching exploit rates of <strong>97.1%</strong> and <strong>91.2%</strong> with mean normalized private ranks of <strong>0.58</strong> and <strong>0.54</strong>.</li>
+                <li>Stronger coding agents are therefore more likely to exploit the public score, and they tend to do so earlier in the interaction.</li>
               </ul>
             </div>
           </article>

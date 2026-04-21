@@ -1,5 +1,5 @@
 const DATA_INDEX_PATH = "static/data/top-exploiters/index.json";
-const DATA_CACHE_BUSTER = "2026-04-20-results5";
+const DATA_CACHE_BUSTER = "2026-04-21-results6";
 
 const header = document.querySelector(".site-header");
 const navLinks = Array.from(document.querySelectorAll(".section-nav a"));
@@ -35,14 +35,7 @@ const explorerState = {
   shouldSyncUrl: false,
 };
 
-const HIDDEN_TASK_IDS = new Set([
-  "mlebench_cofw_face_landmarks_multifile",
-  "mlebench_cmu_hand_keypoints_multifile",
-  "mlebench_data_science_bowl_2018_multifile",
-  "mlebench_kvasir_seg_multifile",
-  "mlebench_uw_madison_gi_tract_image_segmentation_multifile",
-  "mlebench_tgs_salt_identification_multifile",
-]);
+const HIDDEN_TASK_IDS = new Set();
 
 const initialParams = new URLSearchParams(window.location.search);
 const parseRouteInt = (value) => {
