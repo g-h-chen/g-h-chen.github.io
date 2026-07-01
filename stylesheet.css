@@ -105,6 +105,12 @@ name {
   font-size: 32px;
 }
 
+.availability-note {
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 0;
+}
+
 .news-scroll {
   max-height: 185px;
   overflow-y: auto;
