@@ -105,10 +105,40 @@ name {
   font-size: 32px;
 }
 
+.news-scroll {
+  max-height: 185px;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding-right: 10px;
+  scrollbar-gutter: stable;
+}
+
+.news-scroll p {
+  line-height: 1.45;
+  margin: 0 0 10px;
+}
+
+.news-scroll p:last-child {
+  margin-bottom: 0;
+}
+
 .one {
   width: 160px;
   height: 160px;
   position: relative;
+}
+
+.paper-image-box {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.paper-image {
+  display: block;
+  max-height: 160px;
+  object-fit: contain;
+  width: 160px;
 }
 
 .two {
