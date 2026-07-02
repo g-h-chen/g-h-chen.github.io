@@ -107,8 +107,8 @@ name {
 
 .availability-note {
   color: #d00000;
-  font-size: 72px;
-  line-height: 1.05;
+  font-size: 18px;
+  line-height: 1.4;
   margin: 0;
   overflow-wrap: anywhere;
 }
